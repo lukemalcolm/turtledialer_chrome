@@ -1,0 +1,17 @@
+{
+  "lbl_settings_title": {
+    "message": "Turtle dialer settings"
+  },
+  "lbl_phone_model": {
+    "message": "Phone model"
+  },
+  "lbl_model": {
+    "message": "Model"
+  },
+  "lbl_username": {
+      "message": "Username"
+  },
+  "lbl_yealink_t2x_settings": {
+    "message": "Yealink T2x API settings"
+  }
+}

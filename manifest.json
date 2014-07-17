@@ -1,0 +1,40 @@
+{
+  "name": "Turtle dialer",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "trigger a call with an ip phone",
+  "homepage_url": "http://www.velasuci.com",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "default_locale": "en",
+  "background": {
+    "scripts": [
+      //"/src/options_custom/lib/store.js",
+      "js/phoneformat.js",
+      "js/background.js"
+    ],
+    //"page": "src/bg/background.html",
+    "persistent": true
+  },
+  "options_page": "html/settings.html",
+  // "browser_action": {
+  //   "default_icon": "icons/icon19.png",
+  //   "default_title": "Turtle dialer",
+  //   "default_popup": "src/browser_action/browser_action.html"
+  // },
+  "permissions": [
+    "notifications",
+    "storage",
+    "contextMenus",
+    "http://*/*"
+   ]//,
+  // "content_scripts": [
+  //   {
+  //     "matches": ["http://*/*", "https://*/*"],
+  //     "js": ["src/inject/content_script.js"]
+  //   }
+  // ]
+}
