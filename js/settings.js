@@ -31,13 +31,28 @@ $(function () {
 		['protocol1', 'protocol2', 'host', 'port', 'username', 'password'],
 		function(idx, obj) {
 			console.log('object: ' + obj);
-			$('#' + obj).val(localStorage['turtle.settings.' + obj]);
-			$('#' + obj).change(
-				function() {
-					console.log(obj + ' changed: ' + $('#' + obj).val());
-					localStorage['turtle.settings.' + obj] = $('#' + obj).val();
+			var input = $('#' + obj);
+			if (input.attr('type') == 'text' || input.attr('type') == 'select' || input.attr('type') == 'password') {
+				input.val(localStorage['turtle.settings.' + obj]);
+				input.change(
+					function() {
+						console.log(obj + ' changed: ' + input.val());
+						localStorage['turtle.settings.' + obj] = input.val();
+					}
+				)			
+			} else if (input.attr('type') == 'radio') {
+				var value = localStorage['turtle.settings.' + input.attr('name')]
+				if (input.val() == value) {
+					input.attr('checked', 'checked');
 				}
-			);
+				input.change(
+					function() {
+						if (input.is(':checked')) {
+							localStorage['turtle.settings.' + input.attr('name')] = input.val();
+						}
+					}
+				)
+			}
 		}
 	);
 });

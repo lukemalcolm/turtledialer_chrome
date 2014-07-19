@@ -20,16 +20,17 @@
     "persistent": true
   },
   "options_page": "html/settings.html",
-  // "browser_action": {
-  //   "default_icon": "icons/icon19.png",
-  //   "default_title": "Turtle dialer",
-  //   "default_popup": "src/browser_action/browser_action.html"
-  // },
+  "browser_action": {
+    "default_icon": "icons/icon19.png",
+    "default_title": "Turtle dialer",
+    "default_popup": "html/phonebook.html"
+  },
   "permissions": [
     "notifications",
     "storage",
     "contextMenus",
-    "http://*/*"
+    "http://*/*",
+    "https://*/*"
    ]//,
   // "content_scripts": [
   //   {
