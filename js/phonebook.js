@@ -1,5 +1,4 @@
 $(function() {
-	$('body').scrollspy({ target: '#indexgs∫∫XZZ	' })
 	Papa.parse(
 		//'http://admin:gestiovoz@192.168.107.101/cgi-bin/ConfigManApp.com?Id=28&form=1',
 		'https://www.dropbox.com/s/8veqwmravfgnl4s/contact.csv?dl=1',
@@ -23,7 +22,7 @@ $(function() {
 				for (var i = 0; i < 26; i++) {
 					var currentLetter = String.fromCharCode(65 + i);
 					var tabpane = $('<div>', { 'id': currentLetter, 'class': 'tab-pane'});
-					tabpane.append('<legend>' + currentLetter + '</legend>');
+					//tabpane.append('<legend>' + currentLetter + '</legend>');
 					var tabnav = $('<li>');
 					if (currentLetter == 'A') {
 						tabpane.addClass("active");
@@ -39,26 +38,35 @@ $(function() {
 							lastIdx = j;
 							break;
 						}
-						tabpane.append(
+						var contact = 
 							'<div class="row">' +
 							'<div class="col-xs-3">' +
 							'<strong>' + currObj.DisplayName + '</strong>' +
 							'</div>' +
-							'<div class="col-xs-3">' +
-							'<i class="fa fa-building"></i> ' +
-							'<a href="javascript:call(\'' + currObj.OfficeNumber + '\');">' + currObj.OfficeNumber + '</a>' +
+							'<div class="col-xs-3">';
+						if (currObj.OfficeNumber != '') {
+							contact += 							
+								'<i class="fa fa-building"></i> ' +
+								'<a href="javascript:call(\'' + currObj.OfficeNumber + '\');">' + currObj.OfficeNumber + '</a>';
+						}
+						contact += '</div>' +
+							'<div class="col-xs-3">';
+						if (currObj.MobilNumber != '') {
+							contact +=
+								'<i class="fa fa-mobile"></i> ' +
+								'<a href="javascript:call(\'' + currObj.MobilNumber + '\');">' + currObj.MobilNumber + '</a>';
+						}
+						contact += '</div>' +
+							'<div class="col-xs-3">';
+						if (currObj.OtherNumber != '') {
+							contact += 
+								'<i class="fa fa-phone"></i> ' +
+								'<a href="javascript:call(\'' + currObj.OtherNumber + '\');">' + currObj.OtherNumber + '</a>';
+						}
+						contact += 
 							'</div>' +
-							'<div class="col-xs-3">' +
-							'<i class="fa fa-mobile"></i> ' +
-							'<a href="javascript:call(\'' + currObj.MobilNumber + '\');">' + currObj.MobilNumber + '</a>' +
-							'</div>' +
-							'<div class="col-xs-3">' +
-							'<i class="fa fa-phone"></i> ' +
-							'<a href="javascript:call(\'' + currObj.OtherNumber + '\');">' + currObj.OtherNumber + '</a>' +
-							'</div>' +
-							'</div>'
-						);
-
+							'</div>';
+						tabpane.append(contact);
 					}
 					$('#tabs').append(tabpane);
 				}
