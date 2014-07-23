@@ -146,7 +146,14 @@ function trigger_call(e)
 
 chrome.notifications.onButtonClicked.addListener(
 	function(notification_id, button_idx) {
-		console.log('hangup '+ button_idx);
+		yea.hangup({
+			success: function() {
+				console.log('hangup success');
+			},
+			failure: function() {
+				console.log('hangup failure');
+			}
+		});
 	}
 );
 

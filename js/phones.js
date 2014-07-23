@@ -61,7 +61,38 @@ YealinkT2x.prototype.hangup = function(hanguprequest) {
 	}
 	xhr.send();	
 }	
-}
-YealinkT2x.prototype.getPhoneBook = function() {
 
+YealinkT2x.prototype.phonebook = function(phonebookrequest) {
+	var url_to_call = 
+		this.protocol + '://' +
+		this.username + ':' + this.password + '@' + 
+		this.host + '/cgi-bin/ConfigManApp.com?Id=28&form=1';
+	Papa.parse(
+		url_to_call,
+		{
+			download: true,
+			header: true,
+			delimiter: ',',
+			complete: function(results, file) {
+				var compare = function(a,b) {
+				  if (a.DisplayName < b.DisplayName)
+				     return -1;
+				  if (a.DisplayName > b.DisplayName)
+				    return 1;
+				  return 0;
+				}
+				results.data.sort(compare);
+				var items = []
+				for (var i = 0; i < results.data.length; i++) {
+					items.push({
+						'name': results.data[i].DisplayName,
+						'office': results.data[i].OfficeNumber,
+						'mobile': results.data[i].MobilNumber,
+						'other': results.data[i].OtherNumber
+					});
+				}
+				phonebookrequest.success(items);
+			}
+		}
+	);
 }

@@ -28,7 +28,8 @@ $(function () {
 		}
 	);
 	$.each(
-		['protocol1', 'protocol2', 'host', 'port', 'username', 'password', 'account'],
+		['protocol1', 'protocol2', 'host', 'port', 
+			'username', 'password', 'account', 'country'],
 		function(idx, obj) {
 			console.log('object: ' + obj);
 			var input = $('#' + obj);
@@ -52,6 +53,17 @@ $(function () {
 						}
 					}
 				)
+			} else if (input.is('select')) {
+				var value = localStorage['turtle.settings.' + input.attr('name')]
+				if (value != undefined) {
+					input.val(value);
+				}
+				input.change(
+					function(obj) {
+						var value = $(this).val();
+						localStorage['turtle.settings.' + input.attr('name')] = value;
+					}
+				);
 			}
 		}
 	);
