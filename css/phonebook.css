@@ -1,16 +1,28 @@
 body {
+  width: 768px;
   height: 400px;
 }
 .popup {
-  width: 768px;
   height: 400px;
 /*  padding: 15px 15px; */
   position: absolute;
 
 }
+.letter-disabled {
+  color: #ccc;
+}
+.nav {
+  padding-left: 70px;
+}
 .nav>li>a {
   padding: 5px 6px;
 }
-.tab-content {
-  margin-top: 15px;
+.header {
+  height: 100px;
+}
+.contact-list {
+  margin-top: 20px;
+  height: 280px; 
+  overflow: auto; 
+  position: relative;
 }

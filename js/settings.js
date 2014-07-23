@@ -28,11 +28,11 @@ $(function () {
 		}
 	);
 	$.each(
-		['protocol1', 'protocol2', 'host', 'port', 'username', 'password'],
+		['protocol1', 'protocol2', 'host', 'port', 'username', 'password', 'account'],
 		function(idx, obj) {
 			console.log('object: ' + obj);
 			var input = $('#' + obj);
-			if (input.attr('type') == 'text' || input.attr('type') == 'select' || input.attr('type') == 'password') {
+			if (input.attr('type') == 'text' || input.attr('type') == 'password') {
 				input.val(localStorage['turtle.settings.' + obj]);
 				input.change(
 					function() {
