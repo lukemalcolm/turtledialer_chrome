@@ -31,11 +31,11 @@
     "contextMenus",
     "http://*/*",
     "https://*/*"
-   ]//,
-  // "content_scripts": [
-  //   {
-  //     "matches": ["http://*/*", "https://*/*"],
-  //     "js": ["src/inject/content_script.js"]
-  //   }
-  // ]
+   ],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["js/content.js"]
+    }
+  ]
 }

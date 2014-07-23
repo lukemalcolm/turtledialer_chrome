@@ -109,3 +109,43 @@
 //     "onclick" : trigger_call
 //   });
 
+
+
+var context_menu_id = false;
+
+var putil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
+
+function trigger_call(e)
+{
+	chrome.notifications.create("", {
+		"type": "basic",
+		"iconUrl": "/icons/icon48.png",
+		"title": "Turtle dialer",
+		"message": "Cannot dial " + e.selectionText + ": check your phone configuration!",
+		"buttons": [ { 'title': 'Hangup', "iconUrl": "/icons/hangup32.png" } ]
+	}, function() {});
+	console.log('Calling ' + e.selectionText);
+}
+
+chrome.notifications.onButtonClicked.addListener(
+	function(notification_id, button_idx) {
+		console.log('hangup '+ button_idx);
+	}
+);
+
+function onRequest(request, sender, sendResponse) {
+	var text_selected = request.text_selected;
+	try {
+		parsed_number = putil.parse(text_selected, 'ES');
+  		context_menu_id = chrome.contextMenus.create({
+    		"title": "Call to " + parsed_number.getNationalNumber(),
+    		"contexts": [ "selection" ],
+    		"onclick": trigger_call
+  		});
+	} catch (e) {
+	  chrome.contextMenus.remove(context_menu_id, function() {
+	    context_menu_id = null;
+	  });
+	}
+}
+chrome.extension.onRequest.addListener(onRequest);

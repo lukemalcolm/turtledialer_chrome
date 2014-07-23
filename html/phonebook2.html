@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<title>Turtle Dialer address book</title>
+	<link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css"/>
+	<link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css"/>
+	<link rel="stylesheet" href="/css/phonebook.css" type="text/css"/>
+	<script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/papaparse.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div class="popup">
+		<div class="container" style="height: 100px;">
+			<div class="row">
+				<div class="col-xs-12">
+					<h1>Phonebook</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12" id="letters">
+					<ul class="nav nav-pills">
+						<li class="active"><a href="#a">A</a></li>
+						<li><a href="#b">B</a></li>
+						<li><a href="#c">C</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="container" data-spy="scroll" data-target="#letters" style="height: 300px; overflow: auto; position: relative;">
+			<div class="row">
+				<div class="col-xs-12">
+					<section id="a"></section>
+						<div class="row">
+							<div class="col-xs-12">
+								<legend>A</legend>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+					<section id="b"></section>
+						<div class="row">
+							<div class="col-xs-12">
+								<legend>B</legend>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+					<section id="c"></section>
+						<div class="row">
+							<div id="c" class="col-xs-12">
+								<legend>C</legend>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								C
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+							<div class="col-xs-3">
+								A
+							</div>
+						</div>				
+				</div>
+			</div> 
+		</div>   
+	</div>
+</body>
+</html>
