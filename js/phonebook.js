@@ -42,21 +42,21 @@ $(function() {
 					'<strong>' + currObj.name + '</strong>' +
 					'</div>' +
 					'<div class="col-xs-3">';
-				if (currObj.OfficeNumber != '') {
+				if (currObj.office != '') {
 					contact += 							
 						'<i class="fa fa-building"></i> ' +
 						'<a href="#">' + currObj.office + '</a>';
 				}
 				contact += '</div>' +
 					'<div class="col-xs-3">';
-				if (currObj.MobilNumber != '') {
+				if (currObj.mobile != '') {
 					contact +=
 						'<i class="fa fa-mobile"></i> ' +
 						'<a href="#">' + currObj.mobile + '</a>';
 				}
 				contact += '</div>' +
 					'<div class="col-xs-3">';
-				if (currObj.OtherNumber != '') {
+				if (currObj.other != '') {
 					contact += 
 						'<i class="fa fa-phone"></i> ' +
 						'<a href="#">' + currObj.other + '</a>';
