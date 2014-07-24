@@ -8,8 +8,8 @@ function text_selected(event) {
     document.body.addEventListener(
       'mouseup', 
       function() {
-      var text_selected = window.getSelection().toString();
-      chrome.extension.sendRequest({ 'text_selected': text_selected });
+        var text_selected = window.getSelection().toString();
+        chrome.extension.sendRequest({ 'text_selected': text_selected });
     });
   }
 }
