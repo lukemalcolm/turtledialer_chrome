@@ -109,6 +109,106 @@
 //   });
 
 
+//GData-Version: 3.0
+
+var current_token = null;
+
+var google_contacts = [];
+
+// chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
+//   current_token = token;
+// });
+
+
+
+// var xhr = new XMLHttpRequest();
+// xhr.open('GET', 'https://www.google.com/m8/feeds/contacts/default/full');
+// xhr.setRequestHeader('Authorization',
+//                    'Bearer ' + current_token);
+// xhr.setRequestHeader('GData-Version', '3.0');
+
+
+
+// xhr.onreadystatechange = function() {
+// 	console.log(xhr.readyState);
+//   if (xhr.readyState == 4) {
+//   	google_contacts = xhr.responseXML;
+//   	console.log(xhr.responseText);
+//   }
+// }
+// xhr.send();	
+
+var next_url = null;
+
+function authenticatedXhr(url, callback) {
+	console.log('authenticatedXhr');
+	var retry = true;
+
+	function getTokenAndXhr() {
+		console.log('getTokenAndXhr');
+		chrome.identity.getAuthToken({
+				'interactive': true
+			},
+			function(access_token) {
+				if (chrome.runtime.lastError) {
+					callback(chrome.runtime.lastError);
+					return;
+				}
+
+				var xhr = new XMLHttpRequest();
+				xhr.open('GET', url);
+				xhr.setRequestHeader('Authorization',
+					'Bearer ' + access_token);
+				xhr.setRequestHeader('GData-Version', '3.0');
+				xhr.onload = function() {
+					if (this.status === 401 && retry) {
+						// This status may indicate that the cached
+						// access token was invalid. Retry once with
+						// a fresh token.
+						retry = false;
+						chrome.identity.removeCachedAuthToken({
+								'token': access_token
+							},
+							getTokenAndXhr);
+						return;
+					}
+
+					callback(null, this.status, this.responseText, this.responseXML);
+				}
+				xhr.send();
+			});
+
+	}
+	getTokenAndXhr();
+}
+
+var contacts_callback = function(error, status, respText, respXML) {
+	var contacts = JSON.parse(respText);
+	next_url = null;
+	var links = contacts['feed']['link'];
+	for (var i = 0; i < links.length; i++) {
+		if (links[i]['rel'] == 'next') {
+			next_link_found = true;
+			next_url = links[i]['href'];
+			console.log('next page url: ' + next_url);
+			break;
+		}
+	}
+	console.log(contacts);
+	$.each(contacts['feed']['entry'], function(idx, obj) {
+		if (obj.hasOwnProperty('gd$phoneNumber')) {
+			console.log(obj['title']);
+		}
+	});
+	if (next_url != null) {
+		authenticatedXhr(next_url, contacts_callback);	
+	}
+}
+
+authenticatedXhr('https://www.google.com/m8/feeds/contacts/default/full?alt=json&max-results=100', contacts_callback);
+
+
+
 var yea = new YealinkT2x();
 yea.log_config();
 
