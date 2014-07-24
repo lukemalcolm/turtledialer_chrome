@@ -1,4 +1,3 @@
-
 // var settings = new Store("settings", {});
 
 
@@ -42,19 +41,19 @@
 
 // 	var username = settings.get("username");
 // 	var password = settings.get("password");
-	
+
 // 	var url_to_call = protocol + "://";
-	
+
 // 	if (username != null && username.length > 0) {
 // 		url_to_call = url_to_call + username + ":" + password + "@";
 // 	}
 // 	url_to_call = url_to_call + host;
 
-	
+
 
 // 	if (e.selectionText) {
 // 		var number_to_call = e.selectionText;
-		
+
 // 		var parsed_number = null;
 // 		try {
 // 			parsed_number = putil.parse(number_to_call, default_country_code);
@@ -110,42 +109,98 @@
 //   });
 
 
+var yea = new YealinkT2x();
+yea.log_config();
 
-var context_menu_id = false;
+var context_menu_id = null;
 
 var putil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
 
-function trigger_call(e)
-{
-	chrome.notifications.create("", {
-		"type": "basic",
-		"iconUrl": "/icons/icon48.png",
-		"title": "Turtle dialer",
-		"message": "Cannot dial " + e.selectionText + ": check your phone configuration!",
-		"buttons": [ { 'title': 'Hangup', "iconUrl": "/icons/hangup32.png" } ]
-	}, function() {});
+function trigger_call(e) {
+
+	parsed_number = putil.parse(e.selectionText, 'ES');
+	yea.dial({
+		phonenumber: parsed_number.getNationalNumber(),
+		success: function() {
+			chrome.notifications.create("", {
+				"type": "basic",
+				"iconUrl": "/icons/turtle128.png",
+				"title": "Turtle dialer",
+				"message": "Dialing " + parsed_number.getNationalNumber(),
+				"buttons": [{
+					'title': 'Hangup',
+					"iconUrl": "/icons/hangup32.png"
+				}]
+			}, function() {});
+		},
+		failure: function() {
+			chrome.notifications.create("", {
+				"type": "basic",
+				"iconUrl": "/icons/turtle128.png",
+				"title": "Turtle dialer",
+				"message": "Cannot dial " + parsed_number.getNationalNumber() + ": check your phone configuration!"
+			}, function() {});
+		}
+	});
 	console.log('Calling ' + e.selectionText);
 }
 
 chrome.notifications.onButtonClicked.addListener(
 	function(notification_id, button_idx) {
-		console.log('hangup '+ button_idx);
+		yea.hangup({
+			success: function() {
+				console.log('hangup success');
+			},
+			failure: function() {
+				console.log('hangup failure');
+			}
+		});
 	}
 );
 
 function onRequest(request, sender, sendResponse) {
 	var text_selected = request.text_selected;
+	console.log('text selected: ' + text_selected);
+	var parsed_number = null;
 	try {
 		parsed_number = putil.parse(text_selected, 'ES');
-  		context_menu_id = chrome.contextMenus.create({
-    		"title": "Call to " + parsed_number.getNationalNumber(),
-    		"contexts": [ "selection" ],
-    		"onclick": trigger_call
-  		});
-	} catch (e) {
-	  chrome.contextMenus.remove(context_menu_id, function() {
-	    context_menu_id = null;
-	  });
+	} catch (e) {}
+	if (parsed_number != null) {
+		console.log('parsed number not null and context_menu_id = ' + context_menu_id);
+		if (context_menu_id != null) {
+			return;
+		}
+		context_menu_id = chrome.contextMenus.create({
+			"title": "Call to " + parsed_number.getNationalNumber(),
+			"contexts": ["selection"],
+			"onclick": trigger_call
+		}, function() { console.log('context menu created '); });
+	} else {
+		console.log('parsed number is null and context_menu_id = ' + context_menu_id);
+		if (context_menu_id != null) {
+			chrome.contextMenus.remove(context_menu_id, function() {
+				context_menu_id = null;
+			});
+		}
 	}
 }
 chrome.extension.onRequest.addListener(onRequest);
+
+
+/*
+	 
+	pmd = putil.getMetadataForRegion('ES')
+	pmd.getInternationalPrefix()
+
+
+	pn = putil.parse('+390817434329', 'ES')
+
+	if pn.getCountryCode() != pmd.getCountryCode()
+		// add international prefix
+		if phonenumber.hasItalianLeadingZero() {
+			//add zero
+		}
+
+
+
+*/
