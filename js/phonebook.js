@@ -1,11 +1,11 @@
-var yea = new YealinkT2x();
-
-
-
 $(function() {
+	$('#navigation').hide();
 	var populate = function(data) {
-		$('#phonebook').empty();
+		$('#data').empty();
+		$('#data').show();
+		$('#letters_list').empty();
 		$('.progress').hide();
+		$('#navigation').show();
 		var navs = {};
 		var lastIdx = 0;
 		for (var i = 0; i < 26; i++) {
@@ -38,14 +38,22 @@ $(function() {
 				}
 				contact += 
 					'<div class="row">' +
-					'<div class="col-xs-3">' +
+					'<div class="col-xs-3">';
+				if (currObj.type == 'phone') {
+					contact += 
+						'<span class="fa fa-phone-square"></span> ';
+				} else {
+					contact += 
+						'<span class="fa fa-google"></span> ';					
+				}
+				contact += 
 					'<strong>' + currObj.name + '</strong>' +
 					'</div>' +
 					'<div class="col-xs-3">';
-				if (currObj.office != '') {
+				if (currObj.work != '') {
 					contact += 							
 						'<i class="fa fa-building"></i> ' +
-						'<a href="#">' + currObj.office + '</a>';
+						'<a href="#">' + currObj.work + '</a>';
 				}
 				contact += '</div>' +
 					'<div class="col-xs-3">';
@@ -93,7 +101,17 @@ $(function() {
 		});
 		$('#spy').scrollspy('refresh');
 	};
-	yea.phonebook({
-		success: populate
-	});
+	// yea.phonebook({
+	// 	success: populate
+	// });
+	var refresh_contacts = function() {
+		$('.progress').show();
+		$('#navigation').hide();
+		$('#data').hide();
+		chrome.extension.getBackgroundPage().refresh_contacts({
+			success: populate
+		});
+	};
+	$('#refresh').click(refresh_contacts);
+	refresh_contacts();
 });

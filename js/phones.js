@@ -74,19 +74,12 @@ YealinkT2x.prototype.phonebook = function(phonebookrequest) {
 			header: true,
 			delimiter: ',',
 			complete: function(results, file) {
-				var compare = function(a,b) {
-				  if (a.DisplayName < b.DisplayName)
-				     return -1;
-				  if (a.DisplayName > b.DisplayName)
-				    return 1;
-				  return 0;
-				}
-				results.data.sort(compare);
 				var items = []
 				for (var i = 0; i < results.data.length; i++) {
 					items.push({
+						'type': 'phone',
 						'name': results.data[i].DisplayName,
-						'office': results.data[i].OfficeNumber,
+						'work': results.data[i].OfficeNumber,
 						'mobile': results.data[i].MobilNumber,
 						'other': results.data[i].OtherNumber
 					});

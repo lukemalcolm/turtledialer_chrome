@@ -111,15 +111,43 @@
 
 //GData-Version: 3.0
 
+
+
 var current_token = null;
 
 var google_contacts = [];
 
+var phone_contacts = null;
 // chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
 //   current_token = token;
 // });
 
 
+var yea = new YealinkT2x();
+yea.log_config();
+
+var refresh_contacts = function(refreshRequest) {
+	yea.phonebook({
+		success: function(data) {
+			phone_contacts = data;
+			var all_contacts = [].concat.apply(
+				[], 
+				[phone_contacts, google_contacts]
+			);
+			console.log(all_contacts);
+			var compare = function(a,b) {
+			  if (a.name < b.name)
+			     return -1;
+			  if (a.name > b.name)
+			    return 1;
+			  return 0;
+			}
+			all_contacts.sort(compare);
+			console.log(all_contacts);
+			refreshRequest.success(all_contacts);
+		}
+	});
+}
 
 // var xhr = new XMLHttpRequest();
 // xhr.open('GET', 'https://www.google.com/m8/feeds/contacts/default/full');
@@ -138,6 +166,8 @@ var google_contacts = [];
 // }
 // xhr.send();	
 
+
+
 var next_url = null;
 
 function authenticatedXhr(url, callback) {
@@ -145,7 +175,6 @@ function authenticatedXhr(url, callback) {
 	var retry = true;
 
 	function getTokenAndXhr() {
-		console.log('getTokenAndXhr');
 		chrome.identity.getAuthToken({
 				'interactive': true
 			},
@@ -190,14 +219,39 @@ var contacts_callback = function(error, status, respText, respXML) {
 		if (links[i]['rel'] == 'next') {
 			next_link_found = true;
 			next_url = links[i]['href'];
-			console.log('next page url: ' + next_url);
 			break;
 		}
 	}
-	console.log(contacts);
 	$.each(contacts['feed']['entry'], function(idx, obj) {
-		if (obj.hasOwnProperty('gd$phoneNumber')) {
-			console.log(obj['title']);
+		if (obj.hasOwnProperty('gd$phoneNumber')) {			
+			var work = '';
+			var mobile = '';
+			var other = '';
+			for (var i = 0; i < obj['gd$phoneNumber'].length; i++) {
+				if (obj['gd$phoneNumber'][i].hasOwnProperty('rel')) {
+					if (obj['gd$phoneNumber'][i]['rel'].match(/work$/)) {
+						if (obj['gd$phoneNumber'][i].hasOwnProperty('$t')) {
+							work = obj['gd$phoneNumber'][i]['$t'];
+							console.log('name: ' + obj['title']['$t'] + ' work: ' +
+								obj['gd$phoneNumber'][i]['$t']);
+						}
+						
+					}
+					if (obj['gd$phoneNumber'][i]['rel'].match(/mobile$/)) {
+						mobile = obj['gd$phoneNumber'][i]['$t'];
+					}
+					if (obj['gd$phoneNumber'][i]['rel'].match(/other$/)) {
+						other = obj['gd$phoneNumber'][i]['$t'];
+					}
+				}
+			}
+			google_contacts.push({
+				'type': 'google',
+				'name': obj['title']['$t'],
+				'work': work,
+				'mobile': mobile,
+				'other': other
+			});
 		}
 	});
 	if (next_url != null) {
@@ -209,8 +263,6 @@ authenticatedXhr('https://www.google.com/m8/feeds/contacts/default/full?alt=json
 
 
 
-var yea = new YealinkT2x();
-yea.log_config();
 
 var context_menu_id = null;
 

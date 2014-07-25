@@ -1,5 +1,5 @@
 body {
-  width: 768px;
+  width: 820px;
   height: 400px;
 }
 .popup {
@@ -11,9 +11,9 @@ body {
 .letter-disabled {
   color: #ccc;
 }
-.nav {
+/*.nav {
   padding-left: 70px;
-}
+}*/
 .nav>li>a {
   padding: 5px 6px;
 }
