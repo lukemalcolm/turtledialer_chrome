@@ -46,7 +46,7 @@ var merge_contacts = function(set1, set2) {
 	} 
 	for (var key in smallest) {
 		if (biggest.hasOwnProperty(key)) {
-			biggest[key].concat(smallest[key]);
+			biggest[key]['numbers'].concat(smallest[key]['numbers']);
 		} else {
 			biggest[key] = smallest[key];
 		}

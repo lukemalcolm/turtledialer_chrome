@@ -59,10 +59,13 @@ var contacts_callback = function(request, error, status, respText, respXML) {
 	$.each(contacts['feed']['entry'], function(idx, obj) {
 		if (obj.hasOwnProperty('gd$phoneNumber')) {
 			var name = obj['title']['$t'];
-			google_contacts[name] = []
+			google_contacts[name] = {
+				'email': '',
+				'numbers': []
+			}
 			for (var i = 0; i < obj['gd$phoneNumber'].length; i++) {
 				if (obj['gd$phoneNumber'][i].hasOwnProperty('rel')) {
-					google_contacts[name].push({ 
+					google_contacts[name]['numbers'].push({ 
 							'source': 'gmail',
 							'kind': obj['gd$phoneNumber'][i]['rel'].substring(33),
 							'number': obj['gd$phoneNumber'][i]['$t']

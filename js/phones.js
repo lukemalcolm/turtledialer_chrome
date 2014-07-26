@@ -80,23 +80,26 @@ YealinkT2x.prototype.phonebook = function(phonebookrequest) {
 			complete: function(results, file) {
 				var items = {}
 				for (var i = 0; i < results.data.length; i++) {
-					items[results.data[i].DisplayName] = [];
+					items[results.data[i].DisplayName] = {
+						'email': '',
+						'numbers': []
+					};
 					if (results.data[i].OfficeNumber != '') {
-						items[results.data[i].DisplayName].push({ 
+						items[results.data[i].DisplayName]['numbers'].push({ 
 							'source': 'phone',
 							'kind': 'work',
 							'number': results.data[i].OfficeNumber
 						});
 					}
 					if (results.data[i].MobilNumber != '') {
-						items[results.data[i].DisplayName].push({ 
+						items[results.data[i].DisplayName]['numbers'].push({ 
 							'source': 'phone',
 							'kind': 'mobile',
 							'number': results.data[i].MobilNumber
 						});
 					}
 					if (results.data[i].OtherNumber != '') {
-						items[results.data[i].DisplayName].push({ 
+						items[results.data[i].DisplayName]['numbers'].push({ 
 							'source': 'phone',
 							'kind': 'other',
 							'number': results.data[i].OtherNumber
