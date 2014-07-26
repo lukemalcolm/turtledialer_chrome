@@ -40,7 +40,13 @@ $(function () {
 						console.log(obj + ' changed: ' + input.val());
 						localStorage['turtle.settings.' + obj] = input.val();
 					}
-				)			
+				);
+				input.keyup(
+					function() {
+						console.log(obj + ' changed: ' + input.val());
+						localStorage['turtle.settings.' + obj] = input.val();
+					}
+				);			
 			} else if (input.attr('type') == 'radio') {
 				var value = localStorage['turtle.settings.' + input.attr('name')]
 				if (input.val() == value) {

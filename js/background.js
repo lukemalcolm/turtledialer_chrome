@@ -1,116 +1,93 @@
-// var settings = new Store("settings", {});
+var phones = {
+	'yealink_t2x' : YealinkT2x
+}
 
 
-// var putil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
+var extension_ready = false;
+var current_phone = null;
+var contacts = null;
+var gmail = new GMail();
+
+var get_phone_contacts = function() {
+	var deferred = $.Deferred();
+	console.log('get_phone_contacts');
+	current_phone.phonebook({
+		success: function(res) {
+			deferred.resolve(res);
+		},
+		error: function(err) {
+			deferred.reject(err);
+		}
+	});
+	return deferred.promise();
+}
+
+var get_gmail_contacts = function() {
+	var deferred = $.Deferred();
+	console.log('get_google_contacts');
+	gmail.get_gmail_contacts({
+		success: function(res) {
+			deferred.resolve(res);
+		},
+		error: function(err) {
+			deferred.reject(err);
+		}
+	});
+	return deferred.promise();
+};
 
 
-// var trigger_call = function(e) {
+var merge_contacts = function(set1, set2) {
+	var biggest = set1;
+	var smallest = set2;
+	if (Object.keys(set1).length < Object.keys(set2).length) {
+		biggest = set2;
+		smallest = set1;
+	} 
+	for (var key in smallest) {
+		if (biggest.hasOwnProperty(key)) {
+			biggest[key].concat(smallest[key]);
+		} else {
+			biggest[key] = smallest[key];
+		}
+	}
+	contacts = biggest;
+	console.log('total size ' + Object.keys(biggest).length);
+};
 
-// 	var default_country_code = settings.get("default_country_code");
-// 	if (default_country_code != "ES") {
-// 		chrome.notifications.create("", {
-// 			"type": "basic",
-// 			"iconUrl": "/icons/icon48.png",
-// 			"title": "Turtle dialer: invalid configuration",
-// 			"message": "Invalid country code"
-// 		}, function() {});		
-// 		return;
-// 	}
-// 	var host = settings.get("host");
-// 	if (host === undefined || host == null || host.length < 1) {
-// 		chrome.notifications.create("", {
-// 			"type": "basic",
-// 			"iconUrl": "/icons/icon48.png",
-// 			"title": "Turtle dialer: invalid configuration",
-// 			"message": "Invalid host"
-// 		}, function() {});		
-// 		return;
-// 	}
+var init_extension = function() {
+	chrome.browserAction.disable();
+	var phone_model = localStorage['turtle.settings.phone_model'];
 
-// 	var protocol = settings.get("protocol");
-
-// 	if (protocol === undefined || protocol == null || protocol.length < 1) {
-// 		chrome.notifications.create("", {
-// 			"type": "basic",
-// 			"iconUrl": "/icons/icon48.png",
-// 			"title": "Turtle dialer: invalid configuration",
-// 			"message": "You must specify the protocol"
-// 		}, function() {});		
-// 		return;		
-// 	}
-
-// 	var username = settings.get("username");
-// 	var password = settings.get("password");
-
-// 	var url_to_call = protocol + "://";
-
-// 	if (username != null && username.length > 0) {
-// 		url_to_call = url_to_call + username + ":" + password + "@";
-// 	}
-// 	url_to_call = url_to_call + host;
-
-
-
-// 	if (e.selectionText) {
-// 		var number_to_call = e.selectionText;
-
-// 		var parsed_number = null;
-// 		try {
-// 			parsed_number = putil.parse(number_to_call, default_country_code);
-// 		} catch (e) {
-// 			chrome.notifications.create("", {
-// 				"type": "basic",
-// 				"iconUrl": "/icons/icon48.png",
-// 				"title": "Turtle dialer",
-// 				"message": "The number '" + number_to_call + "' is invalid"
-// 			}, function() {});		
-// 			return;					
-// 		}
-
-// 		number_to_call = parsed_number.getNationalNumber();
-// 		var model = settings.get("model");
-// 		var account = settings.get("account");
-// 		if (model == "yealink_t2x") {
-// 			url_to_call = url_to_call + "/cgi-bin/ConfigManApp.com?Id=34&Command=1&Number=" + 
-// 				number_to_call + "&Account=@" + account;	
-// 			console.log(url_to_call);
-// 			var xhr = new XMLHttpRequest();
-// 			xhr.open('GET', url_to_call, true);
-// 			xhr.onreadystatechange = function() {
-// 				console.log(xhr.readyState);
-// 			  if (xhr.readyState == 4) {
-// 			  	console.log(xhr.responseText);
-// 			  	if (xhr.responseText != "1") {
-// 					chrome.notifications.create("", {
-// 						"type": "basic",
-// 						"iconUrl": "/icons/icon48.png",
-// 						"title": "Turtle dialer",
-// 						"message": "Cannot dial " + number_to_call + ": check your phone configuration!"
-// 					}, function() {});
-// 			  	}
-// 			  }
-// 			}
-// 			xhr.send();
-// 			chrome.notifications.create("", {
-// 				"type": "basic",
-// 				"iconUrl": "/icons/icon48.png",
-// 				"title": "Turtle dialer",
-// 				"message": "Calling " + number_to_call
-// 			}, function() {});
-// 		}
-
-// 	}
-// }
-
-// chrome.contextMenus.create({
-//     "title": chrome.i18n.getMessage("l10nContextMenuItem"),
-//     "contexts": ["selection"],
-//     "onclick" : trigger_call
-//   });
+	if (phone_model != undefined) {
+		current_phone = new phones[phone_model];
+		current_phone.log_config();
+		if (current_phone.load_config()) {
+			console.log('config ok!');
+			$.when(get_phone_contacts(), get_gmail_contacts()).then(
+				function(phone_contacts, gmail_contacts) {
+					merge_contacts(phone_contacts, gmail_contacts);
+					console.log('all done!');
+					chrome.browserAction.enable();
+					extension_ready = true;
+				},
+				function(error) {
+					console.log(error);
+				}
+			);
+			//retrieve contacts from phone
+			//retrieve contacts from gmail
+			//merge contacts
+			//enable browser action
+		}
+	}
+}
 
 
-var yea = new YealinkT2x();
-yea.log_config();
+
+init_extension();
+
+
 
 var context_menu_id = null;
 

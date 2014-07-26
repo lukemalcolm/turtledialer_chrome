@@ -4,25 +4,27 @@
   "manifest_version": 2,
   "description": "trigger a call with an ip phone",
   "homepage_url": "http://www.velasuci.com",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlKVdh7QLPHtk/cFQd7UCj6Vhjaqat1/CfafFmlu7gqKef0Oe+AKauJly5/Aaz1RtuOdA8AAHOR+DFGbHQQnyMrs0tqjkuqgRoQVsgpxxAjMPqS6h3X7Xg0Frs2xEO5Aqkrv7sm29jMxrpmawZ+eIokeN1tJDxVRu6I49IDs3TII+Y9HUmGlmpJQRmhbqKCaoExdsSY6m7I4LyB+1eFu4vKODoD3TDj1uqVB7MU8NB+obFnHcrKAtEx/vAE29RPE76PqOEkMtUG0xv/3YiGP+WzAsnxMhsg/3QSHCcQZDmRTOKozbRWFd145Fi+cHQ2JGUzt7bOwe4C54UQMb0SL2WwIDAQAB",
   "icons": {
-    "16": "icons/turtle16.png",
-    "48": "icons/turtle48.png",
-    "128": "icons/turtle128.png"
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
   },
   "default_locale": "en",
   "background": {
     "scripts": [
-      //"/src/options_custom/lib/store.js",
+      "js/jquery-1.11.1.min.js",
       "js/phoneformat.js",
+      "js/papaparse.min.js",
       "js/phones.js",
+      "js/gcontacts.js",
       "js/background.js"
     ],
-    //"page": "src/bg/background.html",
     "persistent": true
   },
   "options_page": "html/settings.html",
   "browser_action": {
-    "default_icon": "icons/turtle19.png",
+    "default_icon": "icons/icon19.png",
     "default_title": "Turtle dialer",
     "default_popup": "html/phonebook.html"
   },
@@ -30,6 +32,7 @@
     "notifications",
     "storage",
     "contextMenus",
+    "identity",
     "http://*/*",
     "https://*/*"
    ],
@@ -38,5 +41,11 @@
       "matches": ["http://*/*", "https://*/*"],
       "js": ["js/content.js"]
     }
-  ]
+  ],
+  "oauth2": {
+    "client_id": "101086173746-9l2ttrpkq7djht9232u1rm19i7t77pjm.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.google.com/m8/feeds"
+    ]
+  }
 }

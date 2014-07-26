@@ -7,8 +7,6 @@
 	<link rel="stylesheet" href="/css/phonebook.css" type="text/css"/>
 	<script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
 	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/js/papaparse.min.js"></script>
-	<script type="text/javascript" src="/js/phones.js"></script>
 	<script type="text/javascript" src="/js/phonebook.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
@@ -25,10 +23,17 @@
 			    Loading...
 			  </div>
 			</div>
-			<div class="row">
-				<div class="col-xs-12" id="letters">
+			<div id="navigation" class="row">
+				<div class="col-xs-11" id="letters">
 					<ul class="nav nav-pills" id="letters_list">
 					</ul>
+				</div>
+				<div class="col-xs-1">
+					<div class="pull-right">
+						<button id="refresh" type="button" class="btn btn-default btn-xs">
+							<span class="fa fa-refresh"></span>
+						</button>
+					</div>
 				</div>
 			</div>
 		</div>
