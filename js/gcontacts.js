@@ -59,8 +59,10 @@ var contacts_callback = function(request, error, status, respText, respXML) {
 	$.each(contacts['feed']['entry'], function(idx, obj) {
 		if (obj.hasOwnProperty('gd$phoneNumber')) {
 			var name = obj['title']['$t'];
+			var email_md5 = md5(obj['gd$email']['address']);
 			google_contacts[name] = {
-				'email': '',
+				'gravatar': 'http://www.gravatar.com/avatar/' + email_md5 +
+					'.png?d=mm&s=96',
 				'numbers': []
 			}
 			for (var i = 0; i < obj['gd$phoneNumber'].length; i++) {

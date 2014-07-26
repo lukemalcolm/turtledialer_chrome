@@ -81,7 +81,7 @@ YealinkT2x.prototype.phonebook = function(phonebookrequest) {
 				var items = {}
 				for (var i = 0; i < results.data.length; i++) {
 					items[results.data[i].DisplayName] = {
-						'email': '',
+						'gravatar': 'http://www.gravatar.com/avatar/00000000000000000000000000000000.png?d=mm&s=96',
 						'numbers': []
 					};
 					if (results.data[i].OfficeNumber != '') {

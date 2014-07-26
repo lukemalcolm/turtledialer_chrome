@@ -16,6 +16,7 @@
       "js/jquery-1.11.1.min.js",
       "js/phoneformat.js",
       "js/papaparse.min.js",
+      "js/md5.js",
       "js/phones.js",
       "js/gcontacts.js",
       "js/background.js"
