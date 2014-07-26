@@ -17,6 +17,7 @@
       "js/phoneformat.js",
       "js/papaparse.min.js",
       "js/phones.js",
+      "js/gcontacts.js",
       "js/background.js"
     ],
     "persistent": true
