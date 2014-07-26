@@ -59,7 +59,16 @@ var contacts_callback = function(request, error, status, respText, respXML) {
 	$.each(contacts['feed']['entry'], function(idx, obj) {
 		if (obj.hasOwnProperty('gd$phoneNumber')) {
 			var name = obj['title']['$t'];
-			var email_md5 = md5(obj['gd$email']['address']);
+			var email_md5 = '00000000000000000000000000000000';
+			if (obj.hasOwnProperty('gd$email')) {
+				for (var k = 0; k < obj['gd$email'].length; k++) {
+					var email = obj['gd$email'][k];
+					if (email['primary'] == 'true') {
+						email_md5 = md5(email['address']);
+						break;
+					}
+				}
+			}  
 			google_contacts[name] = {
 				'gravatar': 'http://www.gravatar.com/avatar/' + email_md5 +
 					'.png?d=mm&s=96',

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<title>Turtle Dialer address book</title>
+	<link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css"/>
+	<link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css"/>
+	<link rel="stylesheet" href="/css/phonebook.css" type="text/css"/>
+	<script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/papaparse.min.js"></script>
+	<script type="text/javascript" src="/js/phones.js"></script>
+	<script type="text/javascript" src="/js/bootstrap-list-filter.min.js"></script>
+	<script type="text/javascript" src="/js/phonebook2.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<div class="popup">
+		<div class="container header">
+			<div class="row">
+				<div class="col-xs-12">
+					<h1>Phonebook</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12" id="letters">
+					<div class="pull-right">
+						<div class="form-group">
+							<input id="searchinput" class="form-control" type="search" placeholder="Search..." />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="spy" class="container contact-list">
+			<div class="row">
+				<div class="col-xs-10">
+					<ul class="media-list" id="data" class="list-group">
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
