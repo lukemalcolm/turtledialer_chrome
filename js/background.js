@@ -82,12 +82,15 @@ var merge_contacts = function(set1, set2) {
 	} 
 	for (var key in smallest) {
 		if (biggest.hasOwnProperty(key)) {
-			biggest[key]['numbers'].concat(smallest[key]['numbers']);
+			for (var i = 0; i < smallest[key]['numbers'].length; i++) {
+				biggest[key]['numbers'].push(smallest[key]['numbers'][i]);	
+			}
 		} else {
 			biggest[key] = smallest[key];
 		}
 	}
 	contacts = biggest;
+	console.log(biggest);
 	console.log('total size ' + Object.keys(biggest).length);
 };
 

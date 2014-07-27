@@ -106,6 +106,7 @@ YealinkT2x.prototype.phonebook = function(phonebookrequest) {
 						});
 					}
 				}
+				console.log(items);
 				phonebookrequest.success(items);
 			}
 		}
