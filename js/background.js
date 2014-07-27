@@ -7,6 +7,24 @@ var extension_ready = false;
 var current_phone = null;
 var contacts = null;
 var gmail = new GMail();
+var phone_utils = i18n.phonenumbers.PhoneNumberUtil.getInstance();
+
+var current_country = null;
+
+
+var format_phone_number = function(phone_number) {
+	try {
+		var pn = phone_utils.parse(phone_number, current_country);
+		if (phone_utils.isValidNumber(pn)) {
+			phone_number = phone_utils.format(
+				pn,
+				i18n.phonenumbers.PhoneNumberFormat.E164
+			);
+		}
+	} catch(e) {
+	}
+	return phone_number;
+}
 
 var get_phone_contacts = function() {
 	var deferred = $.Deferred();
@@ -58,7 +76,7 @@ var merge_contacts = function(set1, set2) {
 var init_extension = function() {
 	chrome.browserAction.disable();
 	var phone_model = localStorage['turtle.settings.phone_model'];
-
+	current_country = localStorage['turtle.settings.country'];
 	if (phone_model != undefined) {
 		current_phone = new phones[phone_model];
 		current_phone.log_config();
@@ -75,10 +93,6 @@ var init_extension = function() {
 					console.log(error);
 				}
 			);
-			//retrieve contacts from phone
-			//retrieve contacts from gmail
-			//merge contacts
-			//enable browser action
 		}
 	}
 }
@@ -96,7 +110,7 @@ var putil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
 function trigger_call(e) {
 
 	parsed_number = putil.parse(e.selectionText, 'ES');
-	yea.dial({
+	current_phone.dial({
 		phonenumber: parsed_number.getNationalNumber(),
 		success: function() {
 			chrome.notifications.create("", {

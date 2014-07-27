@@ -1,45 +1,10 @@
-/*
-						<li class="media list-group-item">
-							<a class="pull-left" href="#">
-								<img class="media-object" src="/icons/icon96.jpg" alt="..."></a>
-							<div class="media-body">
-								<h4 class="media-heading">Alfonso Lluzar Lopez de Bri&ntilde;as de Santamaria</h4>
-								<div class="row" style="padding-top: 10px;">
-									<div class="col-xs-4"> 
-										<i class="fa fa-building"></i>
-										<a href="#">+34687787105</a>
-										<br> <i class="fa fa-phone"></i>
-										<a href="#">+34687787105</a>
-										<br>
-										<i class="fa fa-google"></i>
-										<a href="#">+34687787105</a>
-									</div>
-									<div class="col-xs-4">
-										<i class="fa fa-building"></i>
-										<a href="#">+34687787105</a>
-										<br>
-										<i class="fa fa-phone"></i>
-										<a href="#">+34687787105</a>
-										<br>
-										<i class="fa fa-google"></i>
-										<a href="#">+34687787105</a>
-									</div>
-									<div class="col-xs-4">
-										<i class="fa fa-building"></i>
-										<a href="#">+34687787105</a>
-										<br>
-										<i class="fa fa-phone"></i>
-										<a href="#">+34687787105</a>
-										<br>
-										<i class="fa fa-google"></i>
-										<a href="#">+34687787105</a>
-									</div>
-								</div>
-							</div>
-						</li>
-*/
+var icons = {
+	'work': 'fa fa-building',
+	'mobile': 'fa fa-mobile',
+	'fax': 'fa fa-fax',
+	'home': 'fa fa-home'
 
-
+}
 
 $(function() {
 	var contacts = chrome.extension.getBackgroundPage().contacts;
@@ -56,7 +21,34 @@ $(function() {
 		var heading = $('<h4>').addClass('media-heading');
 		heading.text(sorted_keys[i]);
 		body.append(heading);
+		var numbers = $('<div>').addClass('row contact-card');
+		var cols = [
+			$('<div>').addClass('col-xs-4'),
+			$('<div>').addClass('col-xs-4'),
+			$('<div>').addClass('col-xs-4')
+		];
+		for (var j = 0; j < curr_contact['numbers'].length; j++) {
+			var col_to_add = cols[j%3];
+			var current_number = curr_contact['numbers'][j];
+				var icon_class = 'fa fa-phone';
+				if (icons.hasOwnProperty(current_number['kind'])) {
+					icon_class = icons[current_number['kind']];
+				}
+			col_to_add.append($('<i>').addClass(icon_class));
+			var num = $('<a>').addClass('number-link').attr('href', '#');
+			var phone_number = 
+				chrome.extension.getBackgroundPage().format_phone_number(
+					current_number['number']
+			);
+			num.text(phone_number);
+			col_to_add.append(num);
+			col_to_add.append($('<br>'));
+
+		}
+		body.append(cols);
 		console.log(avatar);
 		$('#data').append(li);
 	}
+	$('#data').btsListFilter('#searchinput', {itemChild: 'h4'});
+
 });

@@ -1,5 +1,5 @@
 body {
-  width: 820px;
+  width: 768px;
   height: 400px;
 }
 .popup {
@@ -25,4 +25,10 @@ body {
   height: 280px; 
   overflow: auto; 
   position: relative;
+}
+.contact-card {
+  padding-top: 10px;
+}
+.number-link {
+  padding-left: 5px;
 }
