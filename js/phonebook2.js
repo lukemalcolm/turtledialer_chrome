@@ -50,5 +50,7 @@ $(function() {
 		$('#data').append(li);
 	}
 	$('#data').btsListFilter('#searchinput', {itemChild: 'h4'});
-
+	$('.number-link').click(function() {
+		chrome.extension.getBackgroundPage().dial($(this).text());	
+	});
 });

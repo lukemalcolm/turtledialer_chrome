@@ -26,6 +26,24 @@ var format_phone_number = function(phone_number) {
 	return phone_number;
 }
 
+var dial = function(phone_number) {
+	var pmd = phone_utils.getMetadataForRegion(current_country);
+	try {
+		var pn = phone_utils.parse(phone_number, current_country);
+		if (pn.getCountryCode() == pmd.getCountryCode()) {
+			phone_number = pn.getNationalNumber();
+		} else {
+			phone_number = pmd.getInternationalPrefix() + 
+				pn.getCountryCode() +
+				(pn.hasItalianLeadingZero() ? '0' : '') + 
+				pn.getNationalNumber();
+		}
+	} catch (e) {
+	}
+	console.log('call to: ' + phone_number);
+
+}
+
 var get_phone_contacts = function() {
 	var deferred = $.Deferred();
 	console.log('get_phone_contacts');
