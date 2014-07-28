@@ -41,6 +41,30 @@ var dial = function(phone_number) {
 	} catch (e) {
 	}
 	console.log('call to: ' + phone_number);
+	current_phone.dial({
+		phonenumber: phone_number,
+		success: function() {
+			chrome.notifications.create("", {
+				"type": "basic",
+				"iconUrl": "/icons/turtle128.png",
+				"title": "Turtle dialer",
+				"message": "Dialing " + phone_number,
+				"buttons": [{
+					'title': 'Hangup',
+					"iconUrl": "/icons/hangup32.png"
+				}]
+			}, function() {});
+		},
+		failure: function() {
+			chrome.notifications.create("", {
+				"type": "basic",
+				"iconUrl": "/icons/turtle128.png",
+				"title": "Turtle dialer",
+				"message": "Cannot dial " + phone_number + ": check your phone configuration!"
+			}, function() {});
+		}
+	});
+	
 
 }
 
@@ -129,32 +153,7 @@ var context_menu_id = null;
 var putil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
 
 function trigger_call(e) {
-
-	parsed_number = putil.parse(e.selectionText, 'ES');
-	current_phone.dial({
-		phonenumber: parsed_number.getNationalNumber(),
-		success: function() {
-			chrome.notifications.create("", {
-				"type": "basic",
-				"iconUrl": "/icons/turtle128.png",
-				"title": "Turtle dialer",
-				"message": "Dialing " + parsed_number.getNationalNumber(),
-				"buttons": [{
-					'title': 'Hangup',
-					"iconUrl": "/icons/hangup32.png"
-				}]
-			}, function() {});
-		},
-		failure: function() {
-			chrome.notifications.create("", {
-				"type": "basic",
-				"iconUrl": "/icons/turtle128.png",
-				"title": "Turtle dialer",
-				"message": "Cannot dial " + parsed_number.getNationalNumber() + ": check your phone configuration!"
-			}, function() {});
-		}
-	});
-	console.log('Calling ' + e.selectionText);
+	dial(e.selectionText);
 }
 
 chrome.notifications.onButtonClicked.addListener(
@@ -197,22 +196,3 @@ function onRequest(request, sender, sendResponse) {
 	}
 }
 chrome.extension.onRequest.addListener(onRequest);
-
-
-/*
-	 
-	pmd = putil.getMetadataForRegion('ES')
-	pmd.getInternationalPrefix()
-
-
-	pn = putil.parse('+390817434329', 'ES')
-
-	if pn.getCountryCode() != pmd.getCountryCode()
-		// add international prefix
-		if phonenumber.hasItalianLeadingZero() {
-			//add zero
-		}
-
-
-
-*/

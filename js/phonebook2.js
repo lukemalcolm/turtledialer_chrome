@@ -1,6 +1,6 @@
 var icons = {
-	'work': 'fa fa-building',
-	'mobile': 'fa fa-mobile',
+	'work': 'glyphicon glyphicon-phone-alt',
+	'mobile': 'glyphicon glyphicon-phone',
 	'fax': 'fa fa-fax',
 	'home': 'fa fa-home'
 
