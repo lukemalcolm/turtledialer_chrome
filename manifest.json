@@ -25,7 +25,7 @@
   },
   "options_page": "html/settings.html",
   "browser_action": {
-    "default_icon": "icons/icon19.png",
+    "default_icon": "icons/turtle19.png",
     "default_title": "Turtle dialer",
     "default_popup": "html/phonebook2.html"
   },

@@ -107,7 +107,18 @@ var merge_contacts = function(set1, set2) {
 	for (var key in smallest) {
 		if (biggest.hasOwnProperty(key)) {
 			for (var i = 0; i < smallest[key]['numbers'].length; i++) {
-				biggest[key]['numbers'].push(smallest[key]['numbers'][i]);	
+				var exists = false;
+				for (var k = 0; k < biggest[key]['numbers'].length; k++) {
+					var bn = biggest[key]['numbers'][k]['number'];
+					var sn = smallest[key]['numbers'][i]['number'];
+					if (format_phone_number(bn) == format_phone_number(sn)) {
+						exists = true;
+						break;
+					}
+				}
+				if (!exists) {
+					biggest[key]['numbers'].push(smallest[key]['numbers'][i]);	
+				}
 			}
 		} else {
 			biggest[key] = smallest[key];
@@ -127,17 +138,36 @@ var init_extension = function() {
 		current_phone.log_config();
 		if (current_phone.load_config()) {
 			console.log('config ok!');
-			$.when(get_phone_contacts(), get_gmail_contacts()).then(
-				function(phone_contacts, gmail_contacts) {
-					merge_contacts(phone_contacts, gmail_contacts);
+			var phone_contacts = {};
+			var gmail_contacts = {};
+			var d = get_phone_contacts();
+			d.done(function(data) {
+				phone_contacts = data;
+				console.log('get_phone_contacts succeded');
+			});
+			d.fail(function(err) {
+				console.log('get_phone_contacts fail: ' + err);
+			});
+			d.always(function() {
+				console.log('always execute get_gmail_contacts');
+				var d1 = get_gmail_contacts();
+				d1.done(function(data) {
+					gmail_contacts = data;
+					console.log('get_gmail_contacts succeded');
+				});
+				d1.fail(function(err) {
+					console.log('get_gmail_contacts fail: ' + err);
+				});
+				d1.always(function() {
 					console.log('all done!');
+					merge_contacts(phone_contacts, gmail_contacts);
 					chrome.browserAction.enable();
+					chrome.browserAction.setBadgeText({text: '' + Object.keys(contacts).length});
+					chrome.browserAction.setBadgeBackgroundColor({color: '#00cc00'});
 					extension_ready = true;
-				},
-				function(error) {
-					console.log(error);
-				}
-			);
+				});
+
+			});
 		}
 	}
 }
@@ -150,15 +180,13 @@ init_extension();
 
 var context_menu_id = null;
 
-var putil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
-
 function trigger_call(e) {
 	dial(e.selectionText);
 }
 
 chrome.notifications.onButtonClicked.addListener(
 	function(notification_id, button_idx) {
-		yea.hangup({
+		current_phone.hangup({
 			success: function() {
 				console.log('hangup success');
 			},
@@ -174,7 +202,7 @@ function onRequest(request, sender, sendResponse) {
 	console.log('text selected: ' + text_selected);
 	var parsed_number = null;
 	try {
-		parsed_number = putil.parse(text_selected, 'ES');
+		parsed_number = phone_utils.parse(text_selected, 'ES');
 	} catch (e) {}
 	if (parsed_number != null) {
 		console.log('parsed number not null and context_menu_id = ' + context_menu_id);
