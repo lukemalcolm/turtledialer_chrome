@@ -119,3 +119,10 @@ http://192.168.107.101/cgi-bin/ConfigManApp.com?Id=34&Command=1&Number=687787105
 //GData-Version: 3.0
 
 
+--- cisco 
+
+non sono gli ultimi di catalogo.... abbiamo i 7941 e 7961 ora sono usciti tanti altri modelli, come coremanager che li gestisce abbiamo la versione 6.1
+
+
+
+
