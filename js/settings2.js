@@ -1,7 +1,19 @@
 $(function() {
+
 	var bp = chrome.extension.getBackgroundPage();
 	var settings = bp.settings;
 
+
+	$('[id^=lbl_]').each(
+		function() {
+			console.log($(this));
+			var msg = chrome.i18n.getMessage($(this).attr('id'));
+			if (msg != undefined && msg != '') {
+				$(this).text(msg);
+			}
+			
+		}
+	);
 
 
 	$('#settings').bootstrapValidator({
@@ -12,16 +24,16 @@ $(function() {
                 message: 'The country is not valid',
                 validators: {
                     notEmpty: {
-                        message: 'The country is required and cannot be empty'
+                        message: chrome.i18n.getMessage('lbl_vld_country_required')
                     }
                 }
             },
-            phone_model: {
+            phone: {
             	trigger: 'blur',
                 message: 'The phone model is not valid',
                 validators: {
                     notEmpty: {
-                        message: 'The phone model is required and cannot be empty'
+                        message: chrome.i18n.getMessage('lbl_vld_phone_required')
                     }
                 }
             },
@@ -30,7 +42,7 @@ $(function() {
                 message: 'The hostname is not valid',
                 validators: {
                     notEmpty: {
-                        message: 'The hostname is required and cannot be empty'
+                        message: chrome.i18n.getMessage('lbl_vld_host_required')
                     }
                 }            	
             },
@@ -39,14 +51,14 @@ $(function() {
                 message: 'The port is not valid',
                 validators: {
                     between: {
-                        message: 'The port must be within [1-65535]',
+                        message: chrome.i18n.getMessage('lbl_vld_port_range'),
                         min: 1,
                         max: 65535,
                         type: 'range',
                         inclusive: true
                     },
                     digits: {
-                    	message: 'Must be numeric'
+                    	message: chrome.i18n.getMessage('lbl_vld_port_numeric')
                     }
                 }
             }
@@ -56,8 +68,8 @@ $(function() {
 
 	// Fill form
 
-	if (settings.phone_model != undefined) {
-		$('#phone_model').val(settings.phone_model);
+	if (settings.phone != undefined) {
+		$('#phone').val(settings.phone);
 		$('#' + settings.phone_model).removeClass('hide');
 	}
 
@@ -93,12 +105,12 @@ $(function() {
 		$('#account').val(settings.account);
 	}
 
-	$('#phone_model').change(
+	$('#phone').change(
 		function() {
 			var selected_model = $(this).val();
-			bp.set('phone_model', selected_model);
+			bp.set('phone', selected_model);
 			$('#' + selected_model).removeClass('hide');
-			$('#phone_model > option').each(function() {
+			$('#phone > option').each(function() {
 				if (!$(this).is(':selected')) {
 					$('#' + $(this).val()).addClass('hide');
 				}

@@ -1,17 +1,53 @@
 {
-  "lbl_settings_title": {
-    "message": "Ajustes de Turtle dialer"
+  "lbl_html_title": {
+    "message": "Configuración de Turtle dialer"
   },
-  "lbl_phone_model": {
-    "message": "Modelo de telefono"
+  "lbl_html_general": {
+    "message": "General"
   },
-  "lbl_model": {
-    "message": "Modelo"
+  "lbl_html_country": {
+    "message": "País"
   },
-  "lbl_username": {
+  "lbl_html_phone": {
+    "message": "Teléfono"
+  },
+  "lbl_html_gmail": {
+      "message": "Incluir contactos de Gmail"
+  },
+  "lbl_html_yealink_t2x_settings": {
+    "message": "Configuración de API de Yealink T2x"
+  },
+  "lbl_html_protocol": {
+      "message": "Protocolo"
+  },
+  "lbl_html_host": {
+      "message": "Nombre de host o dirección IP"
+  },
+  "lbl_html_port": {
+      "message": "Puerto"
+  },
+  "lbl_html_username": {
       "message": "Usuario"
   },
-  "lbl_yealink_t2x_settings": {
-    "message": "Ajustes de API de Yealink T2x"
+  "lbl_html_password": {
+      "message": "Contraseña"
+  },
+  "lbl_html_account": {
+      "message": "Cuenta SIP"
+  },
+  "lbl_vld_country_required": {
+    "message": "El país es obligatorio."
+  },
+  "lbl_vld_phone_required": {
+    "message": "El teléfono es obligatorio."
+  },
+  "lbl_vld_port_range": {
+    "message": "El número de puerto debe estar entre 1 y 65535."
+  },
+  "lbl_vld_port_numeric": {
+    "message": "El número de puerto no es numérico."
+  },
+  "lbl_vld_host_required": {
+    "message": "El nombre de host o dirección IP es obligatorio."
   }
 }

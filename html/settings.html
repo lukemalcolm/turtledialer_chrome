@@ -14,7 +14,7 @@
             <div class="container">
                   <div class="row">
                         <div class="col-md-12">
-                              <h2 id="lbl_settings_title">Turtle Dialer settings</h2>
+                              <h2 id="lbl_html_title">Turtle Dialer settings</h2>
                         </div>
                   </div>
                   <div class="row">
@@ -22,11 +22,11 @@
                   </div>
                   <div class="row">
                         <div class="col-md-12">
-                              <legend id="general">General</legend>
+                              <legend id="lbl_html_general">General</legend>
                               <div class="row">
                                     <div class="col-md-6">
                                           <div class="form-group">
-                                                <label for="country" class="control-label">Country</label>
+                                                <label id="lbl_html_country" for="country" class="control-label">Country</label>
                                                 <select id="country" name="country" class="form-control">
                                                       <option value="">-----</option>
                                                       <option value="AF">Afghanistan</option>
@@ -287,7 +287,20 @@
                                     <div class="col-md-6">
                                           <div class="checkbox">
                                                 <label>
-                                                      <input id="gmail" type="checkbox">Add Gmail contacts</label>
+                                                <input id="gmail" type="checkbox"> <span id="lbl_html_gmail">Add Gmail contacts</span></label>
+                                          </div>
+                                    </div>
+                                    <div class="col-md-6"></div>
+                              </div>
+                              <div class="row">
+                                    <div class="col-md-6">
+                                          <div class="form-group">
+                                                <label id="lbl_html_phone" for="phone" class="control-label">Phone</label>
+                                                <select  name="phone" id="phone" class="form-control">
+                                                      <option value="">---------</option>
+                                                      <option value="yealink_t2x">Yealink T2x</option>
+                                                </select>
+                                                <p class="help-block"></p>
                                           </div>
                                     </div>
                                     <div class="col-md-6"></div>
@@ -299,49 +312,33 @@
                   </div>
                   <div class="row">
                         <div class="col-md-12">
-                              <legend id="lbl_phone_model">Phone model</legend>
-                              <div class="row">
-                                    <div class="col-md-6">
-                                          <div class="form-group">
-                                                <label id="lbl_model" for="phone" class="control-label">Model</label>
-                                                <select  name="phone_model" id="phone_model" class="form-control">
-                                                      <option value="">---------</option>
-                                                      <option value="yealink_t2x">Yealink T2x</option>
-                                                </select>
-                                                <p class="help-block">Choose the model of your ip phone</p>
-                                          </div>
-                                    </div>
-                                    <div class="col-md-6"></div>
-                              </div>
-                        </div>
-                        <div class="col-md-12">
                               <div id="yealink_t2x" class="hide">
-                                    <legend id="lbl_yealink_t2x_settings">Yealink T2x API settings</legend>
+                                    <legend id="lbl_html_yealink_t2x_settings">Yealink T2x API settings</legend>
                                     <div class="row">
                                           <div class="col-md-2">
                                                 <div class="form-group">
-                                                      <label class="control-label">Protocol</label>
+                                                      <label id="lbl_html_protocol" class="control-label">Protocol</label>
                                                       <div class="radio">
                                                             <label class="radio-inline">
                                                                   <input type="radio" name="protocol" id="proto_http" value="http" checked>http</label>
                                                             <label class="radio-inline">
                                                                   <input type="radio" name="protocol" id="proto_https" value="https">https</label>
                                                       </div>
-                                                      <p class="help-block">Choose the protocol</p>
+                                                      <p class="help-block"></p>
                                                 </div>
                                           </div>
                                           <div class="col-md-3">
                                                 <div class="form-group">
-                                                      <label for="host" class="control-label">Hostname or IP Address</label>
+                                                      <label id="lbl_html_host" for="host" class="control-label">Hostname or IP Address</label>
                                                       <input type="text" name="host" id="host" class="form-control">
-                                                      <p class="help-block">Enter the hostname or ip address of your phone</p>
+                                                      <p class="help-block"></p>
                                                 </div>
                                           </div>
                                           <div class="col-md-1">
                                                 <div class="form-group">
-                                                      <label for="port" class="control-label">Port</label>
+                                                      <label id="lbl_html_port" for="port" class="control-label">Port</label>
                                                       <input type="text" name="port" id="port" class="form-control" value="80">
-                                                      <p class="help-block">Port if non-standard</p>
+                                                      <p class="help-block"></p>
                                                 </div>
                                           </div>
                                           <div class="col-md-6"></div>
@@ -349,9 +346,9 @@
                                     <div class="row">
                                           <div class="col-md-6">
                                                 <div class="form-group">
-                                                      <label for="username" class="control-label">Username</label>
+                                                      <label id="lbl_html_username" for="username" class="control-label">Username</label>
                                                       <input type="text" name="username" id="username" class="form-control">
-                                                      <p class="help-block">Enter the username</p>
+                                                      <p class="help-block"></p>
                                                 </div>
                                           </div>
                                           <div class="col-md-6"></div>
@@ -359,9 +356,9 @@
                                     <div class="row">
                                           <div class="col-md-6">
                                                 <div class="form-group">
-                                                      <label for="password" class="control-label">Password</label>
+                                                      <label id="lbl_html_password" for="password" class="control-label">Password</label>
                                                       <input type="password" name="password" id="password" class="form-control">
-                                                      <p class="help-block">Enter the password</p>
+                                                      <p class="help-block"></p>
                                                 </div>
                                           </div>
                                           <div class="col-md-6"></div>
@@ -369,9 +366,9 @@
                                     <div class="row">
                                           <div class="col-md-6">
                                                 <div class="form-group">
-                                                      <label for="account" class="control-label">Account</label>
+                                                      <label id="lbl_html_account" for="account" class="control-label">Account</label>
                                                       <input type="text" name="account" id="account" class="form-control">
-                                                      <p class="help-block">Enter SIP account</p>
+                                                      <p class="help-block"></p>
                                                 </div>
                                           </div>
                                           <div class="col-md-6"></div>
