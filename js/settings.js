@@ -45,6 +45,7 @@ $(function () {
 					function() {
 						console.log(obj + ' changed: ' + input.val());
 						localStorage['turtle.settings.' + obj] = input.val();
+						chrome.extension.getBackgroundPage().initialize();
 					}
 				);			
 			} else if (input.attr('type') == 'radio') {

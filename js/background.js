@@ -224,3 +224,30 @@ function onRequest(request, sender, sendResponse) {
 	}
 }
 chrome.extension.onRequest.addListener(onRequest);
+
+
+
+var test_set = function() {
+	chrome.storage.local.set(
+		{
+			'turtledialer_settings': {
+				'phone_type': 'yealink_t2x',
+				'country': 'ES'
+			}
+		},
+		function() {
+			console.log('saved');
+		}
+	);	
+}
+
+var test_get = function() {
+	chrome.storage.local.get(
+		'turtledialer_settings',
+		function(data) {
+			console.log(data.turtledialer_settings === undefined);
+			console.log(data.turtledialer_settings);
+		}
+	);	
+}
+
