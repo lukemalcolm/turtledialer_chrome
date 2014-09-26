@@ -22,7 +22,7 @@
       "js/gcontacts.js",
       "js/numberutils.js",
       "js/notifications.js",
-      "js/background2.js"
+      "js/background.js"
     ],
     "persistent": true
   },
@@ -30,7 +30,7 @@
   "browser_action": {
     "default_icon": "icons/Susana3.png",
     "default_title": "Turtle dialer",
-    "default_popup": "html/phonebook2.html"
+    "default_popup": "html/phonebook.html"
   },
   "permissions": [
     "tabs",
