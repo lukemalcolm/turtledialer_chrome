@@ -1,8 +1,11 @@
 $(function() {
 
 	var bp = chrome.extension.getBackgroundPage();
-	var settings = bp.settings;
+	var settings = bp.config.getSettings();
 
+	var set = function(name, value) {
+		bp.config.set(name, value, bp.initialize);
+	}
 
 	$('[id^=lbl_]').each(
 		function() {
@@ -20,7 +23,7 @@ $(function() {
         message: 'This value is not valid',
         fields: {
             country: {
-            	trigger: 'blur',
+            	trigger: 'change blur',
                 message: 'The country is not valid',
                 validators: {
                     notEmpty: {
@@ -29,7 +32,7 @@ $(function() {
                 }
             },
             phone: {
-            	trigger: 'blur',
+            	trigger: 'change blur',
                 message: 'The phone model is not valid',
                 validators: {
                     notEmpty: {
@@ -70,7 +73,7 @@ $(function() {
 
 	if (settings.phone != undefined) {
 		$('#phone').val(settings.phone);
-		$('#' + settings.phone_model).removeClass('hide');
+		$('#' + settings.phone).removeClass('hide');
 	}
 
 	if (settings.country != undefined) {
@@ -108,7 +111,7 @@ $(function() {
 	$('#phone').change(
 		function() {
 			var selected_model = $(this).val();
-			bp.set('phone', selected_model);
+			set('phone', selected_model);
 			$('#' + selected_model).removeClass('hide');
 			$('#phone > option').each(function() {
 				if (!$(this).is(':selected')) {
@@ -121,20 +124,20 @@ $(function() {
 	$('#country').change(
 		function() {
 			var selected_country = $(this).val();
-			bp.set('country', selected_country);
+			set('country', selected_country);
 		}
 	);
 
 	$('#gmail').change(
 		function() {
-			bp.set('gmail', $(this).is(':checked'));
+			set('gmail', $(this).is(':checked'));
 		}
 	);
 
 	$('#proto_http').change(
 		function() {
 			if ($(this).is(':checked')) {
-				bp.set('protocol', 'http');
+				set('protocol', 'http');
 				$('#port').val('80');
 			}
 		}
@@ -142,76 +145,30 @@ $(function() {
 	$('#proto_https').change(
 		function() {
 			if ($(this).is(':checked')) {
-				bp.set('protocol', 'https');
+				set('protocol', 'https');
 				$('#port').val('443');
 			}
 		}
 	);
 	$('#host').on('keyup change', function() {
-		bp.set('host', $(this).val());
+		set('host', $(this).val());
 	});
 
 	$('#port').on('keyup change', function() {
-		bp.set('port', $(this).val());
+		set('port', parseInt($(this).val()));
 	});
 
 	$('#username').on('keyup change', function() {
-		bp.set('username', $(this).val());
+		set('username', $(this).val());
 	});
 
 	$('#password').on('keyup change', function() {
-		bp.set('password', $(this).val());
+		set('password', $(this).val());
 	});
 
 	$('#account').on('keyup change', function() {
-		bp.set('account', $(this).val());
+		set('account', $(this).val());
 	});
-	// $.each(
-	// 	['protocol1', 'protocol2', 'host', 'port', 
-	// 		'username', 'password', 'account', 'country'],
-	// 	function(idx, obj) {
-	// 		console.log('object: ' + obj);
-	// 		var input = $('#' + obj);
-	// 		if (input.attr('type') == 'text' || input.attr('type') == 'password') {
-	// 			input.val(localStorage['turtle.settings.' + obj]);
-	// 			input.change(
-	// 				function() {
-	// 					console.log(obj + ' changed: ' + input.val());
-	// 					localStorage['turtle.settings.' + obj] = input.val();
-	// 				}
-	// 			);
-	// 			input.keyup(
-	// 				function() {
-	// 					console.log(obj + ' changed: ' + input.val());
-	// 					localStorage['turtle.settings.' + obj] = input.val();
-	// 					chrome.extension.getBackgroundPage().initialize();
-	// 				}
-	// 			);			
-	// 		} else if (input.attr('type') == 'radio') {
-	// 			var value = localStorage['turtle.settings.' + input.attr('name')]
-	// 			if (input.val() == value) {
-	// 				input.attr('checked', 'checked');
-	// 			}
-	// 			input.change(
-	// 				function() {
-	// 					if (input.is(':checked')) {
-	// 						localStorage['turtle.settings.' + input.attr('name')] = input.val();
-	// 					}
-	// 				}
-	// 			)
-	// 		} else if (input.is('select')) {
-	// 			var value = localStorage['turtle.settings.' + input.attr('name')]
-	// 			if (value != undefined) {
-	// 				input.val(value);
-	// 			}
-	// 			input.change(
-	// 				function(obj) {
-	// 					var value = $(this).val();
-	// 					localStorage['turtle.settings.' + input.attr('name')] = value;
-	// 				}
-	// 			);
-	// 		}
-	// 	}
-	// );
+	
 	$('#settings').data('bootstrapValidator').validate();
 });

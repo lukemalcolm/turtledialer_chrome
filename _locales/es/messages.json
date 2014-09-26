@@ -49,5 +49,8 @@
   },
   "lbl_vld_host_required": {
     "message": "El nombre de host o dirección IP es obligatorio."
-  }
+  },
+  "not_dialing": {
+    "message": "Llamando el numero $1"
+  }  
 }

@@ -1,24 +1,12 @@
-function YealinkT2x() {
+function YealinkT2x(settings) {
+	this.protocol = settings.protocol;
+	this.host = settings.host;
+	this.port = settings.port;
+	this.username = settings.username;
+	this.password = settings.password;
+	this.account = settings.account;
 }
 
-YealinkT2x.prototype.load_config = function() {
-	this.protocol = localStorage['turtle.settings.protocol']
-	this.host = localStorage['turtle.settings.host'];
-	this.port = localStorage['turtle.settings.port'];
-	this.username = localStorage['turtle.settings.username'];
-	this.password = localStorage['turtle.settings.password'];
-	this.account = localStorage['turtle.settings.account'];
-	this.country = localStorage['turtle.settings.country'];	
-	return this.check_config();
-}
-
-YealinkT2x.prototype.log_config = function() {
-	console.log(this);
-}
-
-YealinkT2x.prototype.check_config = function() {
-	return true;
-}
 
 YealinkT2x.prototype.dial = function(dialrequest) {
 	console.log('dialing: ' + dialrequest.phonenumber);

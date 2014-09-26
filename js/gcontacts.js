@@ -2,7 +2,7 @@ var next_url = null;
 
 var google_contacts = {};
 
-function retrieve_gcontacts(request, url, callback) {
+function downloadContacts(request, url, callback) {
 	var retry = true;
 
 	function getTokenAndXhr() {
@@ -42,7 +42,7 @@ function retrieve_gcontacts(request, url, callback) {
 	getTokenAndXhr();
 }
 
-var contacts_callback = function(request, error, status, respText, respXML) {
+var contactsCallback = function(request, error, status, respText, respXML) {
 	if (error != null) {
 		return request.error(error);
 	}
@@ -86,7 +86,8 @@ var contacts_callback = function(request, error, status, respText, respXML) {
 		}
 	});
 	if (next_url != null) {
-		retrieve_gcontacts(request, next_url, contacts_callback);
+		console.log('next_url ' + next_url);
+		downloadContacts(request, next_url, contactsCallback);
 	} else {
 		request.success(google_contacts);
 	}
@@ -94,8 +95,9 @@ var contacts_callback = function(request, error, status, respText, respXML) {
 function GMail() {
 
 }
-GMail.prototype.get_gmail_contacts = function(request) {
-	retrieve_gcontacts(request, 'https://www.google.com/m8/feeds/contacts/default/full?alt=json&max-results=1000', contacts_callback);
+GMail.prototype.getGmailContacts = function(request) {
+	console.log('get gmail contacts');
+	downloadContacts(request, 'https://www.google.com/m8/feeds/contacts/default/full?alt=json&max-results=1000', contactsCallback);
 };
 
 

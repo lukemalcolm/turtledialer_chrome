@@ -37,7 +37,7 @@ $(function() {
 			col_to_add.append($('<i>').addClass(icon_class));
 			var num = $('<a>').addClass('number-link').attr('href', '#');
 			var phone_number = 
-				chrome.extension.getBackgroundPage().format_phone_number(
+				chrome.extension.getBackgroundPage().number_utils.formatPhoneNumber(
 					current_number['number']
 			);
 			num.text(phone_number);
@@ -46,11 +46,11 @@ $(function() {
 
 		}
 		body.append(cols);
-		console.log(avatar);
 		$('#data').append(li);
 	}
 	$('#data').btsListFilter('#searchinput', {itemChild: 'h4'});
 	$('.number-link').click(function() {
+		console.log('try dialing  ' + $(this).text());
 		chrome.extension.getBackgroundPage().dial($(this).text());	
 	});
 });
