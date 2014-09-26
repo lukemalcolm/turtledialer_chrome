@@ -50,7 +50,23 @@
   "lbl_vld_host_required": {
     "message": "El nombre de host o dirección IP es obligatorio."
   },
+  "mnu_dial": {
+    "message": "Llamar"
+  },
   "not_dialing": {
-    "message": "Llamando el numero $1"
+    "message": "Llamando el numero $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_dial_failure": {
+    "message": "Error llamando el numero $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
   }  
 }
