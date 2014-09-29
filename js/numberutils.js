@@ -21,17 +21,8 @@ function NumberUtils(country) {
 
 // number management
 NumberUtils.prototype.formatPhoneNumber = function(phone_number) {
-	try {
-		var pn = this.number_utils.parse(phone_number, this.country);
-		if (this.number_utils.isValidNumber(pn)) {
-			phone_number = this.number_utils.format(
-				pn,
-				i18n.phonenumbers.PhoneNumberFormat.E164
-			);
-		}
-	} catch(e) {
-	}
-	return phone_number;
+	var formatted = this.parsePhoneNumber(phone_number);
+	return formatted != null ? formatted : phone_number;
 }
 
 NumberUtils.prototype.preparePhoneNumber = function(phone_number) {
@@ -47,6 +38,23 @@ NumberUtils.prototype.preparePhoneNumber = function(phone_number) {
 				pn.getNationalNumber();
 		}
 	} catch (e) {
+	}
+	return phone_number;
+}
+
+NumberUtils.prototype.parsePhoneNumber = function(phone_number) {
+	try {
+		var pn = this.number_utils.parse(phone_number, this.country);
+		if (this.number_utils.isValidNumber(pn)) {
+			phone_number = this.number_utils.format(
+				pn,
+				i18n.phonenumbers.PhoneNumberFormat.E164
+			);
+		} else {
+			return null;
+		}
+	} catch(e) {
+		return null;
 	}
 	return phone_number;
 }

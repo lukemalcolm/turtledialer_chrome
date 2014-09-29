@@ -15,30 +15,54 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
 <body>
-	<div class="popup">
-		<div class="container header">
-			<div class="row">
-				<div class="col-xs-12">
-					<h1>Phonebook</h1>
+	<div class="container">
+		<ul class="nav nav-tabs" role="tablist">
+		  <li class="active"><a href="#pb-tab" role="tab" data-toggle="tab">Phonebook</a></li>
+		  <li><a href="#mc-tab">Calls log</a></li>
+		</ul>
+	</div>
+	<div class="tab-content">
+		<div id="pb-tab" class="tab-pane active popup">
+			<div class="container header">
+				<div class="row">
+					<div class="col-xs-12">
+						<h1>Phonebook</h1>
+					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12" id="letters">
-					<div class="pull-right">
-						<div class="form-group">
-							<input id="searchinput" class="form-control" type="search" placeholder="Search..." />
+				<div class="row">
+					<div class="col-xs-12" id="letters">
+						<div class="pull-right">
+							<div class="form-group">
+								<input id="searchinput" class="form-control" type="search" placeholder="Search..." />
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div id="spy" class="container contact-list">
-			<div class="row">
-				<div class="col-xs-12">
-					<ul class="media-list" id="data" class="list-group">
-					</ul>
+			<div id="spy" class="container contact-list">
+				<div class="row">
+					<div class="col-xs-12">
+						<ul class="media-list" id="data" class="list-group">
+						</ul>
+					</div>
 				</div>
 			</div>
+		</div>
+		<div id="mc-tab" class="tab-pane popup">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>when</th>
+					<th>who</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>12/07/2014 12:00:00</td>
+					<td>+34673338363</td>
+				</tr>
+			</tbody>
+		</table>
 		</div>
 	</div>
 </body>

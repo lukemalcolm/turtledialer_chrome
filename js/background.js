@@ -22,6 +22,7 @@ var config = new Config();
 var phone = null;
 var number_utils = null;
 var contacts = null;
+var context_menu_id = null;
 
 /********************************************
  Contacts management functions
@@ -119,6 +120,29 @@ var retrieveContacts = function() {
 /********************************************
  Extension function
 *********************************************/
+var dialSelectedNumber = function(e) {
+	dial(e.selectionText);
+}
+var onRequest = function(request, sender, sendResponse) {
+	if (request.action == 'select') {
+		var number = number_utils.parsePhoneNumber(request.selection);
+		if (number) {
+			context_menu_id = chrome.contextMenus.create({
+				"title": chrome.i18n.getMessage('mnu_dial', [number]),
+				"contexts": ["selection"],
+				"onclick": dialSelectedNumber
+			}, function() { console.log('context menu created '); });			
+		}
+	}
+	if (request.action == 'unselect') {
+		if (context_menu_id) {
+			chrome.contextMenus.remove(context_menu_id, function() {
+				context_menu_id = null;
+			});			
+		}
+	}
+}
+
 var initialize = function() {
 	chrome.browserAction.disable();
 	if (config.check()) {
@@ -132,13 +156,7 @@ var start = function() {
 	chrome.browserAction.enable();
 	// chrome.browserAction.setBadgeText({text: '' + Object.keys(contacts).length});
 	// chrome.browserAction.setBadgeBackgroundColor({color: '#00cc00'});
-	chrome.contextMenus.create({
-		title: chrome.i18n.getMessage('mnu_dial'),
-		contexts: ["selection"],
-		onclick: function(e) {
-			dial(e.selectionText);
-		}
-	});
+	chrome.extension.onRequest.addListener(onRequest);
 }
 
 var dial = function(phone_number) {
@@ -149,6 +167,5 @@ var dial = function(phone_number) {
 		failure: function() { notifyDialFailure(phone_number); }
 	});
 }
-
 
 config.load(initialize);

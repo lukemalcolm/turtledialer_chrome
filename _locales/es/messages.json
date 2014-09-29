@@ -51,7 +51,12 @@
     "message": "El nombre de host o dirección IP es obligatorio."
   },
   "mnu_dial": {
-    "message": "Llamar"
+    "message": "Llamar $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
   },
   "not_dialing": {
     "message": "Llamando el numero $number$",
@@ -68,5 +73,8 @@
         "content": "$1"
       }
     }
-  }  
+  },
+  "not_hangup": {
+    "message": "Colgar"
+  }   
 }
