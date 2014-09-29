@@ -29,7 +29,7 @@ $(function() {
 		var li = $('<li>').addClass('media list-group-item');
 		var a = $('<a>').addClass('pull-left').attr('href', '#');
 		li.append(a);
-		var avatar = $('<img>').addClass('media-object').attr('src', curr_contact['gravatar']);
+		var avatar = $('<img>').addClass('media-object')/*.attr('src', curr_contact['gravatar'])*/;
 		a.append(avatar);
 		var body = $('<div>').addClass('media-body');
 		li.append(body);
@@ -67,5 +67,9 @@ $(function() {
 	$('.number-link').click(function() {
 		console.log('try dialing  ' + $(this).text());
 		chrome.extension.getBackgroundPage().dial($(this).text());	
+	});
+	$('#tab-links a').click(function (e) {
+  		e.preventDefault()
+  		$(this).tab('show')
 	});
 });
