@@ -47,7 +47,7 @@ YealinkT2x.prototype.dial = function(dialrequest) {
 	}
 	xhr.send();	
 }
-YealinkT2x.prototype.calls_log = function() {
+YealinkT2x.prototype.callsLog = function(logrequest) {
 	var url_to_call = 
 		this.protocol + '://' +
 		this.username + ':' + this.password + '@' + 
@@ -62,9 +62,52 @@ YealinkT2x.prototype.calls_log = function() {
 	  	if (start_index > 10) {
 	  		var end_index = page_content.indexOf('"', start_index);
 	  		var data = page_content.substring(start_index, end_index).split('þ');
-	  		for (var i =0; i < data.length; i++) {
-	  			console.log(data[i].split('ÿ'));
+	  		var months = {
+	  			'Jan': '01',
+	  			'Feb': '02',
+	  			'Mar': '03',
+	  			'Apr': '04',
+	  			'May': '05',
+	  			'Jun': '06',
+	  			'Jul': '07',
+	  			'Aug': '08',
+	  			'Sep': '09',
+	  			'Oct': '10',
+	  			'Nov': '11',
+	  			'Dec': '12'
 	  		}
+	  		var log = []
+	  		for (var i =0; i < data.length; i++) {
+	  			var item = data[i].split('ÿ');
+	  			if (item.length < 7) {
+	  				continue;
+	  			}
+	  			var date_parts = item[1].split(',')[1].split(' ');
+	  			var date = ('00' + date_parts[2]).slice(-2) + '/' + months[date_parts[1]];
+	  			var time = item[2];
+	  			var number = item[6];
+	  			var kind = null;
+	  			switch (item[0]) {
+	  				case '1':
+	  					kind = 'outgoing';
+	  					break;
+	  				case '2':
+	  					kind = 'incoming';
+	  					break;
+	  				case '3':
+	  					kind = 'missed';
+	  					break;
+	  			}
+	  			if (kind != null) {
+					log.push({
+						'kind': kind,
+						'date': date,
+						'time': time,
+						'number': number
+					});
+	  			}
+	  		}
+	  		logrequest.success(log);
 	  	}
 	  }
 	}

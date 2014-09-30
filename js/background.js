@@ -22,10 +22,12 @@ var config = new Config();
 var phone = null;
 var number_utils = null;
 var contacts = null;
+var contacts_reverse = null;
+var calls_log = null;
 var context_menu_id = null;
 
 /********************************************
- Contacts management functions
+ Contacts and calls log management functions
 *********************************************/
 var getGmailContacts = function() {
 	var deferred = $.Deferred();
@@ -82,7 +84,17 @@ var mergeContacts = function(set1, set2) {
 		}
 	}
 	return biggest;
-};
+}
+
+var reverseContacts = function(data) {
+	var reversed = {}
+	for (var key in data) {
+		for (var i = 0; i < data[key]['numbers'].length; i++) {
+			reversed[number_utils.formatPhoneNumber(data[key]['numbers'][i]['number'])] = key;
+		}
+	}
+	return reversed;
+}
 
 var retrieveContacts = function() {
 	var phone_contacts = {};
@@ -108,13 +120,27 @@ var retrieveContacts = function() {
 			d1.always(function() {
 				console.log('all done!');
 				contacts = mergeContacts(phone_contacts, gmail_contacts);
+				contacts_reverse = reverseContacts(contacts);
 				start();
 			});
 		} else {
 			contacts = mergeContacts(phone_contacts, gmail_contacts);
+			contacts_reverse = reverseContacts(contacts);
 			start();
 		}
 	});	
+}
+var getCallsLog = function(phone) {
+	var deferred = $.Deferred();
+	phone.callsLog({
+		success: function(res) {
+			deferred.resolve(res);
+		},
+		error: function(err) {
+			deferred.reject(err);
+		}
+	});
+	return deferred.promise();
 }
 
 /********************************************
@@ -153,10 +179,32 @@ var initialize = function() {
 	}
 }
 var start = function() {
-	chrome.browserAction.enable();
-	// chrome.browserAction.setBadgeText({text: '' + Object.keys(contacts).length});
-	// chrome.browserAction.setBadgeBackgroundColor({color: '#00cc00'});
-	chrome.extension.onRequest.addListener(onRequest);
+	var d = getCallsLog(phone);
+	d.done(function(data) {
+		var log = [];
+		for (var i = 0; i < data.length; i++) {
+			var item = data[i];
+			var name = '-';
+			var num_for_lookup = number_utils.formatPhoneNumber(item['number']);
+			if (contacts_reverse.hasOwnProperty(num_for_lookup)) {
+				name = contacts_reverse[num_for_lookup];
+			}
+			log.push({
+				'kind': item['kind'],
+				'date': item['date'],
+				'time': item['time'],
+				'name': name,
+				'number': item['number']
+			});
+		}
+		calls_log = log;
+	});
+	d.always(function() {
+		chrome.browserAction.enable();
+		// chrome.browserAction.setBadgeText({text: '' + Object.keys(contacts).length});
+		// chrome.browserAction.setBadgeBackgroundColor({color: '#00cc00'});
+		chrome.extension.onRequest.addListener(onRequest);
+	});
 }
 
 var dial = function(phone_number) {

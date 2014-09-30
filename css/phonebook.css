@@ -33,3 +33,59 @@ body {
 .number-link {
   padding-left: 5px;
 }
+.calls-log {
+  width: 700px;
+  margin-left: 34px;
+}
+
+.header-fixed {
+}
+
+.header-fixed > thead,
+.header-fixed > tbody,
+.header-fixed > thead > tr,
+.header-fixed > tbody > tr,
+.header-fixed > thead > tr > th,
+.header-fixed > tbody > tr > td {
+    display: block;
+}
+
+.header-fixed > tbody > tr:after,
+.header-fixed > thead > tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+.header-fixed > tbody {
+    overflow-y: auto;
+    height: 320px;
+}
+
+.header-fixed > tbody > tr > td,
+.header-fixed > thead > tr > th {
+    float: left;
+}
+.missed {
+  color: red;
+}
+.outgoing {
+  color: green;
+}
+.incoming {
+  color: blue;
+}
+.col-icon {
+  width: 70px;
+}
+.col-when {
+  width: 140px;
+}
+.col-who {
+  width: 350px;
+}
+.col-number {
+  width: 140px;
+}
+

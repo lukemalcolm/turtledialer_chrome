@@ -18,18 +18,23 @@ var icons = {
 	'work': 'glyphicon glyphicon-phone-alt',
 	'mobile': 'glyphicon glyphicon-phone',
 	'fax': 'fa fa-fax',
-	'home': 'fa fa-home'
+	'home': 'fa fa-home',
+	'outgoing': 'glyphicon glyphicon-resize-full outgoing',
+	'incoming': 'glyphicon glyphicon-resize-small incoming',
+	'missed': 'glyphicon glyphicon-warning-sign missed'
 }
 
 $(function() {
 	var contacts = chrome.extension.getBackgroundPage().contacts;
 	var sorted_keys = Object.keys(contacts).sort();
+	var mm_url = chrome.extension.getURL('/icons/mm.png');
 	for (var i = 0; i < sorted_keys.length; i++) {
 		var curr_contact = contacts[sorted_keys[i]];
 		var li = $('<li>').addClass('media list-group-item');
 		var a = $('<a>').addClass('pull-left').attr('href', '#');
 		li.append(a);
-		var avatar = $('<img>').addClass('media-object')/*.attr('src', curr_contact['gravatar'])*/;
+		var avatar = $('<img>').addClass('media-object').attr('width', '96').attr('height', '96')
+			.attr('id', 'avatar_' + i).attr('src', curr_contact['gravatar']);
 		a.append(avatar);
 		var body = $('<div>').addClass('media-body');
 		li.append(body);
@@ -64,10 +69,34 @@ $(function() {
 		$('#data').append(li);
 	}
 	$('#data').btsListFilter('#searchinput', {itemChild: 'h4'});
+
+	var calls_log = chrome.extension.getBackgroundPage().calls_log;
+	for (var i = 0; i < calls_log.length; i++) {
+		var tr = $('<tr>');
+		var td = $('<td>').addClass('col-icon');
+		var span = $('<span>');
+		span.addClass(icons[calls_log[i]['kind']]);
+		td.append(span);
+		tr.append(td);
+		td = $('<td>').addClass('col-when');
+		td.text(calls_log[i]['date'] + ' ' + calls_log[i]['time']);
+		tr.append(td);
+		td = $('<td>').addClass('col-who');
+		td.text(calls_log[i]['name']);
+		tr.append(td);
+		td = $('<td>').addClass('col-number');
+		var num = $('<a>').addClass('number-link').attr('href', '#');
+		num.text(calls_log[i]['number']);
+		td.append(num);
+		tr.append(td);
+		$('#tbl-log').append(tr);
+	}
+	
 	$('.number-link').click(function() {
 		console.log('try dialing  ' + $(this).text());
 		chrome.extension.getBackgroundPage().dial($(this).text());	
 	});
+
 	$('#tab-links a').click(function (e) {
   		e.preventDefault()
   		$(this).tab('show')
