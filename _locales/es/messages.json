@@ -74,6 +74,14 @@
       }
     }
   },
+  "not_missed_calls": {
+    "message": "Tienes $number$ llamadas perdidas",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
   "not_hangup": {
     "message": "Colgar"
   }   

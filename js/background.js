@@ -26,6 +26,8 @@ var contacts_reverse = null;
 var calls_log = null;
 var context_menu_id = null;
 
+var missed_calls_count = 0;
+
 /********************************************
  Contacts and calls log management functions
 *********************************************/
@@ -107,7 +109,6 @@ var retrieveContacts = function() {
 		console.log('get_phone_contacts fail: ' + err);
 	});
 	d.always(function() {
-		console.log('gmail contact fail');
 		if (config.getSettings().gmail) {
 			var d1 = getGmailContacts();
 			d1.done(function(data) {
@@ -142,7 +143,65 @@ var getCallsLog = function(phone) {
 	});
 	return deferred.promise();
 }
-
+var updateCallsLog = function(data) {
+	var log = [];
+	for (var i = 0; i < data.length; i++) {
+		var item = data[i];
+		var name = '-';
+		var num_for_lookup = number_utils.formatPhoneNumber(item['number']);
+		if (contacts_reverse.hasOwnProperty(num_for_lookup)) {
+			name = contacts_reverse[num_for_lookup];
+		}
+		log.push({
+			'kind': item['kind'],
+			'date': item['date'],
+			'time': item['time'],
+			'name': name,
+			'number': item['number']
+		});
+	}
+	return log;	
+}
+var flipDate = function(date) {
+	return parseInt(date.substring(3) + date.substring(0,2));
+}
+var checkMissedCalls = function(phone) {
+	var d = getCallsLog(phone);
+	d.done(function(data) {
+		var log = updateCallsLog(data);
+		var most_recent_missed = null;
+		for (var i = 0; i < calls_log.length; i++) {
+			if (calls_log[i]['kind'] == 'missed') {
+				most_recent_missed = calls_log[i];
+				break;
+			}
+		}
+		calls_log = log;
+		if (most_recent_missed != null) {
+			var current_date = most_recent_missed['date'];
+			var date_to_check = flipDate(current_date);
+			var time_to_check = most_recent_missed['time'].replace(':', '');
+			
+			for (var i = 0; i < log.length; i++) {
+				if (log[i]['kind'] == 'missed') {
+					var date = flipDate(log[i]['date']);
+					var time = log[i]['time'].replace(':', '');
+					if (date == date_to_check && time == time_to_check) {
+						if (missed_calls_count > 0) {
+							chrome.browserAction.setBadgeText({text: '' + missed_calls_count});
+							chrome.browserAction.setBadgeBackgroundColor({color: '#cc0000'});
+							//notifyMissedCalls(missed_calls_count);
+						}
+						return;
+					}
+					missed_calls_count++;
+				}
+			}
+		} else {
+			//count missed
+		}
+	});
+}
 /********************************************
  Extension function
 *********************************************/
@@ -181,29 +240,23 @@ var initialize = function() {
 var start = function() {
 	var d = getCallsLog(phone);
 	d.done(function(data) {
-		var log = [];
-		for (var i = 0; i < data.length; i++) {
-			var item = data[i];
-			var name = '-';
-			var num_for_lookup = number_utils.formatPhoneNumber(item['number']);
-			if (contacts_reverse.hasOwnProperty(num_for_lookup)) {
-				name = contacts_reverse[num_for_lookup];
+		calls_log = updateCallsLog(data);
+		for (var i = 0; i < calls_log.length; i++) {
+			if (calls_log[i]['kind'] == 'missed') {
+				missed_calls_count++;
 			}
-			log.push({
-				'kind': item['kind'],
-				'date': item['date'],
-				'time': item['time'],
-				'name': name,
-				'number': item['number']
-			});
 		}
-		calls_log = log;
+		if (missed_calls_count > 0) {
+			chrome.browserAction.setBadgeText({text: '' + missed_calls_count});
+			chrome.browserAction.setBadgeBackgroundColor({color: '#cc0000'});
+		}
 	});
 	d.always(function() {
 		chrome.browserAction.enable();
-		// chrome.browserAction.setBadgeText({text: '' + Object.keys(contacts).length});
-		// chrome.browserAction.setBadgeBackgroundColor({color: '#00cc00'});
 		chrome.extension.onRequest.addListener(onRequest);
+		setInterval(function() {
+			checkMissedCalls(phone);
+		}, 10000);
 	});
 }
 

@@ -35,3 +35,12 @@ var notifyDialFailure = function(number) {
 		'message': chrome.i18n.getMessage('not_dial_failure', [number])
 	}, function() {});
 }
+
+var notifyMissedCalls = function(number) {
+	chrome.notifications.create('', {
+		'type': 'basic',
+		'iconUrl': '/icons/turtledialer_128_3.png',
+		'title': 'Turtle dialer',
+		'message': chrome.i18n.getMessage('not_missed_calls', [number])
+	}, function() {});
+}
