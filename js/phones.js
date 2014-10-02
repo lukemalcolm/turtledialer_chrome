@@ -1,24 +1,28 @@
-function YealinkT2x() {
+/*
+Copyright 2014 Francesco Faraone
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+function YealinkT2x(settings) {
+	this.protocol = settings.protocol;
+	this.host = settings.host;
+	this.port = settings.port;
+	this.username = settings.username;
+	this.password = settings.password;
+	this.account = settings.account;
 }
 
-YealinkT2x.prototype.load_config = function() {
-	this.protocol = localStorage['turtle.settings.protocol']
-	this.host = localStorage['turtle.settings.host'];
-	this.port = localStorage['turtle.settings.port'];
-	this.username = localStorage['turtle.settings.username'];
-	this.password = localStorage['turtle.settings.password'];
-	this.account = localStorage['turtle.settings.account'];
-	this.country = localStorage['turtle.settings.country'];	
-	return this.check_config();
-}
-
-YealinkT2x.prototype.log_config = function() {
-	console.log(this);
-}
-
-YealinkT2x.prototype.check_config = function() {
-	return true;
-}
 
 YealinkT2x.prototype.dial = function(dialrequest) {
 	console.log('dialing: ' + dialrequest.phonenumber);
@@ -43,7 +47,7 @@ YealinkT2x.prototype.dial = function(dialrequest) {
 	}
 	xhr.send();	
 }
-YealinkT2x.prototype.calls_log = function() {
+YealinkT2x.prototype.callsLog = function(logrequest) {
 	var url_to_call = 
 		this.protocol + '://' +
 		this.username + ':' + this.password + '@' + 
@@ -58,9 +62,52 @@ YealinkT2x.prototype.calls_log = function() {
 	  	if (start_index > 10) {
 	  		var end_index = page_content.indexOf('"', start_index);
 	  		var data = page_content.substring(start_index, end_index).split('þ');
-	  		for (var i =0; i < data.length; i++) {
-	  			console.log(data[i].split('ÿ'));
+	  		var months = {
+	  			'Jan': '01',
+	  			'Feb': '02',
+	  			'Mar': '03',
+	  			'Apr': '04',
+	  			'May': '05',
+	  			'Jun': '06',
+	  			'Jul': '07',
+	  			'Aug': '08',
+	  			'Sep': '09',
+	  			'Oct': '10',
+	  			'Nov': '11',
+	  			'Dec': '12'
 	  		}
+	  		var log = []
+	  		for (var i =0; i < data.length; i++) {
+	  			var item = data[i].split('ÿ');
+	  			if (item.length < 7) {
+	  				continue;
+	  			}
+	  			var date_parts = item[1].split(',')[1].split(' ');
+	  			var date = ('00' + date_parts[2]).slice(-2) + '/' + months[date_parts[1]];
+	  			var time = item[2];
+	  			var number = item[6];
+	  			var kind = null;
+	  			switch (item[0]) {
+	  				case '1':
+	  					kind = 'outgoing';
+	  					break;
+	  				case '2':
+	  					kind = 'incoming';
+	  					break;
+	  				case '3':
+	  					kind = 'missed';
+	  					break;
+	  			}
+	  			if (kind != null) {
+					log.push({
+						'kind': kind,
+						'date': date,
+						'time': time,
+						'number': number
+					});
+	  			}
+	  		}
+	  		logrequest.success(log);
 	  	}
 	  }
 	}

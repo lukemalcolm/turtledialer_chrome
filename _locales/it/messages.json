@@ -1,0 +1,53 @@
+{
+  "lbl_html_title": {
+    "message": "Configurazione di Turtle dialer"
+  },
+  "lbl_html_general": {
+    "message": "Generale"
+  },
+  "lbl_html_country": {
+    "message": "Paese"
+  },
+  "lbl_html_phone": {
+    "message": "Telefono"
+  },
+  "lbl_html_gmail": {
+      "message": "Includere i contatti di Gmail"
+  },
+  "lbl_html_yealink_t2x_settings": {
+    "message": "Configurazione della API del Yealink T2x"
+  },
+  "lbl_html_protocol": {
+      "message": "Protocollo"
+  },
+  "lbl_html_host": {
+      "message": "Nome host o indirizzo IP"
+  },
+  "lbl_html_port": {
+      "message": "Porta"
+  },
+  "lbl_html_username": {
+      "message": "Utente"
+  },
+  "lbl_html_password": {
+      "message": "Password"
+  },
+  "lbl_html_account": {
+      "message": "Account SIP"
+  },
+  "lbl_vld_country_required": {
+    "message": "Il paese è obbligatorio."
+  },
+  "lbl_vld_phone_required": {
+    "message": "Il telefono è obbligatorio."
+  },
+  "lbl_vld_port_range": {
+    "message": "Il numero di porta deve essere compreso fra 1 e 65535."
+  },
+  "lbl_vld_port_numeric": {
+    "message": "Il numero di porta non è numerico."
+  },
+  "lbl_vld_host_required": {
+    "message": "Il nome host o l'indirizzo IP è obbligatorio."
+  }
+}
