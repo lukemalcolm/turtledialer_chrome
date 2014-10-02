@@ -253,6 +253,7 @@ var start = function() {
 	});
 	d.always(function() {
 		chrome.browserAction.enable();
+		chrome.notifications.onButtonClicked.addListener(function() { phone.hangup() });
 		chrome.extension.onRequest.addListener(onRequest);
 		setInterval(function() {
 			checkMissedCalls(phone);
