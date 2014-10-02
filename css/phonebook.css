@@ -1,9 +1,13 @@
 body {
   width: 768px;
   height: 540px;
+  padding-top: 60px;
+}
+.logo {
+  margin-top: -13px;
 }
 .popup {
-  padding-top: 30px;
+  /*padding-top: 2px;*/
   height: 540px;
 /*  padding: 15px 15px; */
   position: absolute;
@@ -15,15 +19,15 @@ body {
 /*.nav {
   padding-left: 70px;
 }*/
-.nav>li>a {
+/*.nav>li>a {
   padding: 5px 6px;
-}
-.header {
+}*/
+/*.header {
   height: 30px;
-}
+}*/
 .contact-list {
-  margin-top: 20px;
-  height: 330px; 
+  margin-top: 5px;
+  height: 440px; 
   overflow: auto; 
   position: relative;
 }
@@ -60,7 +64,7 @@ body {
 
 .header-fixed > tbody {
     overflow-y: auto;
-    height: 320px;
+    height: 420px;
 }
 
 .header-fixed > tbody > tr > td,
