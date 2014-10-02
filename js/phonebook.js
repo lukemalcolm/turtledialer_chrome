@@ -25,8 +25,7 @@ var icons = {
 }
 
 $(function() {
-	chrome.browserAction.setBadgeText({text: ''});
-	chrome.extension.getBackgroundPage().missed_calls_count = 0;
+	chrome.extension.getBackgroundPage().resetMissedCallsCount();
 	var contacts = chrome.extension.getBackgroundPage().contacts;
 	var sorted_keys = Object.keys(contacts).sort();
 	for (var i = 0; i < sorted_keys.length; i++) {

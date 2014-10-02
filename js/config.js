@@ -13,13 +13,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-function Config(callback) {
+function Config() {
 	this.settings = {
 		phone: '',
 		gmail: false,
 		country: '',
 		protocol: 'http',
-		port: 80
+		port: 80,
+		calls_log: [],
+		missed_calls_count: 0
 	}
 	console.log(this.settings);
 }
