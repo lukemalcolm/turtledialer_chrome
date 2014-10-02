@@ -35,6 +35,21 @@
   "lbl_html_account": {
       "message": "Cuenta SIP"
   },
+  "lbl_html_phonebook": {
+      "message": "Agenda telefónica"
+  },
+  "lbl_html_calllog": {
+      "message": "Registro de llamadas"
+  },
+  "lbl_html_when": {
+      "message": "Cuando"
+  },
+  "lbl_html_who": {
+      "message": "Quién"
+  },
+  "lbl_html_number": {
+      "message": "Número"
+  },
   "lbl_vld_country_required": {
     "message": "El país es obligatorio."
   },

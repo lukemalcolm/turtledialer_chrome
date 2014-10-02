@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-	<title>Turtle Dialer address book</title>
+	<title>Turtle Dialer</title>
 	<link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css"/>
 	<link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css"/>
 	<link rel="stylesheet" href="/css/phonebook.css" type="text/css"/>
@@ -18,14 +18,14 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
-				<h1>Turtle dialer</h1>
+				<img src="../icons/banner.png">
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
 				<ul id="tab-links" class="nav nav-tabs" role="tablist">
-				  <li class="active"><a href="#pb-tab" role="tab" data-toggle="tab">Phonebook</a></li>
-				  <li><a href="#mc-tab">Calls log</a></li>
+				  <li class="active"><a id="lbl_html_phonebook" href="#pb-tab" role="tab" data-toggle="tab">Phone book</a></li>
+				  <li><a id="lbl_html_calllog" href="#mc-tab">Call log</a></li>
 				</ul>
 			</div>
 		</div>
@@ -60,9 +60,9 @@
 							<thead>
 								<tr>
 									<th class="col-icon">&nbsp;</th>
-									<th class="col-when">when</th>
-									<th class="col-who">who</th>
-									<th class="col-number">number</th>
+									<th id="lbl_html_when" class="col-when">When</th>
+									<th id="lbl_html_who" class="col-who">Who</th>
+									<th id="lbl_html_number" class="col-number">Number</th>
 								</tr>
 							</thead>
 							<tbody id='tbl-log'>

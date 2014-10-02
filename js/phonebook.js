@@ -25,6 +25,15 @@ var icons = {
 }
 
 $(function() {
+	$('[id^=lbl_]').each(
+		function() {
+			var msg = chrome.i18n.getMessage($(this).attr('id'));
+			if (msg != undefined && msg != '') {
+				$(this).text(msg);
+			}
+			
+		}
+	);
 	chrome.extension.getBackgroundPage().resetMissedCallsCount();
 	var contacts = chrome.extension.getBackgroundPage().contacts;
 	var sorted_keys = Object.keys(contacts).sort();
