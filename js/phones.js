@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-function YealinkT2x(settings) {
+function YealinkT20P(settings) {
 	this.protocol = settings.protocol;
 	this.host = settings.host;
 	this.port = settings.port;
@@ -24,7 +24,7 @@ function YealinkT2x(settings) {
 }
 
 
-YealinkT2x.prototype.dial = function(dialrequest) {
+YealinkT20P.prototype.dial = function(dialrequest) {
 	console.log('dialing: ' + dialrequest.phonenumber);
 	var url_to_call = 
 		this.protocol + '://' +
@@ -47,7 +47,7 @@ YealinkT2x.prototype.dial = function(dialrequest) {
 	}
 	xhr.send();	
 }
-YealinkT2x.prototype.callsLog = function(logrequest) {
+YealinkT20P.prototype.callsLog = function(logrequest) {
 	var url_to_call = 
 		this.protocol + '://' +
 		this.username + ':' + this.password + '@' + 
@@ -113,7 +113,7 @@ YealinkT2x.prototype.callsLog = function(logrequest) {
 	}
 	xhr.send();	
 }
-YealinkT2x.prototype.hangup = function(hanguprequest) {
+YealinkT20P.prototype.hangup = function(hanguprequest) {
 	console.log('hangup');
 	var url_to_call = 
 		this.protocol + '://' +
@@ -136,7 +136,7 @@ YealinkT2x.prototype.hangup = function(hanguprequest) {
 	xhr.send();	
 }	
 
-YealinkT2x.prototype.phonebook = function(phonebookrequest) {
+YealinkT20P.prototype.phonebook = function(phonebookrequest) {
 	var url_to_call = 
 		this.protocol + '://' +
 		this.username + ':' + this.password + '@' + 

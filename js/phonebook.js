@@ -77,9 +77,9 @@ $(function() {
 		body.append(cols);
 		$('#data').append(li);
 	}
-	$('#data').btsListFilter('#searchinput', {
-		itemChild: 'h4'
-	});
+	// $('#data').btsListFilter('#searchinput', {
+	// 	itemChild: 'h4'
+	// });
 
 	var calls_log = chrome.extension.getBackgroundPage().calls_log;
 	for (var i = 0; i < calls_log.length; i++) {
@@ -110,19 +110,39 @@ $(function() {
 		chrome.extension.getBackgroundPage().dial($(this).text());
 	});
 
-	$('#tab-links a').click(function(e) {
-		e.preventDefault()
-		$(this).tab('show')
+	$('a[data-toggle="tab"]').click(function(e) {
+		e.preventDefault();
+		$(this).tab('show');
+		$('#searchinput').val('');
+		$('#searchinput').trigger('keyup');
 	});
-	$('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-		if ($(e.target).attr('href') == '#pb-tab') {
-			$('#data').btsListFilter('#searchinput', {
-				itemChild: 'h4'
-			});
+	// $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+		
+	// 	// if ($(e.target).attr('href') == '#pb-tab') {
+	// 	// 	$('#data').btsListFilter('#searchinput', {
+	// 	// 		itemChild: 'h4'
+	// 	// 	});
+	// 	// } else {
+	// 	// 	$('#tbl-log').btsListFilter('#searchinput', {
+	// 	// 		itemChild: 'p'
+	// 	// 	});
+	// 	// }
+	// });
+	// $('#searchinput').focus();
+
+	$('#searchinput').keyup(function() {
+	    var value = this.value;
+		var re = new RegExp(value, 'i');
+		if ($('#pb-tab').is(':visible')) {
+		    $('#data').find('.list-group-item').each(function() {
+		        var id = $(this).find("h4").first().text();
+		        $(this).toggle(re.test(id));
+		    });
 		} else {
-			$('#tbl-log').btsListFilter('#searchinput', {
-				itemChild: 'p'
-			});
+			$('#tbl-log').find('tr').each(function() {
+		        var id = $(this).find("p").first().text();
+		        $(this).toggle(re.test(id));
+		    });
 		}
 	});
 });

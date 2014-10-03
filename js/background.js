@@ -14,6 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+
+/********************************************
+ Start disabled
+*********************************************/
+
+chrome.browserAction.disable();
+
 /********************************************
  Global variables
 *********************************************/
@@ -28,6 +35,7 @@ var context_menu_id = null;
 
 var missed_calls_count = 0;
 var initialized = false;
+
 
 /********************************************
  Contacts and calls log management functions
@@ -260,7 +268,6 @@ var initialize = function() {
 	if (initialized) {
 		return;
 	}
-	chrome.browserAction.disable();
 	if (config.check()) {
 		phone_class = config.getSettings().phone;
 		phone = new this[phone_class](config.getSettings());

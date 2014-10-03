@@ -20,6 +20,9 @@ function Config() {
 		country: '',
 		protocol: 'http',
 		port: 80,
+		username: '',
+		password: '',
+		account: '',
 		calls_log: [],
 		missed_calls_count: 0
 	}
@@ -49,6 +52,10 @@ Config.prototype.load = function(callback) {
 		console.log(data.turtle_settings);
 		if (data.turtle_settings === undefined) {
 			self.save();
+			if (callback != undefined) {
+				callback();
+			}
+			return;		
 		}
 		console.log('settings loaded !');
 		self.settings = data.turtle_settings;
@@ -62,8 +69,11 @@ Config.prototype.check = function() {
 	var country = (this.settings.country != undefined && this.settings.country != '');
 	var phone = (this.settings.phone != undefined && this.settings.phone != '');
 	var host = (this.settings.host != undefined && this.settings.host != '');
-	var port = (this.settings.port != undefined && this.settings.port != '');
-	return country && phone && host && port;
+	var port = (this.settings.port != undefined && this.settings.port > 0);
+	var username = (this.settings.username != undefined && this.settings.username != '');
+	var password = (this.settings.port != undefined && this.settings.password != '');
+	var account = (this.settings.account != undefined && this.settings.account != '');
+	return country && phone && host && port && username && password && account;
 }
 Config.prototype.getSettings = function() {
 	return this.settings;
