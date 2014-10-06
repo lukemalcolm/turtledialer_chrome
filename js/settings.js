@@ -34,7 +34,6 @@ $(function() {
 		}
 	);
 
-
 	$('#settings').bootstrapValidator({
         message: 'This value is not valid',
         fields: {

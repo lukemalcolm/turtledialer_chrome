@@ -6,9 +6,11 @@
   "homepage_url": "http://www.velasuci.com",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlKVdh7QLPHtk/cFQd7UCj6Vhjaqat1/CfafFmlu7gqKef0Oe+AKauJly5/Aaz1RtuOdA8AAHOR+DFGbHQQnyMrs0tqjkuqgRoQVsgpxxAjMPqS6h3X7Xg0Frs2xEO5Aqkrv7sm29jMxrpmawZ+eIokeN1tJDxVRu6I49IDs3TII+Y9HUmGlmpJQRmhbqKCaoExdsSY6m7I4LyB+1eFu4vKODoD3TDj1uqVB7MU8NB+obFnHcrKAtEx/vAE29RPE76PqOEkMtUG0xv/3YiGP+WzAsnxMhsg/3QSHCcQZDmRTOKozbRWFd145Fi+cHQ2JGUzt7bOwe4C54UQMb0SL2WwIDAQAB",
   "icons": {
-    "16": "icons/turtledialer_16.png",
-    "48": "icons/turtledialer_128_3.png",
-    "128": "icons/turtledialer_128_3.png"
+    "16": "icons/icon_16.png",
+    "19": "icons/icon_19.png",
+    "38": "icons/icon_38.png",
+    "48": "icons/icon_48.png",
+    "128": "icons/icon_128.png"
   },
   "default_locale": "en",
   "background": {
@@ -28,7 +30,7 @@
   },
   "options_page": "html/settings.html",
   "browser_action": {
-    "default_icon": "icons/Susana3.png",
+    "default_icon": "icons/icon_38.png",
     "default_title": "Turtle dialer",
     "default_popup": "html/phonebook.html"
   },

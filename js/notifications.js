@@ -17,7 +17,7 @@ var notifyDialing = function(number) {
 	console.log('notify dialing')
 	chrome.notifications.create('', {
 		'type': 'basic',
-		'iconUrl': '/icons/turtledialer_128_3.png',
+		'iconUrl': '/icons/icon_128.png',
 		'title': 'Turtle dialer',
 		'message': chrome.i18n.getMessage('not_dialing', [number]),
 		'buttons': [{
@@ -30,7 +30,7 @@ var notifyDialing = function(number) {
 var notifyDialFailure = function(number) {
 	chrome.notifications.create('', {
 		'type': 'basic',
-		'iconUrl': '/icons/turtledialer_128_3.png',
+		'iconUrl': '/icons/icon_128.png',
 		'title': 'Turtle dialer',
 		'message': chrome.i18n.getMessage('not_dial_failure', [number])
 	}, function() {});
@@ -39,7 +39,7 @@ var notifyDialFailure = function(number) {
 var notifyMissedCalls = function(number) {
 	chrome.notifications.create('', {
 		'type': 'basic',
-		'iconUrl': '/icons/turtledialer_128_3.png',
+		'iconUrl': '/icons/icon_128.png',
 		'title': 'Turtle dialer',
 		'message': chrome.i18n.getMessage('not_missed_calls', [number])
 	}, function() {});
