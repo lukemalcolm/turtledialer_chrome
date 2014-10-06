@@ -185,3 +185,229 @@ YealinkT20P.prototype.phonebook = function(phonebookrequest) {
 		}
 	);
 }
+
+function YealinkT28P(settings) {
+	//http://192.168.107.100/servlet?p=login&q=login
+	//username:admin
+	//pwd:gestiovoz
+	//jumpto:status
+	//acc:
+
+	this.protocol = settings.protocol;
+	this.host = settings.host;
+	this.port = settings.port;
+	this.username = settings.username;
+	this.password = settings.password;
+	this.account = settings.account;
+	this.sessionid = null;
+}
+
+YealinkT28P.prototype.login = function(callback) {
+	var url_to_call = 
+		this.protocol + '://' +
+		this.host + '/servlet?p=login&q=login';
+	var params = 'username=' + this.username + '&pwd=' + this.password;
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', url_to_call, true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhr.withCredentials = true;
+	xhr.crossDomain = true;
+	xhr.onreadystatechange = function() {
+		console.log(xhr.readyState);
+		if (xhr.readyState == 4) {
+			callback();
+	  }
+	}
+	xhr.send(params);		
+}
+
+YealinkT28P.prototype.dial = function(dialrequest) {
+	console.log('dialing: ' + dialrequest.phonenumber);
+	var url_to_call = 
+		this.protocol + '://' +
+		this.host + '/servlet?p=contacts-callinfo&q=call&num=' + 
+		dialrequest.phonenumber + '&acc=0';
+	console.log(url_to_call);
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url_to_call, true);
+	xhr.onreadystatechange = function() {
+	  if (xhr.readyState == 4) {
+	  	if (xhr.responseText != 'call success') {
+	  		dialrequest.failure();
+	  	} else {
+	  		dialrequest.success();
+	  	}
+	  }
+	}
+	this.login(function() {
+		xhr.send();
+	});	
+}
+YealinkT28P.prototype.test = function() {
+	var dr = {
+		'phonenumber': '687787105',
+		'success': function() {
+			console.log('oki');
+		},
+		'error': function() {
+			console.log('iko');
+		}
+	}
+	this.dial(dr);
+}
+YealinkT28P.prototype.callsLog = function(logrequest) {
+	var url_to_call = 
+		this.protocol + '://' +
+		this.host + '/servlet?p=contacts-callinfo&q=load';
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url_to_call, true);
+	xhr.onreadystatechange = function() {
+		console.log(xhr.readyState);
+	  if (xhr.readyState == 4) {
+	  	var page_content = xhr.responseText;
+  		var months = {
+  			'Jan': '01',
+  			'Feb': '02',
+  			'Mar': '03',
+  			'Apr': '04',
+  			'May': '05',
+  			'Jun': '06',
+  			'Jul': '07',
+  			'Aug': '08',
+  			'Sep': '09',
+  			'Oct': '10',
+  			'Nov': '11',
+  			'Dec': '12'
+  		}
+	  	var log = [];
+	  	$(['CallDialedListContent', 'CallMissedListContent', 'CallReceivedListContent']).each(function(idx, sel) {
+		  	$(page_content).find('#' + sel + ' table tr').each(function(idx, val) {
+		  		var date = null;
+		  		var time = null;
+		  		var number = null;
+		  		var kind = null;
+		  		$(this).find('td').each(function(idx, obj) {
+		  			var txt = $(this).text();
+		  			switch (idx) {
+		  				case 1:
+		  					//txt = txt.replace(/ +/g, ' ').replace(/\n|\r/g, '');
+		  					txt = txt.substring(txt.indexOf(') T("') + 5);
+		  					var m = txt.substring(0, txt.indexOf('"'));
+		  					txt = txt.substring(txt.indexOf('T("') + 3);
+		  					var d = txt.substring(0, txt.indexOf('"'));
+		  					date = d + '/' + months[m]
+		  					break;
+		  				case 2:
+		  					time = txt;
+		  					break;
+		  				case 5:
+		  					number = txt.substring(0, txt.indexOf('@'));
+		  					break;
+		  			}
+		  		});
+		  		switch (sel) {
+		  			case 'CallDialedListContent':
+		  				kind = 'outgoing';
+		  				break;
+		  			case 'CallMissedListContent':
+		  				kind = 'missed';
+		  				break;
+		  			case 'CallReceivedListContent':
+		  				kind = 'incoming';
+		  		}
+		  		if (!number) {
+		  			return true;
+		  		}
+		  		log.push({
+					'kind': kind,
+					'date': date,
+					'time': time,
+					'number': number
+				});
+		  	});
+	  	});
+
+	  	console.log(log);
+	  	logrequest.success(log);
+	  }
+	}
+	this.login(function() {
+		xhr.send();
+	});
+}
+YealinkT28P.prototype.hangup = function(hanguprequest) {
+	console.log('hangup');
+	var url_to_call = 
+		this.protocol + '://' +
+		this.host + '/servlet?p=contacts-callinfo&q=hangup';
+	console.log('hangup url: ' + url_to_call);
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url_to_call, true);
+	xhr.onreadystatechange = function() {
+		console.log(xhr.readyState);
+	  if (xhr.readyState == 4) {
+	  	console.log(xhr.responseText);
+	  	if (xhr.responseText != 'Hang Up Success!') {
+	  		hanguprequest.failure();
+	  	} else {
+	  		hanguprequest.success();
+	  	}
+	  }
+	}
+	this.login(function() {
+		xhr.send();	
+	});
+}	
+
+YealinkT28P.prototype.phonebook = function(phonebookrequest) {
+	//http://192.168.107.100/servlet?p=contacts-preview&q=exportcvs
+	var url_to_call = 
+		this.protocol + '://' +
+		this.host + '/servlet?p=contacts-preview&q=exportcvs';
+
+	this.login(function() {
+		Papa.parse(
+			url_to_call,
+			{
+				download: true,
+				header: true,
+				delimiter: ',',
+				error: function(err) {
+					phonebookrequest.error(err);
+				},
+				complete: function(results, file) {
+					var items = {}
+					for (var i = 0; i < results.data.length; i++) {
+						items[results.data[i].display_name] = {
+							'gravatar': 'http://www.gravatar.com/avatar/00000000000000000000000000000000.png?d=mm&s=96',
+							'numbers': []
+						};
+						if (results.data[i].office_number != '') {
+							items[results.data[i].display_name]['numbers'].push({ 
+								'source': 'phone',
+								'kind': 'work',
+								'number': results.data[i].office_number
+							});
+						}
+						if (results.data[i].mobile_number != '') {
+							items[results.data[i].display_name]['numbers'].push({ 
+								'source': 'phone',
+								'kind': 'mobile',
+								'number': results.data[i].mobile_number
+							});
+						}
+						if (results.data[i].other_number != '') {
+							items[results.data[i].display_name]['numbers'].push({ 
+								'source': 'phone',
+								'kind': 'other',
+								'number': results.data[i].other_number
+							});
+						}
+					}
+					console.log(items);
+					phonebookrequest.success(items);
+				}
+			}
+		);
+	});
+}
