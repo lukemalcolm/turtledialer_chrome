@@ -19,6 +19,7 @@ function Config() {
 		gmail: false,
 		country: '',
 		protocol: 'http',
+		host: '',
 		port: 80,
 		username: '',
 		password: '',

@@ -22,7 +22,7 @@ var notifyDialing = function(number) {
 		'message': chrome.i18n.getMessage('not_dialing', [number]),
 		'buttons': [{
 			'title': chrome.i18n.getMessage('not_hangup'),
-			'iconUrl': '/icons/hangup32.png'
+			'iconUrl': '/icons/icon_hangup_32.png'
 		}]
 	}, function() {});	
 } 

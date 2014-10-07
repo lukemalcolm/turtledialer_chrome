@@ -14,8 +14,11 @@
   "lbl_html_gmail": {
       "message": "Incluir contactos de Gmail"
   },
-  "lbl_html_yealink_t2x_settings": {
-    "message": "Configuración de API de Yealink T2x"
+  "lbl_html_yealink_t20p_settings": {
+    "message": "Configuración de API de Yealink T20P"
+  },
+  "lbl_html_yealink_t28p_settings": {
+    "message": "Configuración de API de Yealink T28P"
   },
   "lbl_html_protocol": {
       "message": "Protocolo"

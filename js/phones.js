@@ -187,12 +187,6 @@ YealinkT20P.prototype.phonebook = function(phonebookrequest) {
 }
 
 function YealinkT28P(settings) {
-	//http://192.168.107.100/servlet?p=login&q=login
-	//username:admin
-	//pwd:gestiovoz
-	//jumpto:status
-	//acc:
-
 	this.protocol = settings.protocol;
 	this.host = settings.host;
 	this.port = settings.port;
@@ -243,18 +237,7 @@ YealinkT28P.prototype.dial = function(dialrequest) {
 		xhr.send();
 	});	
 }
-YealinkT28P.prototype.test = function() {
-	var dr = {
-		'phonenumber': '687787105',
-		'success': function() {
-			console.log('oki');
-		},
-		'error': function() {
-			console.log('iko');
-		}
-	}
-	this.dial(dr);
-}
+
 YealinkT28P.prototype.callsLog = function(logrequest) {
 	var url_to_call = 
 		this.protocol + '://' +

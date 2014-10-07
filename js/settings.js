@@ -16,6 +16,84 @@ limitations under the License.
 
 $(function() {
 
+	var localizeLabels = function() {
+		$('[id^=lbl_]').each(
+			function() {
+				console.log($(this));
+				var msg = chrome.i18n.getMessage($(this).attr('id'));
+				if (msg != undefined && msg != '') {
+					$(this).text(msg);
+				}
+				
+			}
+		);		
+	}
+
+	var fillPhoneSettings = function() {
+		if (settings.protocol != undefined) {
+			$('#proto_' + settings.protocol).attr('checked', 'checked');
+		}
+
+		if (settings.host != undefined) {
+			$('#host').val(settings.host);
+		}
+
+		if (settings.port != undefined) {
+			$('#port').val(settings.port);
+		}
+
+		if (settings.username != undefined) {
+			$('#username').val(settings.username);
+		}
+
+		if (settings.password != undefined) {
+			$('#password').val(settings.password);
+		}
+
+		if (settings.account != undefined) {
+			$('#account').val(settings.account);
+		}		
+		$('#settings').data('bootstrapValidator').validate();
+	}
+
+	var bindPhoneSettingsEvents = function() {
+		$('#proto_http').change(
+			function() {
+				if ($(this).is(':checked')) {
+					set('protocol', 'http');
+					$('#port').val('80');
+				}
+			}
+		);
+		$('#proto_https').change(
+			function() {
+				if ($(this).is(':checked')) {
+					set('protocol', 'https');
+					$('#port').val('443');
+				}
+			}
+		);
+		$('#host').on('keyup change', function() {
+			set('host', $(this).val());
+		});
+
+		$('#port').on('keyup change', function() {
+			set('port', parseInt($(this).val()));
+		});
+
+		$('#username').on('keyup change', function() {
+			set('username', $(this).val());
+		});
+
+		$('#password').on('keyup change', function() {
+			set('password', $(this).val());
+		});
+
+		$('#account').on('keyup change', function() {
+			set('account', $(this).val());
+		});		
+	}
+
 	var bp = chrome.extension.getBackgroundPage();
 	var settings = bp.config.getSettings();
 
@@ -23,16 +101,7 @@ $(function() {
 		bp.config.set(name, value, bp.initialize);
 	}
 
-	$('[id^=lbl_]').each(
-		function() {
-			console.log($(this));
-			var msg = chrome.i18n.getMessage($(this).attr('id'));
-			if (msg != undefined && msg != '') {
-				$(this).text(msg);
-			}
-			
-		}
-	);
+	localizeLabels();
 
 	$('#settings').bootstrapValidator({
         message: 'This value is not valid',
@@ -84,13 +153,6 @@ $(function() {
     });
 
 
-	// Fill form
-
-	if (settings.phone != undefined) {
-		$('#phone').val(settings.phone);
-		$('#' + settings.phone).removeClass('hide');
-	}
-
 	if (settings.country != undefined) {
 		$('#country').val(settings.country);
 	}
@@ -99,40 +161,35 @@ $(function() {
 		$('#gmail').attr('checked', 'checked');
 	}
 
-	if (settings.protocol != undefined) {
-		$('#proto_' + settings.protocol).attr('checked', 'checked');
+	if (settings.phone != undefined) {
+		$('#phone').val(settings.phone);
+		$('#phone_form').empty();
+		$('#phone_form').load(
+			chrome.extension.getURL("/html/" + settings.phone + '.html'),
+			function() {
+				console.log('loaded !');
+				localizeLabels();
+				fillPhoneSettings();
+				bindPhoneSettingsEvents();
+			}
+		);
 	}
 
-	if (settings.host != undefined) {
-		$('#host').val(settings.host);
-	}
 
-	if (settings.port != undefined) {
-		$('#port').val(settings.port);
-	}
-
-	if (settings.username != undefined) {
-		$('#username').val(settings.username);
-	}
-
-	if (settings.password != undefined) {
-		$('#password').val(settings.password);
-	}
-
-	if (settings.account != undefined) {
-		$('#account').val(settings.account);
-	}
 
 	$('#phone').change(
 		function() {
 			var selected_model = $(this).val();
 			set('phone', selected_model);
-			$('#' + selected_model).removeClass('hide');
-			$('#phone > option').each(function() {
-				if (!$(this).is(':selected')) {
-					$('#' + $(this).val()).addClass('hide');
+			$('#phone_form').empty();
+			$('#phone_form').load(
+				chrome.extension.getURL("/html/" + settings.phone + '.html'), 
+				function() {
+					localizeLabels();
+					fillPhoneSettings();
+					bindPhoneSettingsEvents();
 				}
-			});
+			);
 		}
 	);
 
@@ -148,42 +205,6 @@ $(function() {
 			set('gmail', $(this).is(':checked'));
 		}
 	);
-
-	$('#proto_http').change(
-		function() {
-			if ($(this).is(':checked')) {
-				set('protocol', 'http');
-				$('#port').val('80');
-			}
-		}
-	);
-	$('#proto_https').change(
-		function() {
-			if ($(this).is(':checked')) {
-				set('protocol', 'https');
-				$('#port').val('443');
-			}
-		}
-	);
-	$('#host').on('keyup change', function() {
-		set('host', $(this).val());
-	});
-
-	$('#port').on('keyup change', function() {
-		set('port', parseInt($(this).val()));
-	});
-
-	$('#username').on('keyup change', function() {
-		set('username', $(this).val());
-	});
-
-	$('#password').on('keyup change', function() {
-		set('password', $(this).val());
-	});
-
-	$('#account').on('keyup change', function() {
-		set('account', $(this).val());
-	});
 	
 	$('#settings').data('bootstrapValidator').validate();
 });
