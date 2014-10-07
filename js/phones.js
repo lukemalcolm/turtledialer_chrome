@@ -86,6 +86,7 @@ YealinkT20P.prototype.callsLog = function(logrequest) {
 	  			var date = ('00' + date_parts[2]).slice(-2) + '/' + months[date_parts[1]];
 	  			var time = item[2];
 	  			var number = item[6];
+	  			var ts = months[date_parts[1]] + ('00' + date_parts[2]).slice(-2) + time.replace(':', '');
 	  			var kind = null;
 	  			switch (item[0]) {
 	  				case '1':
@@ -103,6 +104,7 @@ YealinkT20P.prototype.callsLog = function(logrequest) {
 						'kind': kind,
 						'date': date,
 						'time': time,
+						'ts': parseInt(ts),
 						'number': number
 					});
 	  			}
@@ -269,6 +271,7 @@ YealinkT28P.prototype.callsLog = function(logrequest) {
 		  		var time = null;
 		  		var number = null;
 		  		var kind = null;
+		  		var ts = null;
 		  		$(this).find('td').each(function(idx, obj) {
 		  			var txt = $(this).text();
 		  			switch (idx) {
@@ -279,9 +282,11 @@ YealinkT28P.prototype.callsLog = function(logrequest) {
 		  					txt = txt.substring(txt.indexOf('T("') + 3);
 		  					var d = txt.substring(0, txt.indexOf('"'));
 		  					date = d + '/' + months[m]
+		  					ts = months[m] + d;
 		  					break;
 		  				case 2:
 		  					time = txt;
+		  					ts = ts + time.replace(':', '');
 		  					break;
 		  				case 5:
 		  					number = txt.substring(0, txt.indexOf('@'));
@@ -303,13 +308,16 @@ YealinkT28P.prototype.callsLog = function(logrequest) {
 		  		}
 		  		log.push({
 					'kind': kind,
+					'ts': parseInt(ts),
 					'date': date,
 					'time': time,
 					'number': number
 				});
 		  	});
 	  	});
-
+		log.sort(function(a, b) {
+			return b['ts'] - a['ts'];
+		})
 	  	console.log(log);
 	  	logrequest.success(log);
 	  }
@@ -343,7 +351,6 @@ YealinkT28P.prototype.hangup = function(hanguprequest) {
 }	
 
 YealinkT28P.prototype.phonebook = function(phonebookrequest) {
-	//http://192.168.107.100/servlet?p=contacts-preview&q=exportcvs
 	var url_to_call = 
 		this.protocol + '://' +
 		this.host + '/servlet?p=contacts-preview&q=exportcvs';
