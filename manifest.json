@@ -12,7 +12,7 @@
     "48": "icons/icon_48.png",
     "128": "icons/icon_128.png"
   },
-  "default_locale": "en",
+  "default_locale": "es",
   "background": {
     "scripts": [
       "js/jquery-1.11.1.min.js",

@@ -1,6 +1,6 @@
 {
   "lbl_html_title": {
-    "message": "Configuración de Turtle dialer"
+    "message": "Configuració de Turtle dialer"
   },
   "lbl_html_general": {
     "message": "General"
@@ -9,67 +9,67 @@
     "message": "País"
   },
   "lbl_html_phone": {
-    "message": "Teléfono"
+    "message": "Telèfon"
   },
   "lbl_html_gmail": {
-      "message": "Incluir contactos de Gmail"
+      "message": "Incloure contactes de Gmail"
   },
   "lbl_html_yealink_t20p_settings": {
-    "message": "Configuración de API de Yealink T20P"
+    "message": "Configuració d'API de Yealink T20P"
   },
   "lbl_html_yealink_t28p_settings": {
-    "message": "Configuración de API de Yealink T28P"
+    "message": "Configuració d'API de Yealink T28P"
   },
   "lbl_html_protocol": {
-      "message": "Protocolo"
+      "message": "Protocol"
   },
   "lbl_html_host": {
-      "message": "Nombre de host o dirección IP"
+      "message": "Nom d'host o adreça IP"
   },
   "lbl_html_port": {
-      "message": "Puerto"
+      "message": "Port"
   },
   "lbl_html_username": {
-      "message": "Usuario"
+      "message": "Usuari"
   },
   "lbl_html_password": {
-      "message": "Contraseña"
+      "message": "Contrasenya"
   },
   "lbl_html_account": {
-      "message": "Cuenta SIP"
+      "message": "Compte SIP"
   },
   "lbl_html_phonebook": {
-      "message": "Agenda telefónica"
+      "message": "Agenda telefònica"
   },
   "lbl_html_calllog": {
-      "message": "Registro de llamadas"
+      "message": "Registre de trucades"
   },
   "lbl_html_when": {
-      "message": "Cuando"
+      "message": "Quan"
   },
   "lbl_html_who": {
-      "message": "Quién"
+      "message": "Qui"
   },
   "lbl_html_number": {
-      "message": "Número"
+      "message": "Nombre"
   },
   "lbl_vld_country_required": {
-    "message": "El país es obligatorio."
+    "message": "El país és obligatori."
   },
   "lbl_vld_phone_required": {
-    "message": "El teléfono es obligatorio."
+    "message": "El telèfon és obligatori."
   },
   "lbl_vld_port_range": {
-    "message": "El número de puerto debe estar entre 1 y 65535."
+    "message": "El nombre de port ha d'estar entre 1 i 65535."
   },
   "lbl_vld_port_numeric": {
-    "message": "El número de puerto no es numérico."
+    "message": "El nombre de port no és numèric."
   },
   "lbl_vld_host_required": {
-    "message": "El nombre de host o dirección IP es obligatorio."
+    "message": "El nom d'host o adreça IP és obligatori."
   },
   "mnu_dial": {
-    "message": "Llamar $number$",
+    "message": "Trucar $number$",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -77,7 +77,7 @@
     }    
   },
   "not_dialing": {
-    "message": "Llamando el numero $number$",
+    "message": "Trucant el nombre $number$",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -85,7 +85,7 @@
     }
   },
   "not_dial_failure": {
-    "message": "Error llamando el numero $number$",
+    "message": "Error trucant el nombre $number$",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -93,7 +93,7 @@
     }
   },
   "not_missed_calls": {
-    "message": "Tienes $number$ llamadas perdidas",
+    "message": "Tens $number$ trucades perdudes",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -101,7 +101,7 @@
     }
   },
   "not_missed_call": {
-    "message": "Tienes $number$ llamada perdida",
+    "message": "Tens $number$ trucada perduda",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -109,6 +109,6 @@
     }
   },
   "not_hangup": {
-    "message": "Colgar"
+    "message": "Penjar"
   }   
 }
