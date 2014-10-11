@@ -41,7 +41,7 @@ Features / Description
 Issues
 -----
 
-If you find issues please reports it: [https://github.com/turtledialer/turtledialer_chrome](https://github.com/turtledialer/turtledialer_chrome).
+If you find issues please reports it: [https://github.com/turtledialer/turtledialer_chrome](https://github.com/turtledialer/turtledialer_chrome/issues).
 
 
 Contributors
