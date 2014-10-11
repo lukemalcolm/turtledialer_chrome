@@ -68,6 +68,15 @@
   "lbl_vld_host_required": {
     "message": "El nombre de host o dirección IP es obligatorio."
   },
+  "lbl_vld_username_required": {
+    "message": "El nombre de usuario es obligatorio."
+  },
+  "lbl_vld_password_required": {
+    "message": "La contraseña es obligatoria."
+  },
+  "lbl_vld_account_required": {
+    "message": "La cuenta SIP es obligatoria."
+  },
   "mnu_dial": {
     "message": "Llamar $number$",
     "placeholders": {

@@ -70,7 +70,7 @@ $(function() {
 				removeFieldsFromValidator();
 				$('#phone_form').empty();
 				$('#phone_form').load(
-					chrome.extension.getURL('/html/' + settings.phone + '.html'),
+					chrome.extension.getURL('/html/' + selected_model + '.html'),
 					function() {
 						addFieldsToValidator();
 						localizeLabels();
