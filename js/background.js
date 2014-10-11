@@ -1,111 +1,322 @@
+/*
+Copyright 2014 Francesco Faraone
 
-// var settings = new Store("settings", {});
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 
 
-// var putil = i18n.phonenumbers.PhoneNumberUtil.getInstance();
+/********************************************
+ Start disabled
+*********************************************/
+
+chrome.browserAction.disable();
+
+/********************************************
+ Global variables
+*********************************************/
+
+var config = new Config();
+var phone = null;
+var number_utils = null;
+var contacts = null;
+var contacts_reverse = null;
+var calls_log = null;
+var context_menu_id = null;
+
+var missed_calls_count = 0;
+var initialized = false;
 
 
-// var trigger_call = function(e) {
+/********************************************
+ Contacts and calls log management functions
+*********************************************/
+var getGmailContacts = function() {
+	var deferred = $.Deferred();
+	var gmail = new GMail();
+	gmail.getGmailContacts({
+		success: function(res) {
+			deferred.resolve(res);
+		},
+		error: function(err) {
+			deferred.reject(err);
+		}
+	});
+	return deferred.promise();
+};
 
-// 	var default_country_code = settings.get("default_country_code");
-// 	if (default_country_code != "ES") {
-// 		chrome.notifications.create("", {
-// 			"type": "basic",
-// 			"iconUrl": "/icons/icon48.png",
-// 			"title": "Turtle dialer: invalid configuration",
-// 			"message": "Invalid country code"
-// 		}, function() {});		
-// 		return;
-// 	}
-// 	var host = settings.get("host");
-// 	if (host === undefined || host == null || host.length < 1) {
-// 		chrome.notifications.create("", {
-// 			"type": "basic",
-// 			"iconUrl": "/icons/icon48.png",
-// 			"title": "Turtle dialer: invalid configuration",
-// 			"message": "Invalid host"
-// 		}, function() {});		
-// 		return;
-// 	}
+var getPhoneContacts = function(phone) {
+	var deferred = $.Deferred();
+	phone.phonebook({
+		success: function(res) {
+			deferred.resolve(res);
+		},
+		error: function(err) {
+			deferred.reject(err);
+		}
+	});
+	return deferred.promise();
+}
 
-// 	var protocol = settings.get("protocol");
+var mergeContacts = function(set1, set2) {
+	var biggest = set1;
+	var smallest = set2;
+	if (Object.keys(set1).length < Object.keys(set2).length) {
+		biggest = set2;
+		smallest = set1;
+	} 
+	for (var key in smallest) {
+		if (biggest.hasOwnProperty(key)) {
+			for (var i = 0; i < smallest[key]['numbers'].length; i++) {
+				var exists = false;
+				for (var k = 0; k < biggest[key]['numbers'].length; k++) {
+					var bn = biggest[key]['numbers'][k]['number'];
+					var sn = smallest[key]['numbers'][i]['number'];
+					if (number_utils.formatPhoneNumber(bn) == number_utils.formatPhoneNumber(sn)) {
+						exists = true;
+						break;
+					}
+				}
+				if (!exists) {
+					biggest[key]['numbers'].push(smallest[key]['numbers'][i]);	
+				}
+			}
+		} else {
+			biggest[key] = smallest[key];
+		}
+	}
+	return biggest;
+}
 
-// 	if (protocol === undefined || protocol == null || protocol.length < 1) {
-// 		chrome.notifications.create("", {
-// 			"type": "basic",
-// 			"iconUrl": "/icons/icon48.png",
-// 			"title": "Turtle dialer: invalid configuration",
-// 			"message": "You must specify the protocol"
-// 		}, function() {});		
-// 		return;		
-// 	}
+var reverseContacts = function(data) {
+	var reversed = {}
+	for (var key in data) {
+		for (var i = 0; i < data[key]['numbers'].length; i++) {
+			reversed[number_utils.formatPhoneNumber(data[key]['numbers'][i]['number'])] = key;
+		}
+	}
+	return reversed;
+}
 
-// 	var username = settings.get("username");
-// 	var password = settings.get("password");
-	
-// 	var url_to_call = protocol + "://";
-	
-// 	if (username != null && username.length > 0) {
-// 		url_to_call = url_to_call + username + ":" + password + "@";
-// 	}
-// 	url_to_call = url_to_call + host;
-
-	
-
-// 	if (e.selectionText) {
-// 		var number_to_call = e.selectionText;
-		
-// 		var parsed_number = null;
-// 		try {
-// 			parsed_number = putil.parse(number_to_call, default_country_code);
-// 		} catch (e) {
-// 			chrome.notifications.create("", {
-// 				"type": "basic",
-// 				"iconUrl": "/icons/icon48.png",
-// 				"title": "Turtle dialer",
-// 				"message": "The number '" + number_to_call + "' is invalid"
-// 			}, function() {});		
-// 			return;					
-// 		}
-
-// 		number_to_call = parsed_number.getNationalNumber();
-// 		var model = settings.get("model");
-// 		var account = settings.get("account");
-// 		if (model == "yealink_t2x") {
-// 			url_to_call = url_to_call + "/cgi-bin/ConfigManApp.com?Id=34&Command=1&Number=" + 
-// 				number_to_call + "&Account=@" + account;	
-// 			console.log(url_to_call);
-// 			var xhr = new XMLHttpRequest();
-// 			xhr.open('GET', url_to_call, true);
-// 			xhr.onreadystatechange = function() {
-// 				console.log(xhr.readyState);
-// 			  if (xhr.readyState == 4) {
-// 			  	console.log(xhr.responseText);
-// 			  	if (xhr.responseText != "1") {
-// 					chrome.notifications.create("", {
-// 						"type": "basic",
-// 						"iconUrl": "/icons/icon48.png",
-// 						"title": "Turtle dialer",
-// 						"message": "Cannot dial " + number_to_call + ": check your phone configuration!"
-// 					}, function() {});
-// 			  	}
-// 			  }
-// 			}
-// 			xhr.send();
-// 			chrome.notifications.create("", {
-// 				"type": "basic",
-// 				"iconUrl": "/icons/icon48.png",
-// 				"title": "Turtle dialer",
-// 				"message": "Calling " + number_to_call
-// 			}, function() {});
-// 		}
-
-// 	}
+var retrieveContacts = function() {
+	var phone_contacts = {};
+	var gmail_contacts = {};
+	var d = getPhoneContacts(phone);
+	d.done(function(data) {
+		phone_contacts = data;
+	});
+	d.fail(function(err) {
+		console.log('get_phone_contacts fail: ' + err);
+	});
+	d.always(function() {
+		if (config.getSettings().gmail) {
+			var d1 = getGmailContacts();
+			d1.done(function(data) {
+				gmail_contacts = data;
+				console.log('get_gmail_contacts succeded');
+			});
+			d1.fail(function(err) {
+				console.log('get_gmail_contacts fail: ' + err);
+			});
+			d1.always(function() {
+				console.log('all done!');
+				contacts = mergeContacts(phone_contacts, gmail_contacts);
+				contacts_reverse = reverseContacts(contacts);
+				start();
+			});
+		} else {
+			contacts = mergeContacts(phone_contacts, gmail_contacts);
+			contacts_reverse = reverseContacts(contacts);
+			start();
+		}
+	});	
+}
+var getCallsLog = function(phone) {
+	var deferred = $.Deferred();
+	phone.callsLog({
+		success: function(res) {
+			deferred.resolve(res);
+		},
+		error: function(err) {
+			deferred.reject(err);
+		}
+	});
+	return deferred.promise();
+}
+var updateCallsLog = function(data) {
+	var log = [];
+	for (var i = 0; i < data.length; i++) {
+		var item = data[i];
+		var name = '-';
+		var num_for_lookup = number_utils.formatPhoneNumber(item['number']);
+		if (contacts_reverse.hasOwnProperty(num_for_lookup)) {
+			name = contacts_reverse[num_for_lookup];
+		}
+		log.push({
+			'kind': item['kind'],
+			'date': item['date'],
+			'time': item['time'],
+			'ts': item['ts'],
+			'name': name,
+			'number': item['number']
+		});
+	}
+	return log;	
+}
+// var flipDate = function(date) {
+// 	return parseInt(date.substring(3) + date.substring(0,2));
 // }
+var checkMissedCalls = function(phone) {
+	var d = getCallsLog(phone);
+	d.done(function(data) {
+		var log = updateCallsLog(data);
+		var most_recent_missed = null;
+		for (var i = 0; i < calls_log.length; i++) {
+			if (calls_log[i]['kind'] == 'missed') {
+				most_recent_missed = calls_log[i];
+				break;
+			}
+		}
+		calls_log = log;
+		console.log('calls log retrieved, try to store');
+		config.set('calls_log', calls_log, function() {
+			console.log('calls log stored !');
+			var current_missed_count = missed_calls_count;
+			if (most_recent_missed != null) {
+				var ts_to_check = most_recent_missed['ts'];
+				// var current_date = most_recent_missed['date'];
+				// var date_to_check = flipDate(current_date);
+				// var time_to_check = most_recent_missed['time'].replace(':', '');
+				for (var i = 0; i < log.length; i++) {
+					if (log[i]['kind'] == 'missed') {
+						// var date = flipDate(log[i]['date']);
+						// var time = log[i]['time'].replace(':', '');
+						if (log[i]['ts'] == ts_to_check) {
+							if (missed_calls_count > 0) {
+								chrome.browserAction.setBadgeText({text: '' + missed_calls_count});
+								chrome.browserAction.setBadgeBackgroundColor({color: '#cc0000'});
+								if (current_missed_count < missed_calls_count) {
+									notifyMissedCalls(missed_calls_count - current_missed_count);
+								}
+								config.set('missed_calls_count', missed_calls_count, function() {
+									console.log('missed count stored');
+								});
+							}
+							return;
+						}
+						missed_calls_count++;
+					}
+				}
+			} else {
+				for (var i = 0; i < calls_log.length; i++) {
+					if (calls_log[i]['kind'] == 'missed') {
+						missed_calls_count++;
+					}
+				}
+				if (missed_calls_count > 0) {
+					chrome.browserAction.setBadgeText({text: '' + missed_calls_count});
+					chrome.browserAction.setBadgeBackgroundColor({color: '#cc0000'});
+					notifyMissedCalls(missed_calls_count);
+					config.set('missed_calls_count', missed_calls_count, function() {
+						console.log('missed count stored');
+					});
+				}				
+			}
+		});
+	});
+}
+var resetMissedCallsCount = function() {
+	config.set('missed_calls_count', 0, function() {
+		missed_calls_count = 0;
+		chrome.browserAction.setBadgeText({text: ''});
+	});
+}
+/********************************************
+ Extension function
+*********************************************/
+var dialSelectedNumber = function(e) {
+	dial(e.selectionText);
+}
+var onRequest = function(request, sender, sendResponse) {
+	if (request.action == 'select') {
+		var number = number_utils.parsePhoneNumber(request.selection);
+		if (number) {
+			context_menu_id = chrome.contextMenus.create({
+				"title": chrome.i18n.getMessage('mnu_dial', [number]),
+				"contexts": ["selection"],
+				"onclick": dialSelectedNumber
+			}, function() { console.log('context menu created '); });			
+		}
+	}
+	if (request.action == 'unselect') {
+		if (context_menu_id) {
+			chrome.contextMenus.remove(context_menu_id, function() {
+				context_menu_id = null;
+			});			
+		}
+	}
+}
 
-// chrome.contextMenus.create({
-//     "title": chrome.i18n.getMessage("l10nContextMenuItem"),
-//     "contexts": ["selection"],
-//     "onclick" : trigger_call
-//   });
+var initialize = function() {
+	if (initialized) {
+		return;
+	}
+	if (config.check()) {
+		phone_class = config.getSettings().phone;
+		phone = new this[phone_class](config.getSettings());
+		number_utils = new NumberUtils(config.getSettings().country);
+		initialized = true;
+		retrieveContacts();
+	}
+}
+var start = function() {
+	// var d = getCallsLog(phone);
+	// d.done(function(data) {
+	// 	calls_log = updateCallsLog(data);
+	// 	for (var i = 0; i < calls_log.length; i++) {
+	// 		if (calls_log[i]['kind'] == 'missed') {
+	// 			missed_calls_count++;
+	// 		}
+	// 	}
+	// 	if (missed_calls_count > 0) {
+	// 		chrome.browserAction.setBadgeText({text: '' + missed_calls_count});
+	// 		chrome.browserAction.setBadgeBackgroundColor({color: '#cc0000'});
+	// 	}
+	// });
+	calls_log = config.getSettings().calls_log;
+	missed_calls_count = config.getSettings().missed_calls_count;
+	chrome.browserAction.enable();
+	chrome.notifications.onButtonClicked.addListener(function() { phone.hangup() });
+	chrome.extension.onRequest.addListener(onRequest);
+	setInterval(function() {
+		checkMissedCalls(phone);
+	}, 10000);
+	// d.always(function() {
+	// 	chrome.browserAction.enable();
+	// 	chrome.notifications.onButtonClicked.addListener(function() { phone.hangup() });
+	// 	chrome.extension.onRequest.addListener(onRequest);
+	// 	setInterval(function() {
+	// 		checkMissedCalls(phone);
+	// 	}, 10000);
+	// });
+}
 
+var dial = function(phone_number) {
+	phone_number = number_utils.preparePhoneNumber(phone_number);
+	phone.dial({
+		phonenumber: phone_number,
+		success: function() { notifyDialing(phone_number); },
+		failure: function() { notifyDialFailure(phone_number); }
+	});
+}
+
+config.load(initialize);

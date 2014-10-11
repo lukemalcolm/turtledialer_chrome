@@ -1,17 +1,123 @@
 {
-  "lbl_settings_title": {
-    "message": "Ajustes de Turtle dialer"
+  "lbl_html_title": {
+    "message": "Configuración de Turtle dialer"
   },
-  "lbl_phone_model": {
-    "message": "Modelo de telefono"
+  "lbl_html_general": {
+    "message": "General"
   },
-  "lbl_model": {
-    "message": "Modelo"
+  "lbl_html_country": {
+    "message": "País"
   },
-  "lbl_username": {
+  "lbl_html_phone": {
+    "message": "Teléfono"
+  },
+  "lbl_html_gmail": {
+      "message": "Incluir contactos de Gmail"
+  },
+  "lbl_html_yealink_t20p_settings": {
+    "message": "Configuración de API de Yealink T20P"
+  },
+  "lbl_html_yealink_t28p_settings": {
+    "message": "Configuración de API de Yealink T28P"
+  },
+  "lbl_html_protocol": {
+      "message": "Protocolo"
+  },
+  "lbl_html_host": {
+      "message": "Nombre de host o dirección IP"
+  },
+  "lbl_html_port": {
+      "message": "Puerto"
+  },
+  "lbl_html_username": {
       "message": "Usuario"
   },
-  "lbl_yealink_t2x_settings": {
-    "message": "Ajustes de API de Yealink T2x"
-  }
+  "lbl_html_password": {
+      "message": "Contraseña"
+  },
+  "lbl_html_account": {
+      "message": "Cuenta SIP"
+  },
+  "lbl_html_phonebook": {
+      "message": "Agenda telefónica"
+  },
+  "lbl_html_calllog": {
+      "message": "Registro de llamadas"
+  },
+  "lbl_html_when": {
+      "message": "Cuando"
+  },
+  "lbl_html_who": {
+      "message": "Quién"
+  },
+  "lbl_html_number": {
+      "message": "Número"
+  },
+  "lbl_vld_country_required": {
+    "message": "El país es obligatorio."
+  },
+  "lbl_vld_phone_required": {
+    "message": "El teléfono es obligatorio."
+  },
+  "lbl_vld_port_range": {
+    "message": "El número de puerto debe estar entre 1 y 65535."
+  },
+  "lbl_vld_port_numeric": {
+    "message": "El número de puerto no es numérico."
+  },
+  "lbl_vld_host_required": {
+    "message": "El nombre de host o dirección IP es obligatorio."
+  },
+  "lbl_vld_username_required": {
+    "message": "El nombre de usuario es obligatorio."
+  },
+  "lbl_vld_password_required": {
+    "message": "La contraseña es obligatoria."
+  },
+  "lbl_vld_account_required": {
+    "message": "La cuenta SIP es obligatoria."
+  },
+  "mnu_dial": {
+    "message": "Llamar $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "not_dialing": {
+    "message": "Llamando el numero $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_dial_failure": {
+    "message": "Error llamando el numero $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_calls": {
+    "message": "Tienes $number$ llamadas perdidas",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_call": {
+    "message": "Tienes $number$ llamada perdida",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_hangup": {
+    "message": "Colgar"
+  }   
 }

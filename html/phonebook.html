@@ -1,34 +1,78 @@
 <!DOCTYPE html>
 <html lang="es">
-	<head>
-		<title>Turtle Dialer address book</title>
-		<link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css"/>
-		<link rel="stylesheet" href="/css/bootstrap.vertical-tabs.min.css" type="text/css"/>
-		<link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css"/>
-		<link rel="stylesheet" href="/css/phonebook.css" type="text/css"/>
-		<script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
-		<script type="text/javascript" src="/js/bootstrap.min.js"></script>
-		<script type="text/javascript" src="/js/papaparse.min.js"></script>
-		<script type="text/javascript" src="/js/phonebook.js"></script>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-	</head>
-	<body>
-		<div class="container popup">
-			<div class="row">
-				<div class="col-xs-12">
-					<h1>Phonebook</h1>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-11">
-					<div class="tab-content" id="tabs">
+<head>
+	<title>Turtle Dialer</title>
+	<link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css"/>
+	<link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css"/>
+	<link rel="stylesheet" href="/css/phonebook.css" type="text/css"/>
+	<script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/js/bootstrap-list-filter.min.js"></script>
+	<script type="text/javascript" src="/js/papaparse.min.js"></script>
+	<script type="text/javascript" src="/js/phoneformat.js"></script>
+	<script type="text/javascript" src="/js/phones.js"></script>
+	<script type="text/javascript" src="/js/phonebook.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body>
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+	  <div class="container-fluid">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="#"><img class="logo" src="../icons/icon_48.png"></a>
+	    </div>
+
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li class="active"><a id="lbl_html_phonebook" href="#pb-tab" role="tab" data-toggle="tab">Phone book</a></li>
+	        <li><a id="lbl_html_calllog" href="#mc-tab" role="tab" data-toggle="tab">Call log</a></li>
+	      </ul>
+	      <form class="navbar-form navbar-right" role="search">
+	        <div class="form-group">
+	          <input id="searchinput" type="text" class="form-control" tabindex="1">
+	        </div>
+	      </form>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+	<div class="tab-content">
+		<div id="pb-tab" class="tab-pane fade in active popup">
+			<div id="spy" class="container contact-list">
+				<div class="row">
+					<div class="col-xs-12">
+						<ul class="media-list" id="data" class="list-group">
+						</ul>
 					</div>
 				</div>
-				<div class="col-xs-1" >
-					<ul class="nav nav-tabs tabs-right" id="letters">
-					</ul>
-				</div>
-			</div>    
+			</div>
 		</div>
-	</body>
+		<div id="mc-tab" class="tab-pane fade">
+			<div id="container">
+				<div class="row">
+					<div class="col-xs-12">
+						<table class="table table-striped calls-log header-fixed">
+							<thead>
+								<tr>
+									<th class="col-icon">&nbsp;</th>
+									<th id="lbl_html_when" class="col-when">When</th>
+									<th id="lbl_html_who" class="col-who">Who</th>
+									<th id="lbl_html_number" class="col-number">Number</th>
+								</tr>
+							</thead>
+							<tbody id='tbl-log'>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
 </html>
