@@ -19,6 +19,7 @@ function Config() {
 		gmail: false,
 		country: '',
 		protocol: 'http',
+		host: '',
 		port: 80,
 		username: '',
 		password: '',
@@ -30,7 +31,6 @@ function Config() {
 }
 
 Config.prototype.set = function(name, value, callback) {
-	console.log('callback = ' + callback);
 	this.settings[name] = value;
 	this.save(callback);
 }

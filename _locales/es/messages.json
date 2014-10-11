@@ -14,8 +14,11 @@
   "lbl_html_gmail": {
       "message": "Incluir contactos de Gmail"
   },
-  "lbl_html_yealink_t2x_settings": {
-    "message": "Configuración de API de Yealink T2x"
+  "lbl_html_yealink_t20p_settings": {
+    "message": "Configuración de API de Yealink T20P"
+  },
+  "lbl_html_yealink_t28p_settings": {
+    "message": "Configuración de API de Yealink T28P"
   },
   "lbl_html_protocol": {
       "message": "Protocolo"
@@ -65,6 +68,15 @@
   "lbl_vld_host_required": {
     "message": "El nombre de host o dirección IP es obligatorio."
   },
+  "lbl_vld_username_required": {
+    "message": "El nombre de usuario es obligatorio."
+  },
+  "lbl_vld_password_required": {
+    "message": "La contraseña es obligatoria."
+  },
+  "lbl_vld_account_required": {
+    "message": "La cuenta SIP es obligatoria."
+  },
   "mnu_dial": {
     "message": "Llamar $number$",
     "placeholders": {
@@ -91,6 +103,14 @@
   },
   "not_missed_calls": {
     "message": "Tienes $number$ llamadas perdidas",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_call": {
+    "message": "Tienes $number$ llamada perdida",
     "placeholders": {
       "number": {
         "content": "$1"

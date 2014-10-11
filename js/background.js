@@ -165,15 +165,16 @@ var updateCallsLog = function(data) {
 			'kind': item['kind'],
 			'date': item['date'],
 			'time': item['time'],
+			'ts': item['ts'],
 			'name': name,
 			'number': item['number']
 		});
 	}
 	return log;	
 }
-var flipDate = function(date) {
-	return parseInt(date.substring(3) + date.substring(0,2));
-}
+// var flipDate = function(date) {
+// 	return parseInt(date.substring(3) + date.substring(0,2));
+// }
 var checkMissedCalls = function(phone) {
 	var d = getCallsLog(phone);
 	d.done(function(data) {
@@ -191,14 +192,15 @@ var checkMissedCalls = function(phone) {
 			console.log('calls log stored !');
 			var current_missed_count = missed_calls_count;
 			if (most_recent_missed != null) {
-				var current_date = most_recent_missed['date'];
-				var date_to_check = flipDate(current_date);
-				var time_to_check = most_recent_missed['time'].replace(':', '');
+				var ts_to_check = most_recent_missed['ts'];
+				// var current_date = most_recent_missed['date'];
+				// var date_to_check = flipDate(current_date);
+				// var time_to_check = most_recent_missed['time'].replace(':', '');
 				for (var i = 0; i < log.length; i++) {
 					if (log[i]['kind'] == 'missed') {
-						var date = flipDate(log[i]['date']);
-						var time = log[i]['time'].replace(':', '');
-						if (date == date_to_check && time == time_to_check) {
+						// var date = flipDate(log[i]['date']);
+						// var time = log[i]['time'].replace(':', '');
+						if (log[i]['ts'] == ts_to_check) {
 							if (missed_calls_count > 0) {
 								chrome.browserAction.setBadgeText({text: '' + missed_calls_count});
 								chrome.browserAction.setBadgeBackgroundColor({color: '#cc0000'});
