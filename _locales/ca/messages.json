@@ -1,6 +1,6 @@
 {
   "lbl_html_title": {
-    "message": "Configuració de Turtle dialer"
+    "message": "Configuració de Turtle Dialer"
   },
   "lbl_html_general": {
     "message": "General"
@@ -67,6 +67,15 @@
   },
   "lbl_vld_host_required": {
     "message": "El nom d'host o adreça IP és obligatori."
+  },
+  "lbl_vld_username_required": {
+    "message": "El usuari és obligatori."
+  },
+  "lbl_vld_password_required": {
+    "message": "La contrasenya és obligatòria."
+  },
+  "lbl_vld_account_required": {
+    "message": "El compte SIP és obligatori."
   },
   "mnu_dial": {
     "message": "Trucar $number$",

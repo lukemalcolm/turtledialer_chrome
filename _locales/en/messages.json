@@ -1,6 +1,6 @@
 {
   "lbl_html_title": {
-    "message": "Turtle dialer settings"
+    "message": "Turtle Dialer settings"
   },
   "lbl_html_general": {
     "message": "General"
@@ -12,28 +12,46 @@
     "message": "Phone"
   },
   "lbl_html_gmail": {
-    "message": "Include Gmail contacts"
+      "message": "Include Gmail contacts"
   },
-  "lbl_html_yealink_t2x_settings": {
-    "message": "Yealink T2x API settings"
+  "lbl_html_yealink_t20p_settings": {
+    "message": "Yealink T20P API settings"
+  },
+  "lbl_html_yealink_t28p_settings": {
+    "message": "Yealink T28P API settings"
   },
   "lbl_html_protocol": {
-    "message": "Protocol"
+      "message": "Protocol"
   },
   "lbl_html_host": {
-    "message": "Hostname or IP address"
+      "message": "Hostname or IP address"
   },
   "lbl_html_port": {
-    "message": "Port"
+      "message": "Port"
   },
   "lbl_html_username": {
-    "message": "Username"
+      "message": "Username"
   },
   "lbl_html_password": {
-    "message": "Password"
+      "message": "Password"
   },
   "lbl_html_account": {
-    "message": "SIP account"
+      "message": "SIP account"
+  },
+  "lbl_html_phonebook": {
+      "message": "Phone book"
+  },
+  "lbl_html_calllog": {
+      "message": "Call log"
+  },
+  "lbl_html_when": {
+      "message": "When"
+  },
+  "lbl_html_who": {
+      "message": "Who"
+  },
+  "lbl_html_number": {
+      "message": "Number"
   },
   "lbl_vld_country_required": {
     "message": "The country is required."
@@ -48,6 +66,58 @@
     "message": "The port number is not numeric."
   },
   "lbl_vld_host_required": {
-    "message": "The hostname or ip address is requiered."
-  }
+    "message": "The hostname or the IP address is required."
+  },
+  "lbl_vld_username_required": {
+    "message": "The username is required."
+  },
+  "lbl_vld_password_required": {
+    "message": "The password is required."
+  },
+  "lbl_vld_account_required": {
+    "message": "The SIP account is required."
+  },
+  "mnu_dial": {
+    "message": "Call to $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "not_dialing": {
+    "message": "Dialing $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_dial_failure": {
+    "message": "An error occurs while dialing $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_calls": {
+    "message": "You have $number$ missed calls",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_call": {
+    "message": "You have $number$ missed call",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_hangup": {
+    "message": "Hang up"
+  }   
 }

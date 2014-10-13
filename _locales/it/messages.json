@@ -1,6 +1,6 @@
 {
   "lbl_html_title": {
-    "message": "Configurazione di Turtle dialer"
+    "message": "Configurazione di Turtle Dialer"
   },
   "lbl_html_general": {
     "message": "Generale"
@@ -14,8 +14,11 @@
   "lbl_html_gmail": {
       "message": "Includere i contatti di Gmail"
   },
-  "lbl_html_yealink_t2x_settings": {
-    "message": "Configurazione della API del Yealink T2x"
+  "lbl_html_yealink_t20p_settings": {
+    "message": "Configurazione dell'API del Yealink T20P"
+  },
+  "lbl_html_yealink_t28p_settings": {
+    "message": "Configurazione dell'API del Yealink T28P"
   },
   "lbl_html_protocol": {
       "message": "Protocollo"
@@ -35,6 +38,21 @@
   "lbl_html_account": {
       "message": "Account SIP"
   },
+  "lbl_html_phonebook": {
+      "message": "Rubrica telefonica"
+  },
+  "lbl_html_calllog": {
+      "message": "Registro chiamate"
+  },
+  "lbl_html_when": {
+      "message": "Quando"
+  },
+  "lbl_html_who": {
+      "message": "Chi"
+  },
+  "lbl_html_number": {
+      "message": "Numero"
+  },
   "lbl_vld_country_required": {
     "message": "Il paese è obbligatorio."
   },
@@ -42,12 +60,64 @@
     "message": "Il telefono è obbligatorio."
   },
   "lbl_vld_port_range": {
-    "message": "Il numero di porta deve essere compreso fra 1 e 65535."
+    "message": "Il numero di porta deve essere compreso tra 1 e 65535."
   },
   "lbl_vld_port_numeric": {
     "message": "Il numero di porta non è numerico."
   },
   "lbl_vld_host_required": {
     "message": "Il nome host o l'indirizzo IP è obbligatorio."
-  }
+  },
+  "lbl_vld_username_required": {
+    "message": "L'utente è obbligatorio."
+  },
+  "lbl_vld_password_required": {
+    "message": "La password è obbligatoria."
+  },
+  "lbl_vld_account_required": {
+    "message": "L'account SIP è obbligatorio."
+  },
+  "mnu_dial": {
+    "message": "Chiamare il $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "not_dialing": {
+    "message": "Chiamando il $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_dial_failure": {
+    "message": "Errore chiamando il $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_calls": {
+    "message": "Hai $number$ chiamate perse",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_call": {
+    "message": "Hai $number$ chiamata persa",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_hangup": {
+    "message": "Riattaccare"
+  }   
 }
