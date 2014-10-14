@@ -7,7 +7,7 @@ The official [Turtle Dialer](http://www.turtledialer.com/) chrome extension. Con
 Installing
 -----
 
-Go to the [Chrome Web Store](https://chrome.google.com/webstore/detail/ninbgcpkedmfiflomhiboeoohbafakkg) to download the release version.
+Go to the [Chrome Web Store](https://chrome.google.com/webstore/detail/turtle-dialer/ninbgcpkedmfiflomhiboeoohbafakkg) to download the release version.
 
 To access development releases, simply download or clone this code and load as an unpacked extension.
 
