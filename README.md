@@ -53,7 +53,6 @@ I'm also greatful to:
 
 - Omar de Mingo that designed the first version of the Turtle Dialer's logo
 - Alex Maneu that helped me with js and who provided me with so many good advices on UX
-- Stephanie Tequen for French translation
 - Raffaella Scorziello for German, Portuguese and Brasilian translations
 - Isabel Vazquez for Catalan translation and beta testing
 - Mari Botella, Marc Virgili, Patricia Rodriguez for beta testing

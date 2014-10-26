@@ -1,0 +1,123 @@
+{
+  "lbl_html_title": {
+    "message": "Configuration de Turtle dialer"
+  },
+  "lbl_html_general": {
+    "message": "Général"
+  },
+  "lbl_html_country": {
+    "message": "Pays"
+  },
+  "lbl_html_phone": {
+    "message": "Téléphone"
+  },
+  "lbl_html_gmail": {
+      "message": "Inclure contacts de Gmail"
+  },
+  "lbl_html_yealink_t20p_settings": {
+    "message": "Configuration d'API de Yealink T20P"
+  },
+  "lbl_html_yealink_t28p_settings": {
+    "message": "Configuration d'API de Yealink T28P"
+  },
+  "lbl_html_protocol": {
+      "message": "Protocole"
+  },
+  "lbl_html_host": {
+      "message": "Nom du host ou adresse IP"
+  },
+  "lbl_html_port": {
+      "message": "Port"
+  },
+  "lbl_html_username": {
+      "message": "Utilisateur"
+  },
+  "lbl_html_password": {
+      "message": "Mot de passe"
+  },
+  "lbl_html_account": {
+      "message": "Compte SIP"
+  },
+  "lbl_html_phonebook": {
+      "message": "Répertoire téléphonique"
+  },
+  "lbl_html_calllog": {
+      "message": "Registre d'appels"
+  },
+  "lbl_html_when": {
+      "message": "Quand"
+  },
+  "lbl_html_who": {
+      "message": "Qui"
+  },
+  "lbl_html_number": {
+      "message": "Numéro"
+  },
+  "lbl_vld_country_required": {
+    "message": "Le pays est obligatoire."
+  },
+  "lbl_vld_phone_required": {
+    "message": "Le téléphone est obligatoire."
+  },
+  "lbl_vld_port_range": {
+    "message": "Le numéro de port doit être compris entre 1 et 65535."
+  },
+  "lbl_vld_port_numeric": {
+    "message": "Le numéro de port n'est pas numérique."
+  },
+  "lbl_vld_host_required": {
+    "message": "Le nom du host ou adresse IP est obligatoire."
+  },
+  "lbl_vld_username_required": {
+    "message": "Le nom de l'utilisateur est obligatoire."
+  },
+  "lbl_vld_password_required": {
+    "message": "Le mot de passe est obligatoire."
+  },
+  "lbl_vld_account_required": {
+    "message": "Le compte SIP est obligatoire."
+  },
+  "mnu_dial": {
+    "message": "Appeler $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "not_dialing": {
+    "message": "Composition automatique du numéro $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_dial_failure": {
+    "message": "Erreur en composant le número de téléphone $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_calls": {
+    "message": "Vous avez $number$ d'appels manqués",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_call": {
+    "message": "Vous avez $number$ appel manqué",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_hangup": {
+    "message": "Raccrocher"
+  }   
+}

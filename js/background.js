@@ -172,9 +172,6 @@ var updateCallsLog = function(data) {
 	}
 	return log;	
 }
-// var flipDate = function(date) {
-// 	return parseInt(date.substring(3) + date.substring(0,2));
-// }
 var checkMissedCalls = function(phone) {
 	var d = getCallsLog(phone);
 	d.done(function(data) {
@@ -193,13 +190,8 @@ var checkMissedCalls = function(phone) {
 			var current_missed_count = missed_calls_count;
 			if (most_recent_missed != null) {
 				var ts_to_check = most_recent_missed['ts'];
-				// var current_date = most_recent_missed['date'];
-				// var date_to_check = flipDate(current_date);
-				// var time_to_check = most_recent_missed['time'].replace(':', '');
 				for (var i = 0; i < log.length; i++) {
 					if (log[i]['kind'] == 'missed') {
-						// var date = flipDate(log[i]['date']);
-						// var time = log[i]['time'].replace(':', '');
 						if (log[i]['ts'] == ts_to_check) {
 							if (missed_calls_count > 0) {
 								chrome.browserAction.setBadgeText({text: '' + missed_calls_count});
@@ -247,20 +239,23 @@ var dialSelectedNumber = function(e) {
 	dial(e.selectionText);
 }
 var onRequest = function(request, sender, sendResponse) {
+	console.log('context_menu_id ' + context_menu_id);
 	if (request.action == 'select') {
 		var number = number_utils.parsePhoneNumber(request.selection);
 		if (number) {
 			context_menu_id = chrome.contextMenus.create({
-				"title": chrome.i18n.getMessage('mnu_dial', [number]),
-				"contexts": ["selection"],
-				"onclick": dialSelectedNumber
-			}, function() { console.log('context menu created '); });			
+				'id': '1',
+				'title': chrome.i18n.getMessage('mnu_dial', [number]),
+				'contexts': ['selection'],
+				'onclick': dialSelectedNumber
+			}, function() { console.log('context menu created'); });			
 		}
 	}
 	if (request.action == 'unselect') {
 		if (context_menu_id) {
-			chrome.contextMenus.remove(context_menu_id, function() {
+			chrome.contextMenus.remove('1', function() {
 				context_menu_id = null;
+				console.log('context menu removed');
 			});			
 		}
 	}
@@ -279,35 +274,21 @@ var initialize = function() {
 	}
 }
 var start = function() {
-	// var d = getCallsLog(phone);
-	// d.done(function(data) {
-	// 	calls_log = updateCallsLog(data);
-	// 	for (var i = 0; i < calls_log.length; i++) {
-	// 		if (calls_log[i]['kind'] == 'missed') {
-	// 			missed_calls_count++;
-	// 		}
-	// 	}
-	// 	if (missed_calls_count > 0) {
-	// 		chrome.browserAction.setBadgeText({text: '' + missed_calls_count});
-	// 		chrome.browserAction.setBadgeBackgroundColor({color: '#cc0000'});
-	// 	}
-	// });
 	calls_log = config.getSettings().calls_log;
 	missed_calls_count = config.getSettings().missed_calls_count;
 	chrome.browserAction.enable();
-	chrome.notifications.onButtonClicked.addListener(function() { phone.hangup() });
+	chrome.notifications.onButtonClicked.addListener(function() { phone.hangup({
+		success: function() {
+			console.log('hangup ok');
+		},
+		failure: function() {
+			console.log('hangup fail!');
+		}
+	}) });
 	chrome.extension.onRequest.addListener(onRequest);
 	setInterval(function() {
 		checkMissedCalls(phone);
 	}, 10000);
-	// d.always(function() {
-	// 	chrome.browserAction.enable();
-	// 	chrome.notifications.onButtonClicked.addListener(function() { phone.hangup() });
-	// 	chrome.extension.onRequest.addListener(onRequest);
-	// 	setInterval(function() {
-	// 		checkMissedCalls(phone);
-	// 	}, 10000);
-	// });
 }
 
 var dial = function(phone_number) {
