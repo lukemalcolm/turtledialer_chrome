@@ -7,7 +7,7 @@ The official [Turtle Dialer](http://www.turtledialer.com/) chrome extension. Con
 Installing
 -----
 
-Go to the [Chrome Web Store]() to download the release version.
+Go to the [Chrome Web Store](https://chrome.google.com/webstore/detail/turtle-dialer/ninbgcpkedmfiflomhiboeoohbafakkg) to download the release version.
 
 To access development releases, simply download or clone this code and load as an unpacked extension.
 
@@ -41,7 +41,7 @@ Features / Description
 Issues
 -----
 
-If you find issues please reports it: [https://github.com/turtledialer/turtledialer_chrome](https://github.com/turtledialer/turtledialer_chrome).
+If you find issues please report it to me: [https://github.com/turtledialer/turtledialer_chrome/issues](https://github.com/turtledialer/turtledialer_chrome/issues).
 
 
 Contributors
@@ -51,11 +51,10 @@ I would like to thank my wife Susana that helped me with the project page, the p
 
 I'm also greatful to:
 
-- Omar de Mingo that has designed the first version of the Turtle Dialer's logo
-- Alex Maneu that helped me with js and who provided me with so many good advices on UX.
-- Stephanie Tequen for franch translation
-- Raffaella Scorziello for german, portuguese and brasilian translations
-- Isabel Vazquez for catalan translation and beta testing
+- Omar de Mingo that designed the first version of the Turtle Dialer's logo
+- Alex Maneu that helped me with js and who provided me with so many good advices on UX
+- Raffaella Scorziello for German, Portuguese and Brasilian translations
+- Isabel Vazquez for Catalan translation and beta testing
 - Mari Botella, Marc Virgili, Patricia Rodriguez for beta testing
 
 
