@@ -12,6 +12,7 @@
     "48": "icons/icon_48.png",
     "128": "icons/icon_128.png"
   },
+  "omnibox": { "keyword" : "td" },
   "default_locale": "es",
   "background": {
     "scripts": [
