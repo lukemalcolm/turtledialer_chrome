@@ -266,13 +266,16 @@ chrome.omnibox.onInputChanged.addListener(
   		console.log(obj.searchable.toLowerCase() + ' ' + match);
   		return match;
   	});
-  	var num = number_utils.formatPhoneNumber(text);
+  	var num = number_utils.parsePhoneNumber(text);
   	var suggested = [];
   	if (num) {
-  		suggested.push({
-  			content: num,
-  			description: 'Call to ' + num
-  		});
+		chrome.omnibox.setDefaultSuggestion({
+			description: '<url>Call to ' + num + '</url>'
+		});
+  		// suggested.push({
+  		// 	content: num,
+  		// 	description: 'Call to ' + num
+  		// });
   	}
   	for (var i = 0; i < matching.length; i++) {
   		suggested.push({
@@ -298,6 +301,7 @@ chrome.omnibox.onInputEntered.addListener(
 var dialSelectedNumber = function(e) {
 	dial(e.selectionText);
 }
+
 var onRequest = function(request, sender, sendResponse) {
 	console.log('context_menu_id ' + context_menu_id);
 	if (request.action == 'select') {
