@@ -85,6 +85,17 @@
       }
     }    
   },
+  "obx_dial": {
+    "message": "<url>Appeler $number$</url>",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "obx_def_suggestion": {
+    "message": "Tapez un nom de contact ou un numéro à composer"
+  },
   "not_dialing": {
     "message": "Composition automatique du numéro $number$",
     "placeholders": {

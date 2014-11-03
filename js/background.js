@@ -254,10 +254,13 @@ var resetMissedCallsCount = function() {
 /********************************************
  Omnibox
 *********************************************/
-chrome.omnibox.setDefaultSuggestion({
-	description: 'Call '
-});
-
+chrome.omnibox.onInputStarted.addListener(
+	function() {
+		chrome.omnibox.setDefaultSuggestion({
+			description: chrome.i18n.getMessage('obx_def_suggestion')
+		});		
+	}
+);
 chrome.omnibox.onInputChanged.addListener(
   function(text, suggest) {
   	var re = new RegExp(text.toLowerCase(), 'i');
@@ -270,12 +273,16 @@ chrome.omnibox.onInputChanged.addListener(
   	var suggested = [];
   	if (num) {
 		chrome.omnibox.setDefaultSuggestion({
-			description: '<url>Call to ' + num + '</url>'
+			description: chrome.i18n.getMessage('obx_dial', [num])
 		});
   		// suggested.push({
   		// 	content: num,
   		// 	description: 'Call to ' + num
   		// });
+  	} else {
+		chrome.omnibox.setDefaultSuggestion({
+			description: chrome.i18n.getMessage('obx_def_suggestion')
+		});	 		
   	}
   	for (var i = 0; i < matching.length; i++) {
   		suggested.push({
@@ -290,9 +297,7 @@ chrome.omnibox.onInputChanged.addListener(
 // This event is fired with the user accepts the input in the omnibox.
 chrome.omnibox.onInputEntered.addListener(
   function(text) {
-  	//dial(text);
-    console.log('inputEntered: ' + text);
-    alert('You just typed "' + text + '"');
+  	dial(text);
   });
 
 /********************************************

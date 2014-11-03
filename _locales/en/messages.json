@@ -85,6 +85,17 @@
       }
     }    
   },
+  "obx_dial": {
+    "message": "<url>Call to $number$</url>",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "obx_def_suggestion": {
+    "message": "Type a contact name or a number to dial"
+  },
   "not_dialing": {
     "message": "Dialing $number$",
     "placeholders": {
