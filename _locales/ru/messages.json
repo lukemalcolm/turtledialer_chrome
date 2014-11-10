@@ -1,0 +1,134 @@
+{
+  "lbl_html_title": {
+    "message": "настройки да Turtle Dialer"
+  },
+  "lbl_html_general": {
+    "message": "общий"
+  },
+  "lbl_html_country": {
+    "message": "страна"
+  },
+  "lbl_html_phone": {
+    "message": "телефон"
+  },
+  "lbl_html_gmail": {
+      "message": "включать Gmail контакты"
+  },
+  "lbl_html_yealink_t20p_settings": {
+    "message": "настройки да Yealink T20P API"
+  },
+  "lbl_html_yealink_t28p_settings": {
+    "message": "настройки да Yealink T28P API"
+  },
+  "lbl_html_protocol": {
+      "message": "Протокол"
+  },
+  "lbl_html_host": {
+      "message": "Имя хоста или адрес IP"
+  },
+  "lbl_html_port": {
+      "message": "Порт"
+  },
+  "lbl_html_username": {
+      "message": "Имя пользователя"
+  },
+  "lbl_html_password": {
+      "message": "Пароль"
+  },
+  "lbl_html_account": {
+      "message": "SIP аккаунт"
+  },
+  "lbl_html_phonebook": {
+      "message": "телефонная книга"
+  },
+  "lbl_html_calllog": {
+      "message": "лог вызовов"
+  },
+  "lbl_html_when": {
+      "message": "когда"
+  },
+  "lbl_html_who": {
+      "message": "кто"
+  },
+  "lbl_html_number": {
+      "message": "номер"
+  },
+  "lbl_vld_country_required": {
+    "message": " Страна обязательна"
+  },
+  "lbl_vld_phone_required": {
+    "message": "Номер телефона обязателен"
+  },
+  "lbl_vld_port_range": {
+    "message": "Номер порта должен быть от 1 до 65535"
+  },
+  "lbl_vld_port_numeric": {
+    "message": "Номер порта не является цифровом"
+  },
+  "lbl_vld_host_required": {
+    "message": "Имя хоста или адрес IP обязательны"
+  },
+  "lbl_vld_username_required": {
+    "message": "Имя пользователя обязательна"
+  },
+  "lbl_vld_password_required": {
+    "message": "Пароль обязателен"
+  },
+  "lbl_vld_account_required": {
+    "message": "SIP аккаунт обязателен"
+  },
+  "mnu_dial": {
+    "message": "Звоните на $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "obx_dial": {
+    "message": "<url>Звоните на $number$</url>",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "obx_def_suggestion": {
+    "message": "Введите имя контакта или номер набрать"
+  },
+  "not_dialing": {
+    "message": "Набирается $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_dial_failure": {
+    "message": "Произошла ошибка при наборе $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_calls": {
+    "message": "У вас есть $number$ пропущенных звонков",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_call": {
+    "message": "У вас есть один пропущенный звонок",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_hangup": {
+    "message": "Прекратить телефонный разговор"
+  }   
+}

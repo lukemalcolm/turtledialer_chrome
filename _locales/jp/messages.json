@@ -1,0 +1,134 @@
+{
+  "lbl_html_title": {
+    "message": "Turtle Dialer 設定"
+  },
+  "lbl_html_general": {
+    "message": "一般"
+  },
+  "lbl_html_country": {
+    "message": "国"
+  },
+  "lbl_html_phone": {
+    "message": "電話"
+  },
+  "lbl_html_gmail": {
+      "message": "Gmail の連絡先を含める"
+  },
+  "lbl_html_yealink_t20p_settings": {
+    "message": "Yealink T20P 設定"
+  },
+  "lbl_html_yealink_t28p_settings": {
+    "message": "Yealink T28P 設定 "
+  },
+  "lbl_html_protocol": {
+      "message": "プロトコル"
+  },
+  "lbl_html_host": {
+      "message": "ホスト名または IP アドレス"
+  },
+  "lbl_html_port": {
+      "message": "ポート"
+  },
+  "lbl_html_username": {
+      "message": "ユーザー名"
+  },
+  "lbl_html_password": {
+      "message": "パスワード"
+  },
+  "lbl_html_account": {
+      "message": "SIP アカウント"
+  },
+  "lbl_html_phonebook": {
+      "message": "電話帳"
+  },
+  "lbl_html_calllog": {
+      "message": "コールログ"
+  },
+  "lbl_html_when": {
+      "message": "何時"
+  },
+  "lbl_html_who": {
+      "message": "何方"
+  },
+  "lbl_html_number": {
+      "message": "番号"
+  },
+  "lbl_vld_country_required": {
+    "message": "国は必す属性"
+  },
+  "lbl_vld_phone_required": {
+    "message": "電話番号は必す属性"
+  },
+  "lbl_vld_port_range": {
+    "message": "ポート番号 範囲:1〜65535"
+  },
+  "lbl_vld_port_numeric": {
+    "message": "ポート番号は数値ではありません"
+  },
+  "lbl_vld_host_required": {
+    "message": "ホスト名または IP アドレスは必す属性 "
+  },
+  "lbl_vld_username_required": {
+    "message": "ユーザー名は必す属性"
+  },
+  "lbl_vld_password_required": {
+    "message": "パスワードは必す属性"
+  },
+  "lbl_vld_account_required": {
+    "message": "SIP アカウントは必す属性"
+  },
+  "mnu_dial": {
+    "message": "$number$ に電話",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "obx_dial": {
+    "message": "<url>$number$ に電話</url>",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "obx_def_suggestion": {
+    "message": "ダイヤルする連絡先の名前または番号を入力"
+  },
+  "not_dialing": {
+    "message": "$number$ ダイヤル中",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_dial_failure": {
+    "message": "$number$ ダイヤル中にエラーが発生しました",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_calls": {
+    "message": "不在着信 $number$ があります",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_call": {
+    "message": "不在着信 $number$ があります",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_hangup": {
+    "message": "電話を切る"
+  }   
+}
