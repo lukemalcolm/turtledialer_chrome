@@ -24,18 +24,9 @@ var icons = {
 	'missed': 'glyphicon glyphicon-warning-sign missed'
 }
 
-$(function() {
-	$('[id^=lbl_]').each(
-		function() {
-			var msg = chrome.i18n.getMessage($(this).attr('id'));
-			if (msg != undefined && msg != '') {
-				$(this).text(msg);
-			}
-
-		}
-	);
-	chrome.extension.getBackgroundPage().resetMissedCallsCount();
+var renderContacts = function() {
 	var contacts = chrome.extension.getBackgroundPage().contacts;
+	$('#data').empty();
 	var sorted_keys = Object.keys(contacts).sort();
 	for (var i = 0; i < sorted_keys.length; i++) {
 		var curr_contact = contacts[sorted_keys[i]];
@@ -76,39 +67,65 @@ $(function() {
 		}
 		body.append(cols);
 		$('#data').append(li);
-	}
-	// $('#data').btsListFilter('#searchinput', {
-	// 	itemChild: 'h4'
-	// });
+	}	
+}
 
-	var calls_log = chrome.extension.getBackgroundPage().calls_log;
-	for (var i = 0; i < calls_log.length; i++) {
+var renderCallLog = function() {
+	var call_log = chrome.extension.getBackgroundPage().calls_log;
+	for (var i = 0; i < call_log.length; i++) {
 		var tr = $('<tr>');
 		var td = $('<td>').addClass('col-icon');
 		var span = $('<span>');
-		span.addClass(icons[calls_log[i]['kind']]);
+		span.addClass(icons[call_log[i]['kind']]);
 		td.append(span);
 		tr.append(td);
 		td = $('<td>').addClass('col-when');
-		td.text(calls_log[i]['date'] + ' ' + calls_log[i]['time']);
+		td.text(call_log[i]['date'] + ' ' + call_log[i]['time']);
 		tr.append(td);
 		td = $('<td>').addClass('col-who');
 		p = $('<p>');
 		td.append(p);
-		p.text(calls_log[i]['name']);
+		p.text(call_log[i]['name']);
 		tr.append(td);
 		td = $('<td>').addClass('col-number');
 		var num = $('<a>').addClass('number-link').attr('href', '#');
-		num.text(calls_log[i]['number']);
+		num.text(call_log[i]['number']);
 		td.append(num);
 		tr.append(td);
 		$('#tbl-log').append(tr);
-	}
-
+	}	
+}
+var linkNumbers = function() {
 	$('.number-link').click(function() {
 		console.log('try dialing  ' + $(this).text());
 		chrome.extension.getBackgroundPage().dial($(this).text());
 	});
+}
+
+$(function() {
+	$('[id^=lbl_]').each(
+		function() {
+			var msg = chrome.i18n.getMessage($(this).attr('id'));
+			if (msg != undefined && msg != '') {
+				$(this).text(msg);
+			}
+
+		}
+	);
+
+	$('#btn_sync').click(function() {
+		$('#btn_sync span').addClass('fa-spin');
+		chrome.extension.getBackgroundPage().retrieveContacts(function() {
+			$('#btn_sync span').removeClass('fa-spin');
+			renderContacts();
+			linkNumbers();
+		});
+	});
+
+	chrome.extension.getBackgroundPage().resetMissedCallsCount();
+	renderContacts();
+	renderCallLog();
+	linkNumbers();
 
 	$('a[data-toggle="tab"]').click(function(e) {
 		e.preventDefault();
@@ -116,19 +133,6 @@ $(function() {
 		$('#searchinput').val('');
 		$('#searchinput').trigger('keyup');
 	});
-	// $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-		
-	// 	// if ($(e.target).attr('href') == '#pb-tab') {
-	// 	// 	$('#data').btsListFilter('#searchinput', {
-	// 	// 		itemChild: 'h4'
-	// 	// 	});
-	// 	// } else {
-	// 	// 	$('#tbl-log').btsListFilter('#searchinput', {
-	// 	// 		itemChild: 'p'
-	// 	// 	});
-	// 	// }
-	// });
-	// $('#searchinput').focus();
 
 	$('#searchinput').keyup(function() {
 	    var value = this.value;
@@ -144,5 +148,17 @@ $(function() {
 		        $(this).toggle(re.test(id));
 		    });
 		}
+		var num = chrome.extension.getBackgroundPage().number_utils.parsePhoneNumber(value);
+		if (num) {
+			$('#btn_dial').removeAttr('disabled');
+		} else {
+			$('#btn_dial').attr('disabled', 'disabled');
+		}
+	});
+	$('#btn_dial').click(function() {
+		var num = chrome.extension.getBackgroundPage().dial($('#searchinput').val());
+	});
+	$('#btn_hangup').click(function() {
+		chrome.extension.getBackgroundPage().hangup();
 	});
 });

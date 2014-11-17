@@ -45,7 +45,7 @@
       "message": "Registro de llamadas"
   },
   "lbl_html_when": {
-      "message": "Cuando"
+      "message": "Cuándo"
   },
   "lbl_html_who": {
       "message": "Quién"
@@ -84,6 +84,17 @@
         "content": "$1"
       }
     }    
+  },
+  "obx_dial": {
+    "message": "<url>Llamar $number$</url>",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "obx_def_suggestion": {
+    "message": "Escriba un nombre de contacto o un número para marcar"
   },
   "not_dialing": {
     "message": "Llamando el numero $number$",

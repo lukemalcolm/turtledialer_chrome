@@ -85,6 +85,17 @@
       }
     }    
   },
+  "obx_dial": {
+    "message": "<url>Trucar $number$</url>",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "obx_def_suggestion": {
+    "message": "Introduïu un nom de contacte o un número per marcar"
+  },
   "not_dialing": {
     "message": "Trucant el nombre $number$",
     "placeholders": {

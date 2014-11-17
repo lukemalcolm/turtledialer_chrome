@@ -85,6 +85,17 @@
       }
     }    
   },
+  "obx_dial": {
+    "message": "<url>Chiamare il $number$</url>",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "obx_def_suggestion": {
+    "message": "Digitare il nome di un contatto o un numero da comporre"
+  },
   "not_dialing": {
     "message": "Chiamando il $number$",
     "placeholders": {

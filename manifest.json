@@ -12,6 +12,16 @@
     "48": "icons/icon_48.png",
     "128": "icons/icon_128.png"
   },
+  "omnibox": { "keyword" : "td" },
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+D",
+        "mac": "MacCtrl+Shift+D"
+      },
+      "description": "Open Turtle Dialer"
+    }
+  },
   "default_locale": "es",
   "background": {
     "scripts": [

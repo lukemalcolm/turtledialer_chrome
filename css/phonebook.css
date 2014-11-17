@@ -13,6 +13,9 @@ body {
   position: absolute;
 
 }
+.search-box {
+  padding-right: 35px;
+}
 .letter-disabled {
   color: #ccc;
 }
@@ -92,4 +95,9 @@ body {
 .col-number {
   width: 135px;
 }
-
+.fa-rotate-135 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  -webkit-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
