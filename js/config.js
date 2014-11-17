@@ -25,6 +25,7 @@ function Config() {
 		password: '',
 		account: '',
 		calls_log: [],
+		contacts: [],
 		missed_calls_count: 0
 	}
 	console.log(this.settings);
