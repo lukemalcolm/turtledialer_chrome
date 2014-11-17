@@ -30,6 +30,7 @@ var phone = null;
 var number_utils = null;
 var contacts = null;
 var contacts_reverse = null;
+var contacts_search = null;
 var calls_log = null;
 var context_menu_id = null;
 
@@ -106,8 +107,23 @@ var reverseContacts = function(data) {
 	}
 	return reversed;
 }
-
-var retrieveContacts = function() {
+var createSearchableContacts = function(data) {
+	var serchable = []
+	for (var key in data) {
+		for (var i = 0; i < data[key]['numbers'].length; i++) {
+			var num = number_utils.formatPhoneNumber(data[key]['numbers'][i]['number']);
+			serchable.push({
+				searchable: key + ' ' + num,
+				content: num,
+				description: 'Call to ' + key + ' ' + num,
+				contact: data[key]
+			});
+		}
+	}
+	console.log(serchable);
+	return serchable;
+}
+var retrieveContacts = function(callback) {
 	var phone_contacts = {};
 	var gmail_contacts = {};
 	var d = getPhoneContacts(phone);
@@ -131,12 +147,14 @@ var retrieveContacts = function() {
 				console.log('all done!');
 				contacts = mergeContacts(phone_contacts, gmail_contacts);
 				contacts_reverse = reverseContacts(contacts);
-				start();
+				contacts_search = createSearchableContacts(contacts);
+				config.set('contacts', contacts, callback);
 			});
 		} else {
 			contacts = mergeContacts(phone_contacts, gmail_contacts);
 			contacts_reverse = reverseContacts(contacts);
-			start();
+			contacts_search = createSearchableContacts(contacts);
+			config.set('contacts', contacts, callback);
 		}
 	});	
 }
@@ -232,12 +250,59 @@ var resetMissedCallsCount = function() {
 		chrome.browserAction.setBadgeText({text: ''});
 	});
 }
+
+/********************************************
+ Omnibox
+*********************************************/
+chrome.omnibox.onInputStarted.addListener(
+	function() {
+		chrome.omnibox.setDefaultSuggestion({
+			description: chrome.i18n.getMessage('obx_def_suggestion')
+		});		
+	}
+);
+chrome.omnibox.onInputChanged.addListener(
+  function(text, suggest) {
+  	var re = new RegExp(text.toLowerCase(), 'i');
+  	var matching = contacts_search.filter(function(obj) {
+  		var match = re.test(obj.searchable.toLowerCase());
+  		console.log(obj.searchable.toLowerCase() + ' ' + match);
+  		return match;
+  	});
+  	var num = number_utils.parsePhoneNumber(text);
+  	var suggested = [];
+  	if (num) {
+		chrome.omnibox.setDefaultSuggestion({
+			description: chrome.i18n.getMessage('obx_dial', [num])
+		});
+  	} else {
+		chrome.omnibox.setDefaultSuggestion({
+			description: chrome.i18n.getMessage('obx_def_suggestion')
+		});	 		
+  	}
+  	for (var i = 0; i < matching.length; i++) {
+  		suggested.push({
+  			content: matching[i].content,
+  			description: matching[i].description
+  		});
+  	}
+  	console.log(suggested);
+    suggest(suggested);
+  });
+
+// This event is fired with the user accepts the input in the omnibox.
+chrome.omnibox.onInputEntered.addListener(
+  function(text) {
+  	dial(text);
+  });
+
 /********************************************
  Extension function
 *********************************************/
 var dialSelectedNumber = function(e) {
 	dial(e.selectionText);
 }
+
 var onRequest = function(request, sender, sendResponse) {
 	console.log('context_menu_id ' + context_menu_id);
 	if (request.action == 'select') {
@@ -270,25 +335,16 @@ var initialize = function() {
 		phone = new this[phone_class](config.getSettings());
 		number_utils = new NumberUtils(config.getSettings().country);
 		initialized = true;
-		retrieveContacts();
-	}
-}
-var start = function() {
-	calls_log = config.getSettings().calls_log;
-	missed_calls_count = config.getSettings().missed_calls_count;
-	chrome.browserAction.enable();
-	chrome.notifications.onButtonClicked.addListener(function() { phone.hangup({
-		success: function() {
-			console.log('hangup ok');
-		},
-		failure: function() {
-			console.log('hangup fail!');
+		if (!config.getSettings().contacts) {
+			retrieveContacts(start);
+		} else {
+			contacts = config.getSettings().contacts;
+			contacts_reverse = reverseContacts(contacts);
+			contacts_search = createSearchableContacts(contacts);
+			start();
 		}
-	}) });
-	chrome.extension.onRequest.addListener(onRequest);
-	setInterval(function() {
-		checkMissedCalls(phone);
-	}, 10000);
+		
+	}
 }
 
 var dial = function(phone_number) {
@@ -299,5 +355,27 @@ var dial = function(phone_number) {
 		failure: function() { notifyDialFailure(phone_number); }
 	});
 }
+var hangup = function() {
+	phone.hangup({
+		success: function() {
+			console.log('hangup ok');
+		},
+		failure: function() {
+			console.log('hangup fail!');
+		}
+	});
+}
+var start = function() {
+	calls_log = config.getSettings().calls_log;
+	missed_calls_count = config.getSettings().missed_calls_count;
+	chrome.browserAction.enable();
+	chrome.notifications.onButtonClicked.addListener(hangup);
+	chrome.extension.onRequest.addListener(onRequest);
+	setInterval(function() {
+		checkMissedCalls(phone);
+	}, 10000);
+}
+
+
 
 config.load(initialize);

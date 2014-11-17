@@ -34,10 +34,13 @@
 	        <li class="active"><a id="lbl_html_phonebook" href="#pb-tab" role="tab" data-toggle="tab">Phone book</a></li>
 	        <li><a id="lbl_html_calllog" href="#mc-tab" role="tab" data-toggle="tab">Call log</a></li>
 	      </ul>
-	      <form class="navbar-form navbar-right" role="search">
+	      <form class="navbar-form navbar-right search-box" role="search">
 	        <div class="form-group">
 	          <input id="searchinput" type="text" class="form-control" tabindex="1">
 	        </div>
+	      	<button id="btn_dial" type="button" class="btn btn-success btn-sm" disabled="disabled"><span class="fa fa-phone"></span></button>
+	      	<button id="btn_hangup" type="button" class="btn btn-danger btn-sm"><span class="fa fa-phone fa-rotate-135"></span></button>
+	      	<button id="btn_sync" type="button" class="btn btn-default btn-sm"><span class="fa fa-refresh"></span></button>
 	      </form>
 	    </div><!-- /.navbar-collapse -->
 	  </div><!-- /.container-fluid -->

@@ -1,84 +1,84 @@
 {
   "lbl_html_title": {
-    "message": "Turtle Dialer settings"
+    "message": "Turtle Dialer 設定"
   },
   "lbl_html_general": {
-    "message": "General"
+    "message": "一般"
   },
   "lbl_html_country": {
-    "message": "Country"
+    "message": "国"
   },
   "lbl_html_phone": {
-    "message": "Phone"
+    "message": "電話"
   },
   "lbl_html_gmail": {
-      "message": "Include Gmail contacts"
+      "message": "Gmail の連絡先を含める"
   },
   "lbl_html_yealink_t20p_settings": {
-    "message": "Yealink T20P API settings"
+    "message": "Yealink T20P 設定"
   },
   "lbl_html_yealink_t28p_settings": {
-    "message": "Yealink T28P API settings"
+    "message": "Yealink T28P 設定 "
   },
   "lbl_html_protocol": {
-      "message": "Protocol"
+      "message": "プロトコル"
   },
   "lbl_html_host": {
-      "message": "Hostname or IP address"
+      "message": "ホスト名または IP アドレス"
   },
   "lbl_html_port": {
-      "message": "Port"
+      "message": "ポート"
   },
   "lbl_html_username": {
-      "message": "Username"
+      "message": "ユーザー名"
   },
   "lbl_html_password": {
-      "message": "Password"
+      "message": "パスワード"
   },
   "lbl_html_account": {
-      "message": "SIP account"
+      "message": "SIP アカウント"
   },
   "lbl_html_phonebook": {
-      "message": "Phone book"
+      "message": "電話帳"
   },
   "lbl_html_calllog": {
-      "message": "Call log"
+      "message": "コールログ"
   },
   "lbl_html_when": {
-      "message": "When"
+      "message": "何時"
   },
   "lbl_html_who": {
-      "message": "Who"
+      "message": "何方"
   },
   "lbl_html_number": {
-      "message": "Number"
+      "message": "番号"
   },
   "lbl_vld_country_required": {
-    "message": "The country is required."
+    "message": "国は必す属性"
   },
   "lbl_vld_phone_required": {
-    "message": "The phone is required."
+    "message": "電話番号は必す属性"
   },
   "lbl_vld_port_range": {
-    "message": "The port number must be between 1 and 65535."
+    "message": "ポート番号 範囲:1〜65535"
   },
   "lbl_vld_port_numeric": {
-    "message": "The port number is not numeric."
+    "message": "ポート番号は数値ではありません"
   },
   "lbl_vld_host_required": {
-    "message": "The hostname or the IP address is required."
+    "message": "ホスト名または IP アドレスは必す属性 "
   },
   "lbl_vld_username_required": {
-    "message": "The username is required."
+    "message": "ユーザー名は必す属性"
   },
   "lbl_vld_password_required": {
-    "message": "The password is required."
+    "message": "パスワードは必す属性"
   },
   "lbl_vld_account_required": {
-    "message": "The SIP account is required."
+    "message": "SIP アカウントは必す属性"
   },
   "mnu_dial": {
-    "message": "Call to $number$",
+    "message": "$number$ に電話",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -86,7 +86,7 @@
     }    
   },
   "obx_dial": {
-    "message": "<url>Call to $number$</url>",
+    "message": "<url>$number$ に電話</url>",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -94,10 +94,10 @@
     }    
   },
   "obx_def_suggestion": {
-    "message": "Type a contact name or a number to dial"
+    "message": "ダイヤルする連絡先の名前または番号を入力"
   },
   "not_dialing": {
-    "message": "Dialing $number$",
+    "message": "$number$ ダイヤル中",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -105,7 +105,7 @@
     }
   },
   "not_dial_failure": {
-    "message": "An error occurs while dialing $number$",
+    "message": "$number$ ダイヤル中にエラーが発生しました",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -113,7 +113,7 @@
     }
   },
   "not_missed_calls": {
-    "message": "You have $number$ missed calls",
+    "message": "不在着信 $number$ があります",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -121,7 +121,7 @@
     }
   },
   "not_missed_call": {
-    "message": "You have $number$ missed call",
+    "message": "不在着信 $number$ があります",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -129,6 +129,6 @@
     }
   },
   "not_hangup": {
-    "message": "Hang up"
+    "message": "電話を切る"
   }   
 }
