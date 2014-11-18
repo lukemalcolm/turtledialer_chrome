@@ -113,7 +113,7 @@
     }
   },
   "not_missed_calls": {
-    "message": "Tienes $number$ llamadas perdidas",
+    "message": "Tiene $number$ llamadas perdidas",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -121,7 +121,7 @@
     }
   },
   "not_missed_call": {
-    "message": "Tienes $number$ llamada perdida",
+    "message": "Tiene $number$ llamada perdida",
     "placeholders": {
       "number": {
         "content": "$1"
