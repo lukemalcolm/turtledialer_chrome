@@ -1,6 +1,6 @@
 {
   "lbl_html_title": {
-    "message": "Configuració de Turtle Dialer"
+    "message": "Configuració del Turtle Dialer"
   },
   "lbl_html_general": {
     "message": "General"
@@ -12,7 +12,7 @@
     "message": "Telèfon"
   },
   "lbl_html_gmail": {
-      "message": "Incloure contactes de Gmail"
+      "message": "Inclou els contactes de Gmail"
   },
   "lbl_html_yealink_t20p_settings": {
     "message": "Configuració d'API de Yealink T20P"
@@ -24,7 +24,7 @@
       "message": "Protocol"
   },
   "lbl_html_host": {
-      "message": "Nom d'host o adreça IP"
+      "message": "Nom de host o adreça IP"
   },
   "lbl_html_port": {
       "message": "Port"
@@ -33,7 +33,7 @@
       "message": "Usuari"
   },
   "lbl_html_password": {
-      "message": "Contrasenya"
+      "message": "Mot de pas"
   },
   "lbl_html_account": {
       "message": "Compte SIP"
@@ -51,7 +51,7 @@
       "message": "Qui"
   },
   "lbl_html_number": {
-      "message": "Nombre"
+      "message": "Número"
   },
   "lbl_vld_country_required": {
     "message": "El país és obligatori."
@@ -60,25 +60,25 @@
     "message": "El telèfon és obligatori."
   },
   "lbl_vld_port_range": {
-    "message": "El nombre de port ha d'estar entre 1 i 65535."
+    "message": "El número de port ha d'estar entre 1 i 65535."
   },
   "lbl_vld_port_numeric": {
-    "message": "El nombre de port no és numèric."
+    "message": "El número de port no és numèric."
   },
   "lbl_vld_host_required": {
-    "message": "El nom d'host o adreça IP és obligatori."
+    "message": "El nom de host o adreça IP és obligatori."
   },
   "lbl_vld_username_required": {
-    "message": "El usuari és obligatori."
+    "message": "L'usuari és obligatori."
   },
   "lbl_vld_password_required": {
-    "message": "La contrasenya és obligatòria."
+    "message": "El mot de pas és obligatori."
   },
   "lbl_vld_account_required": {
     "message": "El compte SIP és obligatori."
   },
   "mnu_dial": {
-    "message": "Trucar $number$",
+    "message": "Truca $number$",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -86,7 +86,7 @@
     }    
   },
   "obx_dial": {
-    "message": "<url>Trucar $number$</url>",
+    "message": "<url>Truca $number$</url>",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -94,10 +94,10 @@
     }    
   },
   "obx_def_suggestion": {
-    "message": "Introduïu un nom de contacte o un número per marcar"
+    "message": "Introduïu un nom de contacte o un número per trucar-hi"
   },
   "not_dialing": {
-    "message": "Trucant el nombre $number$",
+    "message": "S'està trucant al número $number$",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -105,7 +105,7 @@
     }
   },
   "not_dial_failure": {
-    "message": "Error trucant el nombre $number$",
+    "message": "S'ha produït un error en trucar el número $number$",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -113,7 +113,7 @@
     }
   },
   "not_missed_calls": {
-    "message": "Tens $number$ trucades perdudes",
+    "message": "Teniu $number$ trucades perdudes",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -121,7 +121,7 @@
     }
   },
   "not_missed_call": {
-    "message": "Tens $number$ trucada perduda",
+    "message": "Teniu $number$ trucada perduda",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -129,6 +129,6 @@
     }
   },
   "not_hangup": {
-    "message": "Penjar"
+    "message": "Penja"
   }   
 }
