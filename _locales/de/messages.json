@@ -1,0 +1,134 @@
+{
+  "lbl_html_title": {
+    "message": "Turtle Dialer Einstellungen"
+  },
+  "lbl_html_general": {
+    "message": "Allgemeine Einstellungen"
+  },
+  "lbl_html_country": {
+    "message": "Land"
+  },
+  "lbl_html_phone": {
+    "message": "Telefongerät"
+  },
+  "lbl_html_gmail": {
+      "message": "Gmail-Kontakte erfassen"
+  },
+  "lbl_html_yealink_t20p_settings": {
+    "message": "Yealink T20P API Einstellungen"
+  },
+  "lbl_html_yealink_t28p_settings": {
+    "message": "Yealink T28P API Einstellungen"
+  },
+  "lbl_html_protocol": {
+      "message": "Protokoll"
+  },
+  "lbl_html_host": {
+      "message": "Hostname oder IP-Adresse"
+  },
+  "lbl_html_port": {
+      "message": "Port"
+  },
+  "lbl_html_username": {
+      "message": "Benutzername"
+  },
+  "lbl_html_password": {
+      "message": "Passwort"
+  },
+  "lbl_html_account": {
+      "message": "SIP-Konto"
+  },
+  "lbl_html_phonebook": {
+      "message": "Telefonbuch"
+  },
+  "lbl_html_calllog": {
+      "message": "Anrufliste"
+  },
+  "lbl_html_when": {
+      "message": "Wann"
+  },
+  "lbl_html_who": {
+      "message": "Wer"
+  },
+  "lbl_html_number": {
+      "message": "Nummer"
+  },
+  "lbl_vld_country_required": {
+    "message": "Sie müssen einen Land eingeben"
+  },
+  "lbl_vld_phone_required": {
+    "message": "Sie müssen ein Telefongerät eingeben"
+  },
+  "lbl_vld_port_range": {
+    "message": "Portnummer muss zwischen 1 und 65535 sein"
+  },
+  "lbl_vld_port_numeric": {
+    "message": "Portnummer muss ein Nummer sein"
+  },
+  "lbl_vld_host_required": {
+    "message": "Sie müssen ein Hostname oder IP-Adresse eingeben"
+  },
+  "lbl_vld_username_required": {
+    "message": "Sie müssen ein Benutzername eingeben"
+  },
+  "lbl_vld_password_required": {
+    "message": "Sie müssen ein Passwort eingeben"
+  },
+  "lbl_vld_account_required": {
+    "message": "Sie müssen ein SIP-Konto eingeben"
+  },
+  "mnu_dial": {
+    "message": "$number$ anrufen",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "obx_dial": {
+    "message": "<url>$number$ anrufen</url>",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }    
+  },
+  "obx_def_suggestion": {
+    "message": "Bitte schreiben Sie ein Kontaktname oder ein Nummer um sie anzurufen"
+  },
+  "not_dialing": {
+    "message": "$number$ wird angeruft",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_dial_failure": {
+    "message": "Ein Fehler ist aufgetreten bei Anruf des Nummers $number$",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_calls": {
+    "message": "Sie haben $number$ Anrufe in Abwesenheit",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_missed_call": {
+    "message": "Sie haben $number$ Anruf in Abwesenheit",
+    "placeholders": {
+      "number": {
+        "content": "$1"
+      }
+    }
+  },
+  "not_hangup": {
+    "message": "Auflegen"
+  }   
+}
