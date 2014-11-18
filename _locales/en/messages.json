@@ -66,7 +66,7 @@
     "message": "The port number is not numeric."
   },
   "lbl_vld_host_required": {
-    "message": "The hostname or the IP address is required."
+    "message": "The hostname or IP address is required."
   },
   "lbl_vld_username_required": {
     "message": "The username is required."
@@ -78,7 +78,7 @@
     "message": "The SIP account is required."
   },
   "mnu_dial": {
-    "message": "Call to $number$",
+    "message": "Call $number$",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -86,7 +86,7 @@
     }    
   },
   "obx_dial": {
-    "message": "<url>Call to $number$</url>",
+    "message": "<url>Call $number$</url>",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -105,7 +105,7 @@
     }
   },
   "not_dial_failure": {
-    "message": "An error occurs while dialing $number$",
+    "message": "An error occured while dialing $number$",
     "placeholders": {
       "number": {
         "content": "$1"
