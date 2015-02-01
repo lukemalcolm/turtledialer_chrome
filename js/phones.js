@@ -29,7 +29,7 @@ YealinkT20P.prototype.dial = function(dialrequest) {
 	var url_to_call = 
 		this.protocol + '://' +
 		this.username + ':' + this.password + '@' + 
-		this.host + '/cgi-bin/ConfigManApp.com?Id=34&Command=1&Number=' + 
+		this.host + ':' + this.port + '/cgi-bin/ConfigManApp.com?Id=34&Command=1&Number=' + 
 		dialrequest.phonenumber + "&Account=@" +this.account;	
 	console.log(url_to_call);
 	var xhr = new XMLHttpRequest();
@@ -51,7 +51,7 @@ YealinkT20P.prototype.callsLog = function(logrequest) {
 	var url_to_call = 
 		this.protocol + '://' +
 		this.username + ':' + this.password + '@' + 
-		this.host + '/cgi-bin/ConfigManApp.com?Id=34';
+		this.host + ':' + this.port + '/cgi-bin/ConfigManApp.com?Id=34';
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', url_to_call, true);
 	xhr.onreadystatechange = function() {
@@ -120,7 +120,7 @@ YealinkT20P.prototype.hangup = function(hanguprequest) {
 	var url_to_call = 
 		this.protocol + '://' +
 		this.username + ':' + this.password + '@' + 
-		this.host + '/cgi-bin/ConfigManApp.com?Id=34&Command=3';
+		this.host + ':' + this.port + '/cgi-bin/ConfigManApp.com?Id=34&Command=3';
 	console.log('hangup url: ' + url_to_call);
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', url_to_call, true);
@@ -142,7 +142,8 @@ YealinkT20P.prototype.phonebook = function(phonebookrequest) {
 	var url_to_call = 
 		this.protocol + '://' +
 		this.username + ':' + this.password + '@' + 
-		this.host + '/cgi-bin/ConfigManApp.com?Id=28&form=1';
+		this.host + ':' + this.port + '/cgi-bin/ConfigManApp.com?Id=28&form=1';
+	console.log('phonebook url: ' + url_to_call);
 	Papa.parse(
 		url_to_call,
 		{
@@ -181,6 +182,7 @@ YealinkT20P.prototype.phonebook = function(phonebookrequest) {
 						});
 					}
 				}
+				console.log('phonebook results');
 				console.log(items);
 				phonebookrequest.success(items);
 			}
@@ -201,7 +203,7 @@ function YealinkT28P(settings) {
 YealinkT28P.prototype.login = function(callback) {
 	var url_to_call = 
 		this.protocol + '://' +
-		this.host + '/servlet?p=login&q=login';
+		this.host + ':' + this.port + '/servlet?p=login&q=login';
 	var params = 'username=' + this.username + '&pwd=' + this.password;
 	var xhr = new XMLHttpRequest();
 	xhr.open('POST', url_to_call, true);
@@ -221,7 +223,7 @@ YealinkT28P.prototype.dial = function(dialrequest) {
 	console.log('dialing: ' + dialrequest.phonenumber);
 	var url_to_call = 
 		this.protocol + '://' +
-		this.host + '/servlet?p=contacts-callinfo&q=call&num=' + 
+		this.host + ':' + this.port + '/servlet?p=contacts-callinfo&q=call&num=' + 
 		dialrequest.phonenumber + '&acc=0';
 	console.log(url_to_call);
 	var xhr = new XMLHttpRequest();
@@ -243,7 +245,7 @@ YealinkT28P.prototype.dial = function(dialrequest) {
 YealinkT28P.prototype.callsLog = function(logrequest) {
 	var url_to_call = 
 		this.protocol + '://' +
-		this.host + '/servlet?p=contacts-callinfo&q=load';
+		this.host + ':' + this.port + '/servlet?p=contacts-callinfo&q=load';
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', url_to_call, true);
 	xhr.onreadystatechange = function() {
@@ -330,7 +332,7 @@ YealinkT28P.prototype.hangup = function(hanguprequest) {
 	console.log('hangup');
 	var url_to_call = 
 		this.protocol + '://' +
-		this.host + '/servlet?p=contacts-callinfo&q=hangup';
+		this.host + ':' + this.port + '/servlet?p=contacts-callinfo&q=hangup';
 	console.log('hangup url: ' + url_to_call);
 	var xhr = new XMLHttpRequest();
 	xhr.open('GET', url_to_call, true);
@@ -353,7 +355,7 @@ YealinkT28P.prototype.hangup = function(hanguprequest) {
 YealinkT28P.prototype.phonebook = function(phonebookrequest) {
 	var url_to_call = 
 		this.protocol + '://' +
-		this.host + '/servlet?p=contacts-preview&q=exportcvs';
+		this.host + ':' + this.port + '/servlet?p=contacts-preview&q=exportcvs';
 
 	this.login(function() {
 		Papa.parse(
