@@ -1,84 +1,84 @@
 {
   "lbl_html_title": {
-    "message": "Configuración de Turtle Dialer"
+    "message": "Turtle Dialer Einstellungen"
   },
   "lbl_html_general": {
-    "message": "General"
+    "message": "Allgemeine Einstellungen"
   },
   "lbl_html_country": {
-    "message": "País"
+    "message": "Land"
   },
   "lbl_html_phone": {
-    "message": "Teléfono"
+    "message": "Telefongerät"
   },
   "lbl_html_gmail": {
-      "message": "Incluir contactos de Gmail"
+      "message": "Gmail-Kontakte erfassen"
   },
   "lbl_html_yealink_t20p_settings": {
-    "message": "Configuración de API de Yealink T20P"
+    "message": "Yealink T20P API Einstellungen"
   },
   "lbl_html_yealink_t28p_settings": {
-    "message": "Configuración de API de Yealink T28P"
+    "message": "Yealink T28P API Einstellungen"
   },
   "lbl_html_protocol": {
-      "message": "Protocolo"
+      "message": "Protokoll"
   },
   "lbl_html_host": {
-      "message": "Nombre de host o dirección IP"
+      "message": "Hostname oder IP-Adresse"
   },
   "lbl_html_port": {
-      "message": "Puerto"
+      "message": "Port"
   },
   "lbl_html_username": {
-      "message": "Usuario"
+      "message": "Benutzername"
   },
   "lbl_html_password": {
-      "message": "Contraseña"
+      "message": "Passwort"
   },
   "lbl_html_account": {
-      "message": "Cuenta SIP"
+      "message": "SIP-Konto"
   },
   "lbl_html_phonebook": {
-      "message": "Agenda telefónica"
+      "message": "Telefonbuch"
   },
   "lbl_html_calllog": {
-      "message": "Registro de llamadas"
+      "message": "Anrufliste"
   },
   "lbl_html_when": {
-      "message": "Cuándo"
+      "message": "Wann"
   },
   "lbl_html_who": {
-      "message": "Quién"
+      "message": "Wer"
   },
   "lbl_html_number": {
-      "message": "Número"
+      "message": "Nummer"
   },
   "lbl_vld_country_required": {
-    "message": "El país es obligatorio."
+    "message": "Sie müssen einen Land eingeben"
   },
   "lbl_vld_phone_required": {
-    "message": "El teléfono es obligatorio."
+    "message": "Sie müssen ein Telefongerät eingeben"
   },
   "lbl_vld_port_range": {
-    "message": "El número de puerto debe estar entre 1 y 65535."
+    "message": "Portnummer muss zwischen 1 und 65535 sein"
   },
   "lbl_vld_port_numeric": {
-    "message": "El número de puerto no es numérico."
+    "message": "Portnummer muss ein Nummer sein"
   },
   "lbl_vld_host_required": {
-    "message": "El nombre de host o dirección IP es obligatorio."
+    "message": "Sie müssen ein Hostname oder IP-Adresse eingeben"
   },
   "lbl_vld_username_required": {
-    "message": "El nombre de usuario es obligatorio."
+    "message": "Sie müssen ein Benutzername eingeben"
   },
   "lbl_vld_password_required": {
-    "message": "La contraseña es obligatoria."
+    "message": "Sie müssen ein Passwort eingeben"
   },
   "lbl_vld_account_required": {
-    "message": "La cuenta SIP es obligatoria."
+    "message": "Sie müssen ein SIP-Konto eingeben"
   },
   "mnu_dial": {
-    "message": "Llamar $number$",
+    "message": "$number$ anrufen",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -86,7 +86,7 @@
     }    
   },
   "obx_dial": {
-    "message": "<url>Llamar $number$</url>",
+    "message": "<url>$number$ anrufen</url>",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -94,10 +94,10 @@
     }    
   },
   "obx_def_suggestion": {
-    "message": "Escriba un nombre de contacto o un número para marcar"
+    "message": "Bitte schreiben Sie ein Kontaktname oder ein Nummer um sie anzurufen"
   },
   "not_dialing": {
-    "message": "Llamando el numero $number$",
+    "message": "$number$ wird angeruft",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -105,7 +105,7 @@
     }
   },
   "not_dial_failure": {
-    "message": "Error llamando el numero $number$",
+    "message": "Ein Fehler ist aufgetreten bei Anruf des Nummers $number$",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -113,7 +113,7 @@
     }
   },
   "not_missed_calls": {
-    "message": "Tiene $number$ llamadas perdidas",
+    "message": "Sie haben $number$ Anrufe in Abwesenheit",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -121,7 +121,7 @@
     }
   },
   "not_missed_call": {
-    "message": "Tiene $number$ llamada perdida",
+    "message": "Sie haben $number$ Anruf in Abwesenheit",
     "placeholders": {
       "number": {
         "content": "$1"
@@ -129,6 +129,6 @@
     }
   },
   "not_hangup": {
-    "message": "Colgar"
+    "message": "Auflegen"
   }   
 }
