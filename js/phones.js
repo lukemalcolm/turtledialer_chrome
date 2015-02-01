@@ -401,3 +401,134 @@ YealinkT28P.prototype.phonebook = function(phonebookrequest) {
 		);
 	});
 }
+
+
+
+
+
+
+function GrandstreamGXP14xx(settings) {
+	this.protocol = settings.protocol;
+	this.host = settings.host;
+	this.port = settings.port;
+	this.password = settings.password;
+	this.account = settings.account;
+	this.sid = null;
+}
+
+GrandstreamGXP14xx.prototype.login = function(callback) {
+	if (this.sid == null) {
+		var url_to_call = 
+			this.protocol + '://' +
+			this.host + '/cgi-bin/dologin';
+		var params = 'password=' + this.password;
+		var xhr = new XMLHttpRequest();
+		xhr.open('POST', url_to_call, true);
+		xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		xhr.withCredentials = true;
+		xhr.crossDomain = true;
+		var that = this;
+		xhr.onreadystatechange = function() {
+			console.log(xhr.readyState);
+			if (xhr.readyState == 4) {
+				var json = JSON.parse(xhr.responseText);
+				console.log(json);
+				that.sid = json.body.sid;
+				callback(that.sid);
+		  }
+		}
+		xhr.send(params);		
+	} else {
+		callback(this.sid);
+	}
+}
+
+GrandstreamGXP14xx.prototype.dial = function(dialrequest) {
+	var url_to_call = 
+		this.protocol + '://' +
+		this.host + '/cgi-bin/api-make_call';	
+	var params = 'account=' + this.account + '&phonenumber=' +
+				dialrequest.phonenumber + '&sid=';
+	console.log(url_to_call);
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', url_to_call, true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhr.withCredentials = true;
+	xhr.crossDomain = true;
+	xhr.onreadystatechange = function() {
+		console.log(xhr.readyState);
+		if (xhr.readyState == 4) {
+			var json = JSON.parse(xhr.responseText);
+			console.log(json);
+			if (json.response == 'success') {
+				dialrequest.success();
+			} else {
+				dialrequest.failure();
+			}
+	  }
+	}
+	this.login(function(sid) {
+		console.log(params + sid);
+		xhr.send(params + sid);
+	});
+}
+
+GrandstreamGXP14xx.prototype.callsLog = function(logrequest) {
+	logrequest.success([]);
+}
+GrandstreamGXP14xx.prototype.hangup = function(hanguprequest) {
+	var url_to_call = 
+		this.protocol + '://' +
+		this.host + '/cgi-bin/api-phone_operation';	
+	var xhr = new XMLHttpRequest();
+	xhr.open('POST', url_to_call, true);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhr.withCredentials = true;
+	xhr.crossDomain = true;
+	xhr.onreadystatechange = function() {
+		console.log(xhr.readyState);
+		if (xhr.readyState == 4) {
+			var json = JSON.parse(xhr.responseText);
+			console.log(json);
+			if (json.response == 'success') {
+				hanguprequest.success();
+			} else {
+				hanguprequest.failure();
+			}
+	  }
+	}
+	this.login(function(sid) {
+		var params = 'cmd=endcall&arg=1&sid=' + sid;
+		xhr.send(params);
+	});
+}	
+
+GrandstreamGXP14xx.prototype.phonebook = function(phonebookrequest) {
+	var url_to_call = 
+		this.protocol + '://' +
+		this.host + '/export/phonebook.xml?_stamp=' + (new Date()).getTime();
+	console.log(url_to_call);
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url_to_call, true);
+	xhr.onreadystatechange = function() {
+		console.log(xhr.readyState);
+	  	if (xhr.readyState == 4) {
+	  		var items = {}
+	  		var xml = $($.parseXML(xhr.responseText));
+	  		xml.find('Contact').each(function() {
+	  			var display_name = $(this).find('FirstName').text() + ' ' + $(this).find('LastName').text();
+				items[display_name] = {
+					'gravatar': 'http://www.gravatar.com/avatar/00000000000000000000000000000000.png?d=mm&s=96',
+					'numbers': []
+				};	  			
+				items[display_name]['numbers'].push({ 
+					'source': 'phone',
+					'kind': 'other',
+					'number': $(this).find('phonenumber').text()
+				});
+	  		});
+	  		phonebookrequest.success(items);
+	  	}
+	};
+	xhr.send();
+}

@@ -71,6 +71,7 @@ Config.prototype.check = function() {
 	var phone = (this.settings.phone != undefined && this.settings.phone != '');
 	var host = (this.settings.host != undefined && this.settings.host != '');
 	var port = (this.settings.port != undefined && this.settings.port > 0);
+	//todo no username for grandstream
 	var username = (this.settings.username != undefined && this.settings.username != '');
 	var password = (this.settings.port != undefined && this.settings.password != '');
 	var account = (this.settings.account != undefined && this.settings.account != '');
