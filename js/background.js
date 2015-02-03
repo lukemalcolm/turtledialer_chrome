@@ -21,6 +21,14 @@ limitations under the License.
 
 chrome.browserAction.disable();
 
+chrome.runtime.onInstalled.addListener(function(details) {
+	if (details.reason == 'install' || details.reason == 'upgrade') {
+		chrome.tabs.create({
+			url: 'https://github.com/turtledialer/turtledialer_chrome/releases/tag/' + chrome.runtime.getManifest().version
+		}, function() {});
+	}
+});
+
 /********************************************
  Global variables
 *********************************************/
