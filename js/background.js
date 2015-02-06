@@ -379,9 +379,9 @@ var start = function() {
 	chrome.browserAction.enable();
 	chrome.notifications.onButtonClicked.addListener(hangup);
 	chrome.extension.onRequest.addListener(onRequest);
-	setInterval(function() {
-		checkMissedCalls(phone);
-	}, 10000);
+	// setInterval(function() {
+	// 	checkMissedCalls(phone);
+	// }, 10000);
 }
 
 
