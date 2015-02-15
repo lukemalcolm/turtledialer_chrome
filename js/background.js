@@ -14,28 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-
-/********************************************
- Start disabled
-*********************************************/
-
-chrome.browserAction.disable();
-
-chrome.runtime.onInstalled.addListener(function(details) {
-	if (details.reason == 'install' || details.reason == 'upgrade') {
-		chrome.tabs.create({
-			url: 'https://github.com/turtledialer/turtledialer_chrome/releases/tag/' + chrome.runtime.getManifest().version
-		}, function() {});
-	}
-});
-
 /********************************************
  Global variables
 *********************************************/
 
-var config = new Config();
+var config = null;
 var phone = null;
-var number_utils = null;
+var numUtils = null;
 var contacts = null;
 var contacts_reverse = null;
 var contacts_search = null;
@@ -44,6 +29,7 @@ var context_menu_id = null;
 
 var missed_calls_count = 0;
 var initialized = false;
+var profileEmail = null;
 
 
 /********************************************
@@ -65,7 +51,7 @@ var getGmailContacts = function() {
 
 var getPhoneContacts = function(phone) {
 	var deferred = $.Deferred();
-	phone.phonebook({
+	phone.getPhonebook({
 		success: function(res) {
 			deferred.resolve(res);
 		},
@@ -82,53 +68,59 @@ var mergeContacts = function(set1, set2) {
 	if (Object.keys(set1).length < Object.keys(set2).length) {
 		biggest = set2;
 		smallest = set1;
-	} 
-	for (var key in smallest) {
-		if (biggest.hasOwnProperty(key)) {
-			for (var i = 0; i < smallest[key]['numbers'].length; i++) {
-				var exists = false;
-				for (var k = 0; k < biggest[key]['numbers'].length; k++) {
-					var bn = biggest[key]['numbers'][k]['number'];
-					var sn = smallest[key]['numbers'][i]['number'];
-					if (number_utils.formatPhoneNumber(bn) == number_utils.formatPhoneNumber(sn)) {
-						exists = true;
-						break;
-					}
-				}
-				if (!exists) {
-					biggest[key]['numbers'].push(smallest[key]['numbers'][i]);	
-				}
-			}
-		} else {
-			biggest[key] = smallest[key];
-		}
 	}
+	$.each(smallest, function(key, value) {
+		if (biggest.hasOwnProperty(key)) {
+			$.each(value['numbers'], function(idx1, val1) {
+				var exists = false;
+				$.each(biggest[key]['numbers'], function(idx2, val2) {
+					if (numUtils.formatPhoneNumber(val1['number']) == numUtils.formatPhoneNumber(val2['number'])) {
+						exists = true;
+						return false;
+					}
+				});
+				if (!exists) {
+					biggest[key]['numbers'].push(val1);
+				}
+			});
+		} else {
+			biggest[key] = value;	
+		}
+	});
+	console.log('******merged******');
+	console.log(biggest);
+	console.log('******end******');
 	return biggest;
 }
 
 var reverseContacts = function(data) {
 	var reversed = {}
-	for (var key in data) {
-		for (var i = 0; i < data[key]['numbers'].length; i++) {
-			reversed[number_utils.formatPhoneNumber(data[key]['numbers'][i]['number'])] = key;
-		}
-	}
+	$.each(data, function(key, value) {
+		$.each(value['numbers'], function(idx1, val1) {
+			reversed[numUtils.formatPhoneNumber(val1['number'])] = key;
+		});
+	});
+	console.log('******searcheable******');
+	console.log(reversed);
+	console.log('******end******');
 	return reversed;
 }
 var createSearchableContacts = function(data) {
 	var serchable = []
-	for (var key in data) {
-		for (var i = 0; i < data[key]['numbers'].length; i++) {
-			var num = number_utils.formatPhoneNumber(data[key]['numbers'][i]['number']);
+	$.each(data, function(key, value) {
+		$.each(value['numbers'], function(idx1, val1) {
+			var num = numUtils.formatPhoneNumber(val1['number']);
 			serchable.push({
 				searchable: key + ' ' + num,
 				content: num,
 				description: 'Call to ' + key + ' ' + num,
 				contact: data[key]
 			});
-		}
-	}
+		});
+	});
+	console.log('******searcheable******');
 	console.log(serchable);
+	console.log('******end******');
 	return serchable;
 }
 var retrieveContacts = function(callback) {
@@ -168,7 +160,7 @@ var retrieveContacts = function(callback) {
 }
 var getCallsLog = function(phone) {
 	var deferred = $.Deferred();
-	phone.callsLog({
+	phone.getcallLog({
 		success: function(res) {
 			deferred.resolve(res);
 		},
@@ -183,7 +175,7 @@ var updateCallsLog = function(data) {
 	for (var i = 0; i < data.length; i++) {
 		var item = data[i];
 		var name = '-';
-		var num_for_lookup = number_utils.formatPhoneNumber(item['number']);
+		var num_for_lookup = numUtils.formatPhoneNumber(item['number']);
 		if (contacts_reverse.hasOwnProperty(num_for_lookup)) {
 			name = contacts_reverse[num_for_lookup];
 		}
@@ -277,7 +269,7 @@ chrome.omnibox.onInputChanged.addListener(
   		console.log(obj.searchable.toLowerCase() + ' ' + match);
   		return match;
   	});
-  	var num = number_utils.parsePhoneNumber(text);
+  	var num = numUtils.parsePhoneNumber(text);
   	var suggested = [];
   	if (num) {
 		chrome.omnibox.setDefaultSuggestion({
@@ -294,11 +286,9 @@ chrome.omnibox.onInputChanged.addListener(
   			description: matching[i].description
   		});
   	}
-  	console.log(suggested);
     suggest(suggested);
   });
 
-// This event is fired with the user accepts the input in the omnibox.
 chrome.omnibox.onInputEntered.addListener(
   function(text) {
   	dial(text);
@@ -311,10 +301,10 @@ var dialSelectedNumber = function(e) {
 	dial(e.selectionText);
 }
 
-var onRequest = function(request, sender, sendResponse) {
+var onMessage = function(request, sender, sendResponse) {
 	console.log('context_menu_id ' + context_menu_id);
 	if (request.action == 'select') {
-		var number = number_utils.parsePhoneNumber(request.selection);
+		var number = numUtils.parsePhoneNumber(request.selection);
 		if (number) {
 			context_menu_id = chrome.contextMenus.create({
 				'id': '1',
@@ -341,7 +331,7 @@ var initialize = function() {
 	if (config.check()) {
 		phone_class = config.getSettings().phone;
 		phone = new this[phone_class](config.getSettings());
-		number_utils = new NumberUtils(config.getSettings().country);
+		numUtils = new NumberUtils(config.getSettings().country);
 		initialized = true;
 		if (!config.getSettings().contacts) {
 			retrieveContacts(start);
@@ -355,12 +345,17 @@ var initialize = function() {
 	}
 }
 
-var dial = function(phone_number) {
-	phone_number = number_utils.preparePhoneNumber(phone_number);
+var dial = function(phoneNumber) {
+	phoneNumber = numUtils.preparePhoneNumber(phoneNumber);
 	phone.dial({
-		phonenumber: phone_number,
-		success: function() { notifyDialing(phone_number); },
-		failure: function() { notifyDialFailure(phone_number); }
+		phoneNumber: phoneNumber,
+		success: function() { 
+			notifyDialing(phoneNumber); 
+		},
+		error: function(errorThrown) { 
+			console.log('dial error: ' + errorThrown);
+			notifyDialFailure(phoneNumber); 
+		}
 	});
 }
 var hangup = function() {
@@ -368,7 +363,7 @@ var hangup = function() {
 		success: function() {
 			console.log('hangup ok');
 		},
-		failure: function() {
+		error: function(errorThrown) {
 			console.log('hangup fail!');
 		}
 	});
@@ -378,12 +373,32 @@ var start = function() {
 	missed_calls_count = config.getSettings().missed_calls_count;
 	chrome.browserAction.enable();
 	chrome.notifications.onButtonClicked.addListener(hangup);
-	chrome.extension.onRequest.addListener(onRequest);
-	setInterval(function() {
-		checkMissedCalls(phone);
-	}, 10000);
+	chrome.runtime.onMessage.addListener(onMessage);
+	console.log('Turtle Dialer startup completed!');
+	// setInterval(function() {
+	// 	checkMissedCalls(phone);
+	// }, 10000);
 }
 
+var saveSettings = function(settings) {
+	console.log('save settings');
+	config.updateSettings(settings, initialize);
+}
 
+chrome.runtime.onInstalled.addListener(function(details) {
+	if (details.reason == 'install' || details.reason == 'upgrade') {
+		chrome.tabs.create({
+			url: 'https://github.com/turtledialer/turtledialer_chrome/releases/tag/' + chrome.runtime.getManifest().version
+		}, function() {});
+	}
+});
 
-config.load(initialize);
+console.log('starting up Turtle Dialer....');
+chrome.browserAction.disable();
+chrome.identity.getProfileUserInfo(function(userInfo) {
+	profileEmail = userInfo.email;
+	console.log(profileEmail);
+	config = new Config();
+	config.load(initialize);
+});
+

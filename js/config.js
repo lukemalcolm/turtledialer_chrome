@@ -80,3 +80,12 @@ Config.prototype.check = function() {
 Config.prototype.getSettings = function() {
 	return this.settings;
 }
+Config.prototype.updateSettings = function(s, callback) {
+	for (k in s) {
+		this.settings[k] = s[k];
+	}
+	this.save(function() {
+		console.log('settings updated!');
+		callback();
+	});
+} 

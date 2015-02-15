@@ -14,17 +14,29 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-$(function() {
+"use strict";
 
-	var set = function(name, value) {
-		var backgroundPage = chrome.extension.getBackgroundPage(); 
-		backgroundPage.config.set(name, value, backgroundPage.initialize);
+$(function() {
+	var currentTabId = 0;
+	var settings = null;
+	var profileEmail = null;
+	var backgroundPage = null;
+
+	var closeListener = function(tabId, removeInfo) {
+		if (currentTabId == tabId) {
+			backgroundPage.saveSettings(settings);
+			chrome.tabs.onRemoved.removeListener(this);
+		}
 	}
+	chrome.tabs.getCurrent(function(tab) {
+		currentTabId = tab.id;
+		console.log('tabid = ' + currentTabId);
+		chrome.tabs.onRemoved.addListener(closeListener);
+	});
 
 	var localizeLabels = function() {
 		$('[id^=lbl_]').each(
 			function() {
-				console.log($(this));
 				var msg = chrome.i18n.getMessage($(this).attr('id'));
 				if (msg != undefined && msg != '') {
 					$(this).text(msg);
@@ -35,8 +47,6 @@ $(function() {
 	}
 
 	var fillGeneralSettings = function() {
-		var backgroundPage = chrome.extension.getBackgroundPage(); 
-		var settings = backgroundPage.config.getSettings();
 		if (settings.country != undefined) {
 			$('#country').val(settings.country);
 		}
@@ -66,7 +76,7 @@ $(function() {
 		$('#phone').change(
 			function() {
 				var selected_model = $(this).val();
-				set('phone', selected_model);
+				settings.phone = selected_model;
 				removeFieldsFromValidator();
 				$('#phone_form').empty();
 				$('#phone_form').load(
@@ -85,20 +95,18 @@ $(function() {
 		$('#country').change(
 			function() {
 				var selected_country = $(this).val();
-				set('country', selected_country);
+				settings.country = selected_country;
 			}
 		);
 
 		$('#gmail').change(
 			function() {
-				set('gmail', $(this).is(':checked'));
+				settings.gmail = $(this).is(':checked');
 			}
 		);
 	}
 
 	var fillPhoneSettings = function() {
-		var backgroundPage = chrome.extension.getBackgroundPage(); 
-		var settings = backgroundPage.config.getSettings();
 		if (settings.protocol != undefined) {
 			$('#proto_' + settings.protocol).attr('checked', 'checked');
 		}
@@ -118,10 +126,6 @@ $(function() {
 		if (settings.password != undefined) {
 			$('#password').val(settings.password);
 		}
-
-		if (settings.account != undefined) {
-			$('#account').val(settings.account);
-		}
 	}
 
 
@@ -129,7 +133,7 @@ $(function() {
 		$('#proto_http').change(
 			function() {
 				if ($(this).is(':checked')) {
-					set('protocol', 'http');
+					settings.protocol = 'http';
 					$('#port').val('80');
 				}
 			}
@@ -137,30 +141,26 @@ $(function() {
 		$('#proto_https').change(
 			function() {
 				if ($(this).is(':checked')) {
-					set('protocol', 'https');
+					settings.protocol = 'https';
 					$('#port').val('443');
 				}
 			}
 		);
 
 		$('#host').on('keyup change', function() {
-			set('host', $(this).val());
+			settings.host = $(this).val();
 		});
 
 		$('#port').on('keyup change', function() {
-			set('port', parseInt($(this).val()));
+			settings.port = parseInt($(this).val());
 		});
 
 		$('#username').on('keyup change', function() {
-			set('username', $(this).val());
+			settings.username = $(this).val();
 		});
 
 		$('#password').on('keyup change', function() {
-			set('password', $(this).val());
-		});
-
-		$('#account').on('keyup change', function() {
-			set('account', $(this).val());
+			settings.password = $(this).val();
 		});
 	}
 
@@ -263,5 +263,10 @@ $(function() {
 		validateSettings();
 	}
 
-	init();
+	chrome.runtime.getBackgroundPage(function(page) {
+		backgroundPage = page;
+		settings = backgroundPage.config.getSettings();
+		profileEmail = backgroundPage.profileEmail;
+		init();
+	});
 });

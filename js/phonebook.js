@@ -57,7 +57,7 @@ var renderContacts = function() {
 			col_to_add.append($('<i>').addClass(icon_class));
 			var num = $('<a>').addClass('number-link').attr('href', '#');
 			var phone_number =
-				chrome.extension.getBackgroundPage().number_utils.formatPhoneNumber(
+				chrome.extension.getBackgroundPage().numUtils.formatPhoneNumber(
 					current_number['number']
 				);
 			num.text(phone_number);
@@ -148,7 +148,7 @@ $(function() {
 		        $(this).toggle(re.test(id));
 		    });
 		}
-		var num = chrome.extension.getBackgroundPage().number_utils.parsePhoneNumber(value);
+		var num = chrome.extension.getBackgroundPage().numUtils.parsePhoneNumber(value);
 		if (num) {
 			$('#btn_dial').removeAttr('disabled');
 		} else {

@@ -1,9 +1,9 @@
 {
   "name": "Turtle Dialer",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "manifest_version": 2,
   "description": "Control your IP phone from Google Chrome",
-  "homepage_url": "http://www.turtledialer.com",
+  "homepage_url": "http://turtledialer.com",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlKVdh7QLPHtk/cFQd7UCj6Vhjaqat1/CfafFmlu7gqKef0Oe+AKauJly5/Aaz1RtuOdA8AAHOR+DFGbHQQnyMrs0tqjkuqgRoQVsgpxxAjMPqS6h3X7Xg0Frs2xEO5Aqkrv7sm29jMxrpmawZ+eIokeN1tJDxVRu6I49IDs3TII+Y9HUmGlmpJQRmhbqKCaoExdsSY6m7I4LyB+1eFu4vKODoD3TDj1uqVB7MU8NB+obFnHcrKAtEx/vAE29RPE76PqOEkMtUG0xv/3YiGP+WzAsnxMhsg/3QSHCcQZDmRTOKozbRWFd145Fi+cHQ2JGUzt7bOwe4C54UQMb0SL2WwIDAQAB",
   "icons": {
     "16": "icons/icon_16.png",
@@ -27,7 +27,6 @@
     "scripts": [
       "js/jquery-1.11.1.min.js",
       "js/phoneformat.js",
-      "js/papaparse.min.js",
       "js/md5.js",
       "js/config.js",
       "js/phones.js",
@@ -50,6 +49,7 @@
     "storage",
     "contextMenus",
     "identity",
+    "identity.email",
     "http://*/*",
     "https://*/*"
    ],

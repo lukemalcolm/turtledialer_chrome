@@ -14,261 +14,298 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+"use strict";
+
+
+var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+	'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+var lp2 = function(val) {
+	return ('00' + val).slice(-2);
+}
+var m2n = function(val) {
+	return lp2($.inArray(val, MONTHS) + 1);
+}
+
+var parsePhonebook = function(response) {
+	var lines = response.split('\n');
+	var header = lines[0].split(',');
+	var items = {}
+	$.each(lines, function(i, value) {
+		if (i == 0) {
+			return true;
+		}
+		var fields = value.split(',');
+		if (fields.length < 4) {
+			return true;
+		}
+		var displayName = fields[0].substring(0, fields[0].length);
+		var officeNumber = fields[1].substring(0, fields[1].length);
+		var mobileNumber = fields[2].substring(0, fields[2].length);
+		var otherNumber = fields[3].substring(0, fields[3].length);
+		if (displayName.substring(0, 1) == '"') {
+			displayName = displayName.substring(1, displayName.length - 1);
+			officeNumber = officeNumber.substring(1, officeNumber.length - 1);
+			mobileNumber = mobileNumber.substring(1, mobileNumber.length - 1);
+			otherNumber = otherNumber.substring(1, otherNumber.length - 1);
+		}
+		items[displayName] = {
+			'gravatar': 'http://www.gravatar.com/avatar/00000000000000000000000000000000.png?d=mm&s=96',
+			'numbers': []
+		};
+		if (officeNumber != '') {
+			items[displayName]['numbers'].push({ 
+				'source': 'phone',
+				'kind': 'work',
+				'number': officeNumber
+			});
+		}
+		if (mobileNumber != '') {
+			items[displayName]['numbers'].push({ 
+				'source': 'phone',
+				'kind': 'mobile',
+				'number': mobileNumber
+			});
+		}
+		if (otherNumber != '') {
+			items[displayName]['numbers'].push({ 
+				'source': 'phone',
+				'kind': 'other',
+				'number': otherNumber
+			});
+		}
+	});
+	return items;
+}
+
 function YealinkT20P(settings) {
 	this.protocol = settings.protocol;
 	this.host = settings.host;
 	this.port = settings.port;
 	this.username = settings.username;
 	this.password = settings.password;
-	this.account = settings.account;
+	this.configuredLines = 0;
+	this.baseUrl = 
+		this.protocol + '://' +
+		this.host + ':' + this.port + 
+		'/cgi-bin/ConfigManApp.com';
+	this.checkLines();
 }
 
-
-YealinkT20P.prototype.dial = function(dialrequest) {
-	console.log('dialing: ' + dialrequest.phonenumber);
-	var url_to_call = 
-		this.protocol + '://' +
-		this.username + ':' + this.password + '@' + 
-		this.host + ':' + this.port + '/cgi-bin/ConfigManApp.com?Id=34&Command=1&Number=' + 
-		dialrequest.phonenumber + "&Account=@" +this.account;	
-	console.log(url_to_call);
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', url_to_call, true);
-	xhr.onreadystatechange = function() {
-		console.log(xhr.readyState);
-	  if (xhr.readyState == 4) {
-	  	console.log(xhr.responseText);
-	  	if (xhr.responseText != '1') {
-	  		dialrequest.failure();
-	  	} else {
-	  		dialrequest.success();
-	  	}
-	  }
-	}
-	xhr.send();	
+YealinkT20P.prototype.checkLines = function() {
+	$.ajax({
+		url: this.baseUrl,
+		type: 'GET',
+		data: {
+			'Id': '1'
+		},
+		dataType: 'html',
+		username: this.username,
+		password: this.password,
+			success: function(response) {
+		  	var startIndex = response.indexOf('Cfgdata="') + 9;
+		  	if (startIndex > 9) {
+		  		var endIndex = response.indexOf('"', startIndex);
+		  		var data = response.substring(startIndex, endIndex).split('þ');
+		  		if (data[11].indexOf('REGISTERED') > 0) {
+		  			this.configuredLines++;
+		  		}
+		  		if (data[12].indexOf('REGISTERED') > 0) {
+		  			this.configuredLines++;
+				}
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			dialRequest.error(errorThrown);
+		}
+	});	
 }
-YealinkT20P.prototype.callsLog = function(logrequest) {
-	var url_to_call = 
-		this.protocol + '://' +
-		this.username + ':' + this.password + '@' + 
-		this.host + ':' + this.port + '/cgi-bin/ConfigManApp.com?Id=34';
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', url_to_call, true);
-	xhr.onreadystatechange = function() {
-		console.log(xhr.readyState);
-	  if (xhr.readyState == 4) {
-	  	var page_content = xhr.responseText;
-	  	var start_index = page_content.indexOf('Cfgdata2="') + 10;
-	  	if (start_index > 10) {
-	  		var end_index = page_content.indexOf('"', start_index);
-	  		var data = page_content.substring(start_index, end_index).split('þ');
-	  		var months = {
-	  			'Jan': '01',
-	  			'Feb': '02',
-	  			'Mar': '03',
-	  			'Apr': '04',
-	  			'May': '05',
-	  			'Jun': '06',
-	  			'Jul': '07',
-	  			'Aug': '08',
-	  			'Sep': '09',
-	  			'Oct': '10',
-	  			'Nov': '11',
-	  			'Dec': '12'
-	  		}
-	  		var log = []
-	  		for (var i =0; i < data.length; i++) {
-	  			var item = data[i].split('ÿ');
+
+YealinkT20P.prototype.dial = function(dialRequest) {
+	$.ajax({
+		url: this.baseUrl,
+		type: 'GET',
+		data: {
+			'Id': '34',
+			'Command': '1',
+			'Number': dialRequest.phoneNumber,
+			'Account': dialRequest.accountId || '0'
+		},
+		dataType: 'text',
+		username: this.username,
+		password: this.password,
+		success: function(response) {
+			if (response == '1') {
+				dialRequest.success();
+			} else {
+				dialRequest.error('Invalid response');
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			dialRequest.error(errorThrown);
+		}
+	});	
+}
+YealinkT20P.prototype.hangup = function(hangupRequest) {
+	$.ajax({
+		url: this.baseUrl,
+		type: 'GET',
+		data: {
+			'Id': '34',
+			'Command': '3'
+		},
+		dataType: 'text',
+		username: this.username,
+		password: this.password,
+		success: function(response) {
+			if (response == '3') {
+				hangupRequest.success();
+			} else {
+				hangupRequest.error('Invalid response');
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			hangupRequest.error(errorThrown);
+		}
+	});
+}	
+YealinkT20P.prototype.getCallLog = function(logRequest) {
+	var parseCallLog = function(response) {
+		var log = [];
+		var callKinds = {
+			'1': 'outgoing',
+			'2': 'incoming',
+			'3': 'missed'
+		}
+	  	var startIndex = response.indexOf('Cfgdata2="') + 10;
+	  	if (startIndex > 10) {
+	  		var endIndex = response.indexOf('"', startIndex);
+	  		var data = response.substring(startIndex, endIndex).split('þ');
+	  		$.each(data, function(i, value) {
+	  			var item = value.split('ÿ');
 	  			if (item.length < 7) {
-	  				continue;
+	  				return true;
 	  			}
-	  			var date_parts = item[1].split(',')[1].split(' ');
-	  			var date = ('00' + date_parts[2]).slice(-2) + '/' + months[date_parts[1]];
+	  			var dateParts = item[1].split(',')[1].split(' ');
+	  			var date = lp2(dateParts[2]) + '/' + m2n(dateParts[1]);
 	  			var time = item[2];
 	  			var number = item[6];
-	  			var ts = months[date_parts[1]] + ('00' + date_parts[2]).slice(-2) + time.replace(':', '');
-	  			var kind = null;
-	  			switch (item[0]) {
-	  				case '1':
-	  					kind = 'outgoing';
-	  					break;
-	  				case '2':
-	  					kind = 'incoming';
-	  					break;
-	  				case '3':
-	  					kind = 'missed';
-	  					break;
-	  			}
-	  			if (kind != null) {
+	  			var ts = m2n(dateParts[1]) + lp2(dateParts[2]) + time.replace(':', '');
+	  			if (callKinds.hasOwnProperty(item[0])) {
 					log.push({
-						'kind': kind,
+						'kind': callKinds[item[0]],
 						'date': date,
 						'time': time,
 						'ts': parseInt(ts),
 						'number': number
 					});
-	  			}
-	  		}
-	  		logrequest.success(log);
+	  			}	  			
+	  		});
 	  	}
-	  }
+	  	return log;
 	}
-	xhr.send();	
-}
-YealinkT20P.prototype.hangup = function(hanguprequest) {
-	console.log('hangup');
-	var url_to_call = 
-		this.protocol + '://' +
-		this.username + ':' + this.password + '@' + 
-		this.host + ':' + this.port + '/cgi-bin/ConfigManApp.com?Id=34&Command=3';
-	console.log('hangup url: ' + url_to_call);
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', url_to_call, true);
-	xhr.onreadystatechange = function() {
-		console.log(xhr.readyState);
-	  if (xhr.readyState == 4) {
-	  	console.log(xhr.responseText);
-	  	if (xhr.responseText != '3') {
-	  		hanguprequest.failure();
-	  	} else {
-	  		hanguprequest.success();
-	  	}
-	  }
-	}
-	xhr.send();	
-}	
-
-YealinkT20P.prototype.phonebook = function(phonebookrequest) {
-	var url_to_call = 
-		this.protocol + '://' +
-		this.username + ':' + this.password + '@' + 
-		this.host + ':' + this.port + '/cgi-bin/ConfigManApp.com?Id=28&form=1';
-	console.log('phonebook url: ' + url_to_call);
-	Papa.parse(
-		url_to_call,
-		{
-			download: true,
-			header: true,
-			delimiter: ',',
-			error: function(err) {
-				phonebookrequest.error(err);
-			},
-			complete: function(results, file) {
-				var items = {}
-				for (var i = 0; i < results.data.length; i++) {
-					items[results.data[i].DisplayName] = {
-						'gravatar': 'http://www.gravatar.com/avatar/00000000000000000000000000000000.png?d=mm&s=96',
-						'numbers': []
-					};
-					if (results.data[i].OfficeNumber != '') {
-						items[results.data[i].DisplayName]['numbers'].push({ 
-							'source': 'phone',
-							'kind': 'work',
-							'number': results.data[i].OfficeNumber
-						});
-					}
-					if (results.data[i].MobilNumber != '') {
-						items[results.data[i].DisplayName]['numbers'].push({ 
-							'source': 'phone',
-							'kind': 'mobile',
-							'number': results.data[i].MobilNumber
-						});
-					}
-					if (results.data[i].OtherNumber != '') {
-						items[results.data[i].DisplayName]['numbers'].push({ 
-							'source': 'phone',
-							'kind': 'other',
-							'number': results.data[i].OtherNumber
-						});
-					}
-				}
-				console.log('phonebook results');
-				console.log(items);
-				phonebookrequest.success(items);
-			}
+	$.ajax({
+		url: this.baseUrl,
+		type: 'GET',
+		data: {
+			'Id': '34'
+		},
+		dataType: 'html',
+		username: this.username,
+		password: this.password,
+		success: function(response) {
+			logRequest.success(parseCallLog(response));
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			logRequest.error(errorThrown);
 		}
-	);
+	});
+}
+YealinkT20P.prototype.getPhonebook = function(phonebookRequest) {
+	$.ajax({
+		url: this.baseUrl,
+		type: 'GET',
+		data: {
+			'Id': '28',
+			'form': '1'
+		},
+		dataType: 'text',
+		username: this.username,
+		password: this.password,
+		success: function(response) {
+			phonebookRequest.success(parsePhonebook(response));
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			phonebookRequest.error(errorThrown);
+		}
+	});
 }
 
-function YealinkT28P(settings) {
+function YealinkT21P_28P_46G(settings) {
 	this.protocol = settings.protocol;
 	this.host = settings.host;
 	this.port = settings.port;
 	this.username = settings.username;
 	this.password = settings.password;
 	this.account = settings.account;
-	this.sessionid = null;
+	this.baseUrl = 
+		this.protocol + '://' +
+		this.host + ':' + this.port + '/servlet';
 }
 
-YealinkT28P.prototype.login = function(callback) {
-	var url_to_call = 
-		this.protocol + '://' +
-		this.host + ':' + this.port + '/servlet?p=login&q=login';
-	var params = 'username=' + this.username + '&pwd=' + this.password;
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', url_to_call, true);
-	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhr.withCredentials = true;
-	xhr.crossDomain = true;
-	xhr.onreadystatechange = function() {
-		console.log(xhr.readyState);
-		if (xhr.readyState == 4) {
+YealinkT21P_28P_46G.prototype.login = function(callback) {
+	$.ajax({
+		url: this.baseUrl + 
+			'?p=login&q=login&username=' + this.username + 
+			'&pwd=' + this.password,
+		type: 'POST',
+		dataType: 'html',
+		success: function(response) {
 			callback();
-	  }
-	}
-	xhr.send(params);		
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			console.log('error logging in: ' + errorThrown);
+		}
+	});		
 }
 
-YealinkT28P.prototype.dial = function(dialrequest) {
-	console.log('dialing: ' + dialrequest.phonenumber);
-	var url_to_call = 
-		this.protocol + '://' +
-		this.host + ':' + this.port + '/servlet?p=contacts-callinfo&q=call&num=' + 
-		dialrequest.phonenumber + '&acc=0';
-	console.log(url_to_call);
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', url_to_call, true);
-	xhr.onreadystatechange = function() {
-	  if (xhr.readyState == 4) {
-	  	if (xhr.responseText != 'call success') {
-	  		dialrequest.failure();
-	  	} else {
-	  		dialrequest.success();
-	  	}
-	  }
-	}
+YealinkT21P_28P_46G.prototype.dial = function(dialRequest) {
+	var that = this;
 	this.login(function() {
-		xhr.send();
-	});	
+		$.ajax({
+			url: that.baseUrl,
+			type: 'GET',
+			data: {
+				'p': 'contacts-callinfo',
+				'q': 'call',
+				'num': dialRequest.phoneNumber,
+				'acc': dialRequest.accountId || '0'
+			},
+			dataType: 'text',
+			success: function(response) {
+				if (response == 'call success') {
+					dialRequest.success();
+				} else {
+					dialRequest.error(response);
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				dialRequest.error(errorThrown);
+			}
+		});
+	});
 }
 
-YealinkT28P.prototype.callsLog = function(logrequest) {
-	var url_to_call = 
-		this.protocol + '://' +
-		this.host + ':' + this.port + '/servlet?p=contacts-callinfo&q=load';
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', url_to_call, true);
-	xhr.onreadystatechange = function() {
-		console.log(xhr.readyState);
-	  if (xhr.readyState == 4) {
-	  	var page_content = xhr.responseText;
-  		var months = {
-  			'Jan': '01',
-  			'Feb': '02',
-  			'Mar': '03',
-  			'Apr': '04',
-  			'May': '05',
-  			'Jun': '06',
-  			'Jul': '07',
-  			'Aug': '08',
-  			'Sep': '09',
-  			'Oct': '10',
-  			'Nov': '11',
-  			'Dec': '12'
-  		}
-	  	var log = [];
-	  	$(['CallDialedListContent', 'CallMissedListContent', 'CallReceivedListContent']).each(function(idx, sel) {
-		  	$(page_content).find('#' + sel + ' table tr').each(function(idx, val) {
+YealinkT21P_28P_46G.prototype.getCallLog = function(logRequest) {
+	var parseCallLog = function(response) {
+		var callKinds = {
+			'CallDialedListContent': 'outgoing', 
+			'CallMissedListContent': 'missed', 
+			'CallReceivedListContent': 'incoming'
+		};
+		var log = [];
+	  	$(Object.keys(callKinds)).each(function(idx, sel) {
+		  	$(response).find('#' + sel + ' table tr').each(function(idx, val) {
 		  		var date = null;
 		  		var time = null;
 		  		var number = null;
@@ -278,13 +315,12 @@ YealinkT28P.prototype.callsLog = function(logrequest) {
 		  			var txt = $(this).text();
 		  			switch (idx) {
 		  				case 1:
-		  					//txt = txt.replace(/ +/g, ' ').replace(/\n|\r/g, '');
 		  					txt = txt.substring(txt.indexOf(') T("') + 5);
 		  					var m = txt.substring(0, txt.indexOf('"'));
 		  					txt = txt.substring(txt.indexOf('T("') + 3);
 		  					var d = txt.substring(0, txt.indexOf('"'));
-		  					date = d + '/' + months[m]
-		  					ts = months[m] + d;
+		  					date = d + '/' + m2n[m]
+		  					ts = m2n[m] + d;
 		  					break;
 		  				case 2:
 		  					time = txt;
@@ -295,21 +331,11 @@ YealinkT28P.prototype.callsLog = function(logrequest) {
 		  					break;
 		  			}
 		  		});
-		  		switch (sel) {
-		  			case 'CallDialedListContent':
-		  				kind = 'outgoing';
-		  				break;
-		  			case 'CallMissedListContent':
-		  				kind = 'missed';
-		  				break;
-		  			case 'CallReceivedListContent':
-		  				kind = 'incoming';
-		  		}
 		  		if (!number) {
 		  			return true;
 		  		}
 		  		log.push({
-					'kind': kind,
+					'kind': callKinds[sel],
 					'ts': parseInt(ts),
 					'date': date,
 					'time': time,
@@ -319,95 +345,74 @@ YealinkT28P.prototype.callsLog = function(logrequest) {
 	  	});
 		log.sort(function(a, b) {
 			return b['ts'] - a['ts'];
-		})
-	  	console.log(log);
-	  	logrequest.success(log);
-	  }
+		});
+		return log;		
 	}
+
+	var that = this;
 	this.login(function() {
-		xhr.send();
+		$.ajax({
+			url: that.baseUrl,
+			type: 'GET',
+			data: {
+				'p': 'contacts-callinfo',
+				'q': 'load'
+			},
+			dataType: 'html',
+			success: function(response) {
+				logRequest.success(parseCallLog(response));
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				logRequest.error(errorThrown);
+			}
+		});
 	});
 }
-YealinkT28P.prototype.hangup = function(hanguprequest) {
-	console.log('hangup');
-	var url_to_call = 
-		this.protocol + '://' +
-		this.host + ':' + this.port + '/servlet?p=contacts-callinfo&q=hangup';
-	console.log('hangup url: ' + url_to_call);
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', url_to_call, true);
-	xhr.onreadystatechange = function() {
-		console.log(xhr.readyState);
-	  if (xhr.readyState == 4) {
-	  	console.log(xhr.responseText);
-	  	if (xhr.responseText != 'Hang Up Success!') {
-	  		hanguprequest.failure();
-	  	} else {
-	  		hanguprequest.success();
-	  	}
-	  }
-	}
+YealinkT21P_28P_46G.prototype.hangup = function(hangupRequest) {
+	var that = this;
 	this.login(function() {
-		xhr.send();	
+		$.ajax({
+			url: that.baseUrl,
+			type: 'GET',
+			data: {
+				'p': 'contacts-callinfo',
+				'q': 'hangup'
+			},
+			dataType: 'text',
+			success: function(response) {
+				if (response == 'Hang Up Success!') {
+					hangupRequest.success();
+				} else {
+					hangupRequest.error(response);
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				hangupRequest.error(errorThrown);
+			}
+		});
 	});
 }	
 
-YealinkT28P.prototype.phonebook = function(phonebookrequest) {
-	var url_to_call = 
-		this.protocol + '://' +
-		this.host + ':' + this.port + '/servlet?p=contacts-preview&q=exportcvs';
-
+YealinkT21P_28P_46G.prototype.getPhonebook = function(phonebookRequest) {
+	var that = this;
 	this.login(function() {
-		Papa.parse(
-			url_to_call,
-			{
-				download: true,
-				header: true,
-				delimiter: ',',
-				error: function(err) {
-					phonebookrequest.error(err);
-				},
-				complete: function(results, file) {
-					var items = {}
-					for (var i = 0; i < results.data.length; i++) {
-						items[results.data[i].display_name] = {
-							'gravatar': 'http://www.gravatar.com/avatar/00000000000000000000000000000000.png?d=mm&s=96',
-							'numbers': []
-						};
-						if (results.data[i].office_number != '') {
-							items[results.data[i].display_name]['numbers'].push({ 
-								'source': 'phone',
-								'kind': 'work',
-								'number': results.data[i].office_number
-							});
-						}
-						if (results.data[i].mobile_number != '') {
-							items[results.data[i].display_name]['numbers'].push({ 
-								'source': 'phone',
-								'kind': 'mobile',
-								'number': results.data[i].mobile_number
-							});
-						}
-						if (results.data[i].other_number != '') {
-							items[results.data[i].display_name]['numbers'].push({ 
-								'source': 'phone',
-								'kind': 'other',
-								'number': results.data[i].other_number
-							});
-						}
-					}
-					console.log(items);
-					phonebookrequest.success(items);
-				}
+		$.ajax({
+			url: that.baseUrl,
+			type: 'GET',
+			data: {
+				'p': 'contacts-preview',
+				'q': 'exportcvs'
+			},
+			dataType: 'text',
+			success: function(response) {
+				phonebookRequest.success(parsePhonebook(response));
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				phonebookRequest.error(errorThrown);
 			}
-		);
+		});
 	});
 }
-
-
-
-
-
 
 function GrandstreamGXP14xx(settings) {
 	this.protocol = settings.protocol;
