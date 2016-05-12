@@ -15,7 +15,7 @@ limitations under the License.
 */
 function NumberUtils(country) {
 	this.country = country;
-	this.number_utils = i18n.phonenumbers.PhoneNumberUtil.getInstance();
+	this.number_utils = libphonenumber.PhoneNumberUtil.getInstance();
 }
 
 
@@ -29,14 +29,7 @@ NumberUtils.prototype.preparePhoneNumber = function(phone_number) {
 	var pmd = this.number_utils.getMetadataForRegion(this.country);
 	try {
 		var pn = this.number_utils.parse(phone_number, this.country);
-		if (pn.getCountryCode() == pmd.getCountryCode()) {
-			phone_number = pn.getNationalNumber();
-		} else {
-			phone_number = pmd.getInternationalPrefix() + 
-				pn.getCountryCode() +
-				(pn.hasItalianLeadingZero() ? '0' : '') + 
-				pn.getNationalNumber();
-		}
+		return this.number_utils.formatOutOfCountryCallingNumber(pn, this.country);
 	} catch (e) {
 	}
 	return phone_number;
@@ -48,7 +41,7 @@ NumberUtils.prototype.parsePhoneNumber = function(phone_number) {
 		if (this.number_utils.isValidNumber(pn)) {
 			phone_number = this.number_utils.format(
 				pn,
-				i18n.phonenumbers.PhoneNumberFormat.E164
+				libphonenumber.PhoneNumberFormat.E164
 			);
 		} else {
 			return null;
