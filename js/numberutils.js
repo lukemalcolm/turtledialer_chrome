@@ -29,7 +29,8 @@ NumberUtils.prototype.preparePhoneNumber = function(phone_number) {
 	var pmd = this.number_utils.getMetadataForRegion(this.country);
 	try {
 		var pn = this.number_utils.parse(phone_number, this.country);
-		return this.number_utils.formatOutOfCountryCallingNumber(pn, this.country);
+		var formatted = this.number_utils.formatOutOfCountryCallingNumber(pn, this.country);
+		return formatted.replace(/ /g,'');
 	} catch (e) {
 	}
 	return phone_number;
