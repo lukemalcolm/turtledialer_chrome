@@ -20,6 +20,9 @@
   "lbl_html_yealink_t28p_settings": {
     "message": "Yealink T28P API settings"
   },
+  "lbl_html_grandstream_2170_settings": {
+    "message": "Grandstream 2170 API settings"
+  },
   "lbl_html_protocol": {
       "message": "Protocol"
   },

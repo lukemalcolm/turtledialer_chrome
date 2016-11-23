@@ -55,7 +55,7 @@
    ],
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
+      "matches": ["http://*/*", "https://*/*", "file:///*/*"],
       "js": ["js/content.js"]
     }
   ],
