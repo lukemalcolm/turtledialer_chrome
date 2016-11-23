@@ -403,3 +403,54 @@ YealinkT28P.prototype.phonebook = function(phonebookrequest) {
 		);
 	});
 }
+
+function Grandstream2170(settings) {
+    this.protocol = settings.protocol;
+    this.host = settings.host;
+    this.port = settings.port;
+    this.username = settings.username;
+    this.password = settings.password;
+    this.account = settings.account;
+}
+
+
+Grandstream2170.prototype.dial = function(dialrequest) {
+    // http://192.168.47.166/cgi-bin/api-make_call?phonenumber=07707081802&account=0&password=admin
+	console.log('dialing: ' + dialrequest.phonenumber);
+    var url_to_call =
+        this.protocol + '://' +
+        this.host + ':' + this.port + '/cgi-bin/api-make_call?phonenumber=' +
+        dialrequest.phonenumber + "&account=" +this.account + "&password=" + this.password;
+    console.log(url_to_call);
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url_to_call, true);
+    xhr.onreadystatechange = function() {
+        console.log(xhr.readyState);
+        if (xhr.readyState == 4) {
+            console.log(xhr.responseText);
+            if (xhr.responseText != '{"response":"success", "body": ""}') {
+                dialrequest.failure();
+            } else {
+                dialrequest.success();
+            }
+        }
+    }
+    xhr.send();
+}
+Grandstream2170.prototype.callsLog = function(logrequest) {
+    console.log('logcall');
+}
+Grandstream2170.prototype.hangup = function(hanguprequest) {
+    console.log('hangup');
+
+}
+
+Grandstream2170.prototype.phonebook = function(phonebookrequest) {
+
+	var items = {}
+
+	console.log('phonebook results');
+	console.log(items);
+	phonebookrequest.success(items);
+
+}
